@@ -35,6 +35,18 @@ private:
     juce::Slider outputGainSlider;
     juce::Label inputGainLabel;
     juce::Label outputGainLabel;
+    
+    juce::Slider delayTimeSlider;
+    juce::Label delayTimeLabel;
+    
+    juce::Slider decayRateSlider;
+    juce::Label decayRateLabel;
+    
+    juce::Slider wetMixSlider;
+    juce::Label wetMixLabel;
+    
+    juce::Slider dryMixSlider;
+    juce::Label dryMixLabel;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (JZDelayAudioProcessorEditor)
 };

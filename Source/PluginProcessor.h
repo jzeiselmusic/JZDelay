@@ -55,6 +55,10 @@ public:
     
     double inputGain;
     double outputGain;
+    double delayTime;
+    double decayRate;
+    double wetMix;
+    double dryMix;
 
 private:
     //==============================================================================
