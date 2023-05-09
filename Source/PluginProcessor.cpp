@@ -8,6 +8,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include <math.h>
 
 //==============================================================================
 JZDelayAudioProcessor::JZDelayAudioProcessor()
@@ -18,6 +19,15 @@ JZDelayAudioProcessor::JZDelayAudioProcessor()
 {
     inputGain = pow(10, 0.0); // start input gain at 1.0
     outputGain = pow(10, 0.0); // start output gain at 1.0
+    
+    numSamples = ceil(.001 * 70.0 * getSampleRate());
+    decayRate = 0.75;
+    delayTime = 70.0;
+    wetMix = 50.0;
+    dryMix = 100.0;
+    
+    echoListL = (float*)calloc(10000, sizeof(float));
+    echoListR = (float*)calloc(10000, sizeof(float));
 }
 
 JZDelayAudioProcessor::~JZDelayAudioProcessor()
@@ -77,14 +87,17 @@ void JZDelayAudioProcessor::changeProgramName (int index, const juce::String& ne
 //==============================================================================
 void JZDelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
+    readPosL = 1;
+    writePosL = 0;
+    readPosR = 1;
+    writePosR = 0;
 }
 
 void JZDelayAudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
+    
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -141,15 +154,42 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
     buffer.applyGain(1, 0, buffer.getNumSamples(), inputGain);
     
     
+    float origL;
+    float origR;
+    float tempL;
+    float tempR;
     
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
-        auto* channelData = buffer.getWritePointer (channel);
-
-        // ..do something to the data...
+        auto* channelWData = buffer.getWritePointer (channel);
+        for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
+        {
+            if (channel == 0)
+            {
+                // L processing             // increment modulo numSamples
+                origL = channelWData[sample];
+                readPosL = readPosL + 1 == numSamples ? 0 : (readPosL + 1);
+                writePosL = writePosL + 1 == numSamples ? 0 : (writePosL + 1);
+                tempL = decayRate * echoListL[readPosL];
+                echoListL[writePosL] = origL + tempL;
+                
+                channelWData[sample] = (wetMix*.01)*tempL + (dryMix*.01)*origL;
+                
+                
+            }
+            else if (channel == 1)
+            {
+                // R processing             // increment modulo numSamples
+                origR = channelWData[sample];
+                readPosR = readPosR + 1 == numSamples ? 0 : (readPosR + 1);
+                writePosR = writePosR + 1 == numSamples ? 0 : (writePosR + 1);
+                tempR = decayRate * echoListR[readPosR];
+                echoListR[writePosR] = origR + tempR;
+                
+                channelWData[sample] = (wetMix*.01)*tempR + (dryMix*.01)*origR;
+            }
+        }
     }
-    
-    
     
     // output gain
     buffer.applyGain(0, 0, buffer.getNumSamples(), outputGain);

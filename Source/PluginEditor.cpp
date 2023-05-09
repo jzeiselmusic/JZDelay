@@ -93,9 +93,9 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     wetMixSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     wetMixSlider.setTitle("Wet Mix");
     wetMixSlider.setRange(0.0, 100.0, .1);
-    wetMixSlider.setValue(0.0);
+    wetMixSlider.setValue(50.0);
     wetMixSlider.setTextBoxIsEditable(true);
-    wetMixSlider.setDoubleClickReturnValue(true, 0.0, NULL);
+    wetMixSlider.setDoubleClickReturnValue(true, 50.0, NULL);
     wetMixSlider.addListener(this);
     addAndMakeVisible(wetMixSlider);
     
@@ -161,6 +161,16 @@ void JZDelayAudioProcessorEditor::sliderValueChanged(juce::Slider *slider) {
     }
     else if (slider == &delayTimeSlider) {
         audioProcessor.delayTime = delayTimeSlider.getValue();
+        // if this slider is moved, reset echo parameters
+        int tempNumSamples = ceil(.001 * delayTimeSlider.getValue() *
+                                            audioProcessor.getSampleRate());
+        if (tempNumSamples != audioProcessor.numSamples) {
+            audioProcessor.numSamples = tempNumSamples;
+            audioProcessor.readPosL = 1; //
+            audioProcessor.writePosL = 0; // always write to 1 before read. both are incremented
+            audioProcessor.readPosR = 1;
+            audioProcessor.writePosR = 0;
+        }
     }
     else if (slider == &decayRateSlider) {
         audioProcessor.decayRate = decayRateSlider.getValue();

@@ -53,12 +53,24 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
     
-    double inputGain;
-    double outputGain;
-    double delayTime;
-    double decayRate;
-    double wetMix;
-    double dryMix;
+    // parameter editor values
+    float inputGain;
+    float outputGain;
+    float delayTime;
+    float decayRate;
+    float wetMix;
+    float dryMix;
+    
+    // parameter processor values
+    int numSamples;
+    int readPosL;
+    int writePosL;
+    int readPosR;
+    int writePosR;
+    
+    // list to store memory values
+    float* echoListL;
+    float* echoListR;
 
 private:
     //==============================================================================
