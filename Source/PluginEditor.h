@@ -15,7 +15,8 @@
 /**
 */
 class JZDelayAudioProcessorEditor  : public juce::AudioProcessorEditor,
-                                        public juce::Slider::Listener
+                                        public juce::Slider::Listener,
+                                        public juce::Button::Listener
 {
 public:
     JZDelayAudioProcessorEditor (JZDelayAudioProcessor&);
@@ -25,6 +26,8 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
     void sliderValueChanged(juce::Slider *slider) override;
+    void buttonStateChanged(juce::Button *button) override;
+    void buttonClicked(juce::Button *button) override;
 
 private:
     // This reference is provided as a quick way for your editor to
@@ -41,6 +44,8 @@ private:
     
     juce::Slider decayRateSlider;
     juce::Label decayRateLabel;
+    
+    juce::ToggleButton delayOneButton;
     
     juce::Slider wetMixSlider;
     juce::Label wetMixLabel;

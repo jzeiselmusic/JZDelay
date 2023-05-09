@@ -15,26 +15,28 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (300, 350);
+    setSize (500, 350);
     
     // pre-gain slider parameters
     inputGainSlider.setSliderSnapsToMousePosition(true);
-    inputGainSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
+    inputGainSlider.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
     inputGainSlider.setTitle("Input Gain");
     inputGainSlider.setRange(-24.0, 24.0, 0.01);
     inputGainSlider.setValue(0.0);
     inputGainSlider.setTextBoxIsEditable(false);
+    inputGainSlider.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxAbove, true, 35, 20);
     inputGainSlider.setDoubleClickReturnValue(true, 0.0, NULL);
     inputGainSlider.addListener(this);
     addAndMakeVisible(inputGainSlider);
     
     // post-gain slider parameters
     outputGainSlider.setSliderSnapsToMousePosition(true);
-    outputGainSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
+    outputGainSlider.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
     outputGainSlider.setTitle("Output Gain");
     outputGainSlider.setRange(-24.0, 24.0, 0.01);
     outputGainSlider.setValue(0.0);
     outputGainSlider.setTextBoxIsEditable(false);
+    outputGainSlider.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxAbove, true, 35, 20);
     outputGainSlider.setDoubleClickReturnValue(true, 0.0, NULL);
     outputGainSlider.addListener(this);
     addAndMakeVisible(outputGainSlider);
@@ -43,12 +45,14 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     addAndMakeVisible (inputGainLabel);
     inputGainLabel.setText ("Input Gain", juce::dontSendNotification);
     inputGainLabel.attachToComponent (&inputGainSlider, false); //
-    inputGainLabel.setJustificationType(juce::Justification::topLeft);
+    inputGainLabel.setJustificationType(juce::Justification::top);
+    inputGainLabel.setMinimumHorizontalScale(0.5);
     
     addAndMakeVisible (outputGainLabel);
     outputGainLabel.setText ("Output Gain", juce::dontSendNotification);
     outputGainLabel.attachToComponent (&outputGainSlider, false); //
-    outputGainLabel.setJustificationType(juce::Justification::topLeft);
+    outputGainLabel.setJustificationType(juce::Justification::centredTop);
+    outputGainLabel.setMinimumHorizontalScale(0.5);
     
     
     // delay time slider parameters
@@ -108,11 +112,12 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     
     // dry mix slider parameters
     dryMixSlider.setSliderSnapsToMousePosition(true);
-    dryMixSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
+    dryMixSlider.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
     dryMixSlider.setTitle("Dry Mix");
     dryMixSlider.setRange(0.0, 100.0, .1);
     dryMixSlider.setValue(100.0);
     dryMixSlider.setTextBoxIsEditable(true);
+    dryMixSlider.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxAbove, true, 35, 20);
     dryMixSlider.setDoubleClickReturnValue(true, 100.0, NULL);
     dryMixSlider.addListener(this);
     addAndMakeVisible(dryMixSlider);
@@ -121,7 +126,10 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     addAndMakeVisible (dryMixLabel);
     dryMixLabel.setText ("Dry Mix", juce::dontSendNotification);
     dryMixLabel.attachToComponent (&dryMixSlider, false); //
-    dryMixLabel.setJustificationType(juce::Justification::topLeft);
+    dryMixLabel.setJustificationType(juce::Justification::top);
+    
+    addAndMakeVisible(delayOneButton);
+    delayOneButton.addListener(this);
     
 }
 
@@ -141,13 +149,16 @@ void JZDelayAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
-    auto sliderLeft = 20;
-    inputGainSlider.setBounds(sliderLeft, 50, 250, 20);
-    outputGainSlider.setBounds(sliderLeft, 100, 250, 20);
-    delayTimeSlider.setBounds(sliderLeft, 150, 250, 20);
-    decayRateSlider.setBounds(sliderLeft, 200, 250, 20);
-    wetMixSlider.setBounds(sliderLeft, 250, 250, 20);
-    dryMixSlider.setBounds(sliderLeft, 300, 250, 20);
+    auto sliderLeft = 30;
+    inputGainSlider.setBounds(sliderLeft, 55, 60, 250);
+    outputGainSlider.setBounds(sliderLeft+60, 55, 60, 250);
+    dryMixSlider.setBounds(sliderLeft+120, 55, 60, 250);
+    
+    delayOneButton.setBounds(230, 30, 20, 20);
+    
+    delayTimeSlider.setBounds(230, 80, 225, 20);
+    decayRateSlider.setBounds(230, 130, 225, 20);
+    wetMixSlider.setBounds(230, 180, 225, 20);
 }
 
 
@@ -182,4 +193,18 @@ void JZDelayAudioProcessorEditor::sliderValueChanged(juce::Slider *slider) {
         audioProcessor.dryMix = dryMixSlider.getValue();
     }
     
+}
+
+void JZDelayAudioProcessorEditor::buttonStateChanged(juce::Button *button) {
+    printf("state is %d\n", delayOneButton.getState());
+    if (button == &delayOneButton) {
+        if (delayOneButton.getState() == 2) {
+            audioProcessor.delayOneEnable = !audioProcessor.delayOneEnable;
+        }
+    }
+}
+
+
+void JZDelayAudioProcessorEditor::buttonClicked(juce::Button *button) {
+
 }

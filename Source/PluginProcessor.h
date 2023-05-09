@@ -71,6 +71,8 @@ public:
     // list to store memory values
     float* echoListL;
     float* echoListR;
+    
+    bool delayOneEnable;
 
 private:
     //==============================================================================

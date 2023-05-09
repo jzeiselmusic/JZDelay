@@ -166,27 +166,30 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
         {
             if (channel == 0)
             {
-                // L processing             // increment modulo numSamples
-                origL = channelWData[sample];
-                readPosL = readPosL + 1 == numSamples ? 0 : (readPosL + 1);
-                writePosL = writePosL + 1 == numSamples ? 0 : (writePosL + 1);
-                tempL = decayRate * echoListL[readPosL];
-                echoListL[writePosL] = origL + tempL;
+                if (delayOneEnable) {
+                    // L processing             // increment modulo numSamples
+                    origL = channelWData[sample];
+                    readPosL = readPosL + 1 == numSamples ? 0 : (readPosL + 1);
+                    writePosL = writePosL + 1 == numSamples ? 0 : (writePosL + 1);
+                    tempL = decayRate * echoListL[readPosL];
+                    echoListL[writePosL] = origL + tempL;
+                    
+                    channelWData[sample] = (wetMix*.01)*tempL + (dryMix*.01)*origL;
                 
-                channelWData[sample] = (wetMix*.01)*tempL + (dryMix*.01)*origL;
-                
-                
+                }
             }
             else if (channel == 1)
             {
-                // R processing             // increment modulo numSamples
-                origR = channelWData[sample];
-                readPosR = readPosR + 1 == numSamples ? 0 : (readPosR + 1);
-                writePosR = writePosR + 1 == numSamples ? 0 : (writePosR + 1);
-                tempR = decayRate * echoListR[readPosR];
-                echoListR[writePosR] = origR + tempR;
-                
-                channelWData[sample] = (wetMix*.01)*tempR + (dryMix*.01)*origR;
+                if (delayOneEnable) {
+                    // R processing             // increment modulo numSamples
+                    origR = channelWData[sample];
+                    readPosR = readPosR + 1 == numSamples ? 0 : (readPosR + 1);
+                    writePosR = writePosR + 1 == numSamples ? 0 : (writePosR + 1);
+                    tempR = decayRate * echoListR[readPosR];
+                    echoListR[writePosR] = origR + tempR;
+                    
+                    channelWData[sample] = (wetMix*.01)*tempR + (dryMix*.01)*origR;
+                }
             }
         }
     }
