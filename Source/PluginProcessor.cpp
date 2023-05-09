@@ -17,17 +17,26 @@ JZDelayAudioProcessor::JZDelayAudioProcessor()
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                        )
 {
+    // set universal parameters first
     inputGain = pow(10, 0.0); // start input gain at 1.0
     outputGain = pow(10, 0.0); // start output gain at 1.0
+    dryMix = 100.0;
     
+    // set default parameters for delay 1
     numSamples = ceil(.001 * 70.0 * getSampleRate());
     decayRate = 0.75;
     delayTime = 70.0;
     wetMix = 50.0;
-    dryMix = 100.0;
-    
     echoListL = (float*)calloc(10000, sizeof(float));
     echoListR = (float*)calloc(10000, sizeof(float));
+    
+    // set default parameters for delay 2
+    numTwoSamples = ceil(.001 * 70.0 * getSampleRate());
+    decayTwoRate = 0.75;
+    delayTwoTime = 70.0;
+    wetTwoMix = 50.0;
+    echoTwoListL = (float*)calloc(10000, sizeof(float));
+    echoTwoListR = (float*)calloc(10000, sizeof(float));
 }
 
 JZDelayAudioProcessor::~JZDelayAudioProcessor()
@@ -91,6 +100,11 @@ void JZDelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
     writePosL = 0;
     readPosR = 1;
     writePosR = 0;
+    
+    readTwoPosL = 1;
+    writeTwoPosL = 0;
+    readTwoPosR = 1;
+    writeTwoPosR = 0;
 }
 
 void JZDelayAudioProcessor::releaseResources()
@@ -156,40 +170,74 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
     
     float origL;
     float origR;
+    
     float tempL;
     float tempR;
+    float tempTwoL;
+    float tempTwoR;
+    
+    float mult1, mult2;
     
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         auto* channelWData = buffer.getWritePointer (channel);
         for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
         {
+            tempL = 0;
+            tempR = 0;
+            tempTwoL = 0;
+            tempTwoR = 0;
+            mult1 = 0;
+            mult2 = 0;
             if (channel == 0)
             {
-                if (delayOneEnable) {
-                    // L processing             // increment modulo numSamples
-                    origL = channelWData[sample];
-                    readPosL = readPosL + 1 == numSamples ? 0 : (readPosL + 1);
-                    writePosL = writePosL + 1 == numSamples ? 0 : (writePosL + 1);
-                    tempL = decayRate * echoListL[readPosL];
-                    echoListL[writePosL] = origL + tempL;
-                    
-                    channelWData[sample] = (wetMix*.01)*tempL + (dryMix*.01)*origL;
+                // L processing
+                origL = channelWData[sample];
                 
+                readPosL = readPosL + 1 >= numSamples ? 0 : (readPosL + 1);
+                writePosL = writePosL + 1 >= numSamples ? 0 : (writePosL + 1);
+                
+                readTwoPosL = readTwoPosL + 1 >= numTwoSamples ? 0 : (readTwoPosL + 1);
+                writeTwoPosL = writeTwoPosL + 1 >= numTwoSamples ? 0 : (writeTwoPosL + 1);
+                
+                tempL = (float)(decayRate * echoListL[readPosL]);
+                echoListL[writePosL] = origL + tempL;
+                tempTwoL = (float)(decayTwoRate * echoTwoListL[readTwoPosL]);
+                echoTwoListL[writeTwoPosL] = origL + tempTwoL;
+                
+                if (delayOneEnable) {
+                    mult1 = 1.0;
                 }
+                if (delayTwoEnable) {
+                    mult2 = 1.0;
+                }
+                
+                channelWData[sample] = (wetMix*0.01)*tempL*mult1 + (wetTwoMix*0.01)*tempTwoL*mult2 + (dryMix*0.01)*origL;
+                
             }
             else if (channel == 1)
             {
+                // R processing
+                origR = channelWData[sample];
+                
+                readPosR = readPosR + 1 >= numSamples ? 0 : (readPosR + 1);
+                writePosR = writePosR + 1 >= numSamples ? 0 : (writePosR + 1);
+                
+                readTwoPosR = readTwoPosR + 1 >= numTwoSamples ? 0 : (readTwoPosR + 1);
+                writeTwoPosR = writeTwoPosR + 1 >= numTwoSamples ? 0 : (writeTwoPosR + 1);
+                
+                tempR = (float)(decayRate * echoListR[readPosR]);
+                echoListR[writePosR] = origR + tempR;
+                tempTwoR = (float)(decayTwoRate * echoTwoListR[readTwoPosR]);
+                echoTwoListR[writeTwoPosR] = origR + tempTwoR;
+                
                 if (delayOneEnable) {
-                    // R processing             // increment modulo numSamples
-                    origR = channelWData[sample];
-                    readPosR = readPosR + 1 == numSamples ? 0 : (readPosR + 1);
-                    writePosR = writePosR + 1 == numSamples ? 0 : (writePosR + 1);
-                    tempR = decayRate * echoListR[readPosR];
-                    echoListR[writePosR] = origR + tempR;
-                    
-                    channelWData[sample] = (wetMix*.01)*tempR + (dryMix*.01)*origR;
+                    mult1 = 1.0;
                 }
+                if (delayTwoEnable) {
+                    mult2 = 1.0;
+                }
+                channelWData[sample] = (wetMix*0.01)*tempR*mult1 + (wetTwoMix*0.01)*tempTwoR*mult2 + (dryMix*0.01)*origR;
             }
         }
     }

@@ -38,20 +38,27 @@ private:
     juce::Slider outputGainSlider;
     juce::Label inputGainLabel;
     juce::Label outputGainLabel;
+    juce::Slider dryMixSlider;
+    juce::Label dryMixLabel;
     
+    // objects for delay 1
+    juce::ToggleButton delayOneButton;
     juce::Slider delayTimeSlider;
     juce::Label delayTimeLabel;
-    
     juce::Slider decayRateSlider;
     juce::Label decayRateLabel;
-    
-    juce::ToggleButton delayOneButton;
-    
     juce::Slider wetMixSlider;
     juce::Label wetMixLabel;
     
-    juce::Slider dryMixSlider;
-    juce::Label dryMixLabel;
+    // objects for delay 2
+    juce::ToggleButton delayTwoButton;
+    juce::Slider delayTwoTimeSlider;
+    juce::Label delayTwoTimeLabel;
+    juce::Slider decayTwoRateSlider;
+    juce::Label decayTwoRateLabel;
+    juce::Slider wetTwoMixSlider;
+    juce::Label wetTwoMixLabel;
+    
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (JZDelayAudioProcessorEditor)
 };
