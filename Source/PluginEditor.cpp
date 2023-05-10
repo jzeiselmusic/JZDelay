@@ -15,12 +15,17 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (750, 450);
+    setSize (900, 450);
     
     //**************************************************************************//
     //**************************************************************************//
     
     // parameters for universal control
+    addAndMakeVisible(xypad);
+    xypad.registerSlider(&wetMixSlider, Gui::XyPad::Axis::XX);
+    xypad.registerSlider(&wetFourMixSlider, Gui::XyPad::Axis::YY);
+    xypad.registerSlider(&wetThreeMixSlider, Gui::XyPad::Axis::XY);
+    xypad.registerSlider(&wetTwoMixSlider, Gui::XyPad::Axis::YX);
     
     // pre-gain slider parameters
     inputGainSlider.setSliderSnapsToMousePosition(true);
@@ -339,6 +344,8 @@ void JZDelayAudioProcessorEditor::resized()
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
     auto sliderLeft = 30;
+    
+    xypad.setBounds(740, 180, 110, 110);
     
     // drawing boxes for universal parameters
     inputGainSlider.setBounds(sliderLeft, 55, 60, 340);
