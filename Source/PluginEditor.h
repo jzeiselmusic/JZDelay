@@ -53,6 +53,8 @@ private:
     juce::Label decayRateLabel;
     juce::Slider wetMixSlider;
     juce::Label wetMixLabel;
+    juce::Slider panSlider;
+    juce::Label panLabel;
     
     // objects for delay 2
     juce::ToggleButton delayTwoButton;
@@ -62,6 +64,8 @@ private:
     juce::Label decayTwoRateLabel;
     juce::Slider wetTwoMixSlider;
     juce::Label wetTwoMixLabel;
+    juce::Slider panTwoSlider;
+    juce::Label panTwoLabel;
     
     //objects for delay 3
     juce::ToggleButton delayThreeButton;
@@ -71,6 +75,8 @@ private:
     juce::Label decayThreeRateLabel;
     juce::Slider wetThreeMixSlider;
     juce::Label wetThreeMixLabel;
+    juce::Slider panThreeSlider;
+    juce::Label panThreeLabel;
     
     //objects for delay 4
     juce::ToggleButton delayFourButton;
@@ -80,6 +86,8 @@ private:
     juce::Label decayFourRateLabel;
     juce::Slider wetFourMixSlider;
     juce::Label wetFourMixLabel;
+    juce::Slider panFourSlider;
+    juce::Label panFourLabel;
     
     
 

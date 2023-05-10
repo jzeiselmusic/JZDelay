@@ -28,6 +28,7 @@ JZDelayAudioProcessor::JZDelayAudioProcessor()
     decayRate = 0.75;
     delayTime = 70.0;
     wetMix = 50.0;
+    pan = 0.5;
     echoListL = (float*)calloc(10000, sizeof(float));
     echoListR = (float*)calloc(10000, sizeof(float));
     
@@ -37,6 +38,7 @@ JZDelayAudioProcessor::JZDelayAudioProcessor()
     decayTwoRate = 0.75;
     delayTwoTime = 70.0;
     wetTwoMix = 50.0;
+    panTwo = 0.5;
     echoTwoListL = (float*)calloc(10000, sizeof(float));
     echoTwoListR = (float*)calloc(10000, sizeof(float));
     
@@ -46,6 +48,7 @@ JZDelayAudioProcessor::JZDelayAudioProcessor()
     decayThreeRate = 0.75;
     delayThreeTime = 70.0;
     wetThreeMix = 50.0;
+    panThree = 0.5;
     echoThreeListL = (float*)calloc(10000, sizeof(float));
     echoThreeListR = (float*)calloc(10000, sizeof(float));
     
@@ -56,6 +59,7 @@ JZDelayAudioProcessor::JZDelayAudioProcessor()
     decayFourRate = 0.75;
     delayFourTime = 70.0;
     wetFourMix = 50.0;
+    panFour = 0.5;
     echoFourListL = (float*)calloc(10000, sizeof(float));
     echoFourListR = (float*)calloc(10000, sizeof(float));
 }

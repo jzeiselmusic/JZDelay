@@ -66,6 +66,7 @@ public:
     float decayRate;
     float wetMix;
     bool delayOneEnable;
+    float pan;
     
     // delay 1 parameter processor values
     int numSamples;
@@ -86,6 +87,7 @@ public:
     float decayTwoRate;
     float wetTwoMix;
     bool delayTwoEnable;
+    float panTwo;
     
     // delay 2 parameter processor values
     int numTwoSamples;
@@ -106,6 +108,7 @@ public:
     float decayThreeRate;
     float wetThreeMix;
     bool delayThreeEnable;
+    float panThree;
     
     // delay 3 parameter processor values
     int numThreeSamples;
@@ -126,6 +129,7 @@ public:
     float decayFourRate;
     float wetFourMix;
     bool delayFourEnable;
+    float panFour;
     
     // delay 4 parameter processor values
     int numFourSamples;

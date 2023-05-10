@@ -15,7 +15,7 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (900, 450);
+    setSize (900, 520);
     
     //**************************************************************************//
     //**************************************************************************//
@@ -141,6 +141,23 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     wetMixLabel.attachToComponent (&wetMixSlider, false); //
     wetMixLabel.setJustificationType(juce::Justification::topLeft);
     
+    // pan slider parameters
+    panSlider.setSliderSnapsToMousePosition(true);
+    panSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
+    panSlider.setTitle("Pan");
+    panSlider.setRange(0.0, 1.0, .01);
+    panSlider.setValue(0.5);
+    panSlider.setTextBoxIsEditable(true);
+    panSlider.setDoubleClickReturnValue(true, 0.5, NULL);
+    panSlider.addListener(this);
+    addAndMakeVisible(panSlider);
+    
+    // add label to wet mix slider
+    addAndMakeVisible (panLabel);
+    panLabel.setText ("Pan", juce::dontSendNotification);
+    panLabel.attachToComponent (&panSlider, false); //
+    panLabel.setJustificationType(juce::Justification::topLeft);
+    
     
     
     //**************************************************************************//
@@ -201,6 +218,23 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     wetTwoMixLabel.setText ("Wet Mix", juce::dontSendNotification);
     wetTwoMixLabel.attachToComponent (&wetTwoMixSlider, false); //
     wetTwoMixLabel.setJustificationType(juce::Justification::topLeft);
+    
+    // pan slider parameters
+    panTwoSlider.setSliderSnapsToMousePosition(true);
+    panTwoSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
+    panTwoSlider.setTitle("Pan");
+    panTwoSlider.setRange(0.0, 1.0, .01);
+    panTwoSlider.setValue(0.5);
+    panTwoSlider.setTextBoxIsEditable(true);
+    panTwoSlider.setDoubleClickReturnValue(true, 0.5, NULL);
+    panTwoSlider.addListener(this);
+    addAndMakeVisible(panTwoSlider);
+    
+    // add label to wet mix slider
+    addAndMakeVisible (panTwoLabel);
+    panTwoLabel.setText ("Pan", juce::dontSendNotification);
+    panTwoLabel.attachToComponent (&panTwoSlider, false); //
+    panTwoLabel.setJustificationType(juce::Justification::topLeft);
     
     
     
@@ -263,6 +297,23 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     wetThreeMixLabel.attachToComponent (&wetThreeMixSlider, false); //
     wetThreeMixLabel.setJustificationType(juce::Justification::topLeft);
     
+    // pan slider parameters
+    panThreeSlider.setSliderSnapsToMousePosition(true);
+    panThreeSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
+    panThreeSlider.setTitle("Pan");
+    panThreeSlider.setRange(0.0, 1.0, .01);
+    panThreeSlider.setValue(0.5);
+    panThreeSlider.setTextBoxIsEditable(true);
+    panThreeSlider.setDoubleClickReturnValue(true, 0.5, NULL);
+    panThreeSlider.addListener(this);
+    addAndMakeVisible(panThreeSlider);
+    
+    // add label to wet mix slider
+    addAndMakeVisible (panThreeLabel);
+    panThreeLabel.setText ("Pan", juce::dontSendNotification);
+    panThreeLabel.attachToComponent (&panThreeSlider, false); //
+    panThreeLabel.setJustificationType(juce::Justification::topLeft);
+    
     
     //**************************************************************************//
     //**************************************************************************//
@@ -323,6 +374,24 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     wetFourMixLabel.attachToComponent (&wetThreeMixSlider, false); //
     wetFourMixLabel.setJustificationType(juce::Justification::topLeft);
     
+    
+    // pan slider parameters
+    panFourSlider.setSliderSnapsToMousePosition(true);
+    panFourSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
+    panFourSlider.setTitle("Pan");
+    panFourSlider.setRange(0.0, 1.0, .01);
+    panFourSlider.setValue(0.5);
+    panFourSlider.setTextBoxIsEditable(true);
+    panFourSlider.setDoubleClickReturnValue(true, 0.5, NULL);
+    panFourSlider.addListener(this);
+    addAndMakeVisible(panFourSlider);
+    
+    // add label to wet mix slider
+    addAndMakeVisible (panFourLabel);
+    panFourLabel.setText ("Pan", juce::dontSendNotification);
+    panFourLabel.attachToComponent (&panFourSlider, false); //
+    panFourLabel.setJustificationType(juce::Justification::topLeft);
+    
 }
 
 JZDelayAudioProcessorEditor::~JZDelayAudioProcessorEditor()
@@ -357,13 +426,15 @@ void JZDelayAudioProcessorEditor::resized()
     delayTimeSlider.setBounds(230, 80, 225, 20);
     decayRateSlider.setBounds(230, 130, 225, 20);
     wetMixSlider.setBounds(230, 180, 225, 20);
+    panSlider.setBounds(230, 230, 225, 20);
     
     // drawing boxes for delay 2 parameters
     
-    delayTwoButton.setBounds(230, 230, 20, 20);
-    delayTwoTimeSlider.setBounds(230, 280, 225, 20);
-    decayTwoRateSlider.setBounds(230, 330, 225, 20);
-    wetTwoMixSlider.setBounds(230, 380, 225, 20);
+    delayTwoButton.setBounds(230, 260, 20, 20);
+    delayTwoTimeSlider.setBounds(230, 310, 225, 20);
+    decayTwoRateSlider.setBounds(230, 360, 225, 20);
+    wetTwoMixSlider.setBounds(230, 410, 225, 20);
+    panTwoSlider.setBounds(230, 460, 225, 20);
     
     // drawing boxes for delay 3 parameters
     
@@ -371,13 +442,15 @@ void JZDelayAudioProcessorEditor::resized()
     delayThreeTimeSlider.setBounds(480, 80, 225, 20);
     decayThreeRateSlider.setBounds(480, 130, 225, 20);
     wetThreeMixSlider.setBounds(480, 180, 225, 20);
+    panThreeSlider.setBounds(480, 230, 225, 20);
     
     // drawing boxes for delay 4 parameters
     
-    delayFourButton.setBounds(480, 230, 20, 20);
-    delayFourTimeSlider.setBounds(480, 280, 225, 20);
-    decayFourRateSlider.setBounds(480, 330, 225, 20);
-    wetFourMixSlider.setBounds(480, 380, 225, 20);
+    delayFourButton.setBounds(480, 260, 20, 20);
+    delayFourTimeSlider.setBounds(480, 310, 225, 20);
+    decayFourRateSlider.setBounds(480, 360, 225, 20);
+    wetFourMixSlider.setBounds(480, 410, 225, 20);
+    panFourSlider.setBounds(480, 460, 225, 20);
 }
 
 
@@ -425,6 +498,9 @@ void JZDelayAudioProcessorEditor::sliderValueChanged(juce::Slider *slider) {
     else if (slider == &wetMixSlider) {
         audioProcessor.wetMix = wetMixSlider.getValue();
     }
+    else if (slider == &panSlider) {
+        audioProcessor.pan = panSlider.getValue();
+    }
     
     //****************************************************************************//
     //****************************************************************************//
@@ -449,6 +525,9 @@ void JZDelayAudioProcessorEditor::sliderValueChanged(juce::Slider *slider) {
     }
     else if (slider == &wetTwoMixSlider) {
         audioProcessor.wetTwoMix = wetTwoMixSlider.getValue();
+    }
+    else if (slider == &panTwoSlider) {
+        audioProcessor.panTwo = panTwoSlider.getValue();
     }
     
     //****************************************************************************//
@@ -475,6 +554,9 @@ void JZDelayAudioProcessorEditor::sliderValueChanged(juce::Slider *slider) {
     else if (slider == &wetThreeMixSlider) {
         audioProcessor.wetThreeMix = wetThreeMixSlider.getValue();
     }
+    else if (slider == &panThreeSlider) {
+        audioProcessor.panThree = panThreeSlider.getValue();
+    }
     
     //****************************************************************************//
     //****************************************************************************//
@@ -499,6 +581,9 @@ void JZDelayAudioProcessorEditor::sliderValueChanged(juce::Slider *slider) {
     }
     else if (slider == &wetFourMixSlider) {
         audioProcessor.wetFourMix = wetFourMixSlider.getValue();
+    }
+    else if (slider == &panFourSlider) {
+        audioProcessor.panFour = panFourSlider.getValue();
     }
     
 }
