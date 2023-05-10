@@ -23,6 +23,7 @@ JZDelayAudioProcessor::JZDelayAudioProcessor()
     dryMix = 100.0;
     
     // set default parameters for delay 1
+    delayOneEnable = false;
     numSamples = ceil(.001 * 70.0 * getSampleRate());
     decayRate = 0.75;
     delayTime = 70.0;
@@ -31,6 +32,7 @@ JZDelayAudioProcessor::JZDelayAudioProcessor()
     echoListR = (float*)calloc(10000, sizeof(float));
     
     // set default parameters for delay 2
+    delayTwoEnable = false;
     numTwoSamples = ceil(.001 * 70.0 * getSampleRate());
     decayTwoRate = 0.75;
     delayTwoTime = 70.0;
@@ -39,6 +41,7 @@ JZDelayAudioProcessor::JZDelayAudioProcessor()
     echoTwoListR = (float*)calloc(10000, sizeof(float));
     
     // set default parameters for delay 3
+    delayThreeEnable = false;
     numThreeSamples = ceil(.001 * 70.0 * getSampleRate());
     decayThreeRate = 0.75;
     delayThreeTime = 70.0;
@@ -48,6 +51,7 @@ JZDelayAudioProcessor::JZDelayAudioProcessor()
     
     
     // set default parameters for delay 4
+    delayFourEnable = false;
     numFourSamples = ceil(.001 * 70.0 * getSampleRate());
     decayFourRate = 0.75;
     delayFourTime = 70.0;
