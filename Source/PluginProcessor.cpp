@@ -37,6 +37,23 @@ JZDelayAudioProcessor::JZDelayAudioProcessor()
     wetTwoMix = 50.0;
     echoTwoListL = (float*)calloc(10000, sizeof(float));
     echoTwoListR = (float*)calloc(10000, sizeof(float));
+    
+    // set default parameters for delay 3
+    numThreeSamples = ceil(.001 * 70.0 * getSampleRate());
+    decayThreeRate = 0.75;
+    delayThreeTime = 70.0;
+    wetThreeMix = 50.0;
+    echoThreeListL = (float*)calloc(10000, sizeof(float));
+    echoThreeListR = (float*)calloc(10000, sizeof(float));
+    
+    
+    // set default parameters for delay 4
+    numFourSamples = ceil(.001 * 70.0 * getSampleRate());
+    decayFourRate = 0.75;
+    delayFourTime = 70.0;
+    wetFourMix = 50.0;
+    echoFourListL = (float*)calloc(10000, sizeof(float));
+    echoFourListR = (float*)calloc(10000, sizeof(float));
 }
 
 JZDelayAudioProcessor::~JZDelayAudioProcessor()
@@ -105,6 +122,16 @@ void JZDelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
     writeTwoPosL = 0;
     readTwoPosR = 1;
     writeTwoPosR = 0;
+    
+    readThreePosL = 1;
+    writeThreePosL = 0;
+    readThreePosR = 1;
+    writeThreePosR = 0;
+    
+    readFourPosL = 1;
+    writeFourPosL = 0;
+    readFourPosR = 1;
+    writeFourPosR = 0;
 }
 
 void JZDelayAudioProcessor::releaseResources()
@@ -173,10 +200,17 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
     
     float tempL;
     float tempR;
+    
     float tempTwoL;
     float tempTwoR;
     
-    float mult1, mult2;
+    float tempThreeL;
+    float tempThreeR;
+    
+    float tempFourL;
+    float tempFourR;
+    
+    float mult1, mult2, mult3, mult4;
     
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
@@ -185,10 +219,21 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
         {
             tempL = 0;
             tempR = 0;
+            
             tempTwoL = 0;
             tempTwoR = 0;
+            
+            tempThreeL = 0;
+            tempThreeR = 0;
+            
+            tempFourL = 0;
+            tempFourR = 0;
+            
             mult1 = 0;
             mult2 = 0;
+            mult3 = 0;
+            mult4 = 0;
+            
             if (channel == 0)
             {
                 // L processing
@@ -200,10 +245,20 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
                 readTwoPosL = readTwoPosL + 1 >= numTwoSamples ? 0 : (readTwoPosL + 1);
                 writeTwoPosL = writeTwoPosL + 1 >= numTwoSamples ? 0 : (writeTwoPosL + 1);
                 
+                readThreePosL = readThreePosL + 1 >= numThreeSamples ? 0 : (readThreePosL + 1);
+                writeThreePosL = writeThreePosL + 1 >= numThreeSamples ? 0 : (writeThreePosL + 1);
+                
+                readFourPosL = readFourPosL + 1 >= numFourSamples ? 0 : (readFourPosL + 1);
+                writeFourPosL = writeFourPosL + 1 >= numFourSamples ? 0 : (writeFourPosL + 1);
+                
                 tempL = (float)(decayRate * echoListL[readPosL]);
                 echoListL[writePosL] = origL + tempL;
                 tempTwoL = (float)(decayTwoRate * echoTwoListL[readTwoPosL]);
                 echoTwoListL[writeTwoPosL] = origL + tempTwoL;
+                tempThreeL = (float)(decayThreeRate * echoThreeListL[readThreePosL]);
+                echoThreeListL[writeThreePosL] = origL + tempThreeL;
+                tempFourL = (float)(decayFourRate * echoFourListL[readFourPosL]);
+                echoFourListL[writeFourPosL] = origL + tempFourL;
                 
                 if (delayOneEnable) {
                     mult1 = 1.0;
@@ -211,8 +266,18 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
                 if (delayTwoEnable) {
                     mult2 = 1.0;
                 }
+                if (delayThreeEnable) {
+                    mult3 = 1.0;
+                }
+                if (delayFourEnable) {
+                    mult4 = 1.0;
+                }
                 
-                channelWData[sample] = (wetMix*0.01)*tempL*mult1 + (wetTwoMix*0.01)*tempTwoL*mult2 + (dryMix*0.01)*origL;
+                channelWData[sample] = (wetMix*0.01) * tempL * mult1 +
+                                       (wetTwoMix*0.01) * tempTwoL * mult2 +
+                                       (wetThreeMix*0.01) * tempThreeL * mult3 +
+                                       (wetFourMix*0.01) * tempFourL * mult4 +
+                                       (dryMix*0.01) * origL;
                 
             }
             else if (channel == 1)
@@ -226,10 +291,20 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
                 readTwoPosR = readTwoPosR + 1 >= numTwoSamples ? 0 : (readTwoPosR + 1);
                 writeTwoPosR = writeTwoPosR + 1 >= numTwoSamples ? 0 : (writeTwoPosR + 1);
                 
+                readThreePosR = readThreePosR + 1 >= numThreeSamples ? 0 : (readThreePosR + 1);
+                writeThreePosR = writeThreePosR + 1 >= numThreeSamples ? 0 : (writeThreePosR + 1);
+                
+                readFourPosR = readFourPosR + 1 >= numFourSamples ? 0 : (readFourPosR + 1);
+                writeFourPosR = writeFourPosR + 1 >= numFourSamples ? 0 : (writeFourPosR + 1);
+                
                 tempR = (float)(decayRate * echoListR[readPosR]);
                 echoListR[writePosR] = origR + tempR;
                 tempTwoR = (float)(decayTwoRate * echoTwoListR[readTwoPosR]);
                 echoTwoListR[writeTwoPosR] = origR + tempTwoR;
+                tempThreeR = (float)(decayThreeRate * echoThreeListR[readThreePosR]);
+                echoThreeListR[writeThreePosR] = origR + tempThreeR;
+                tempFourR = (float)(decayFourRate * echoFourListR[readFourPosR]);
+                echoFourListR[writeFourPosR] = origR + tempFourR;
                 
                 if (delayOneEnable) {
                     mult1 = 1.0;
@@ -237,7 +312,17 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
                 if (delayTwoEnable) {
                     mult2 = 1.0;
                 }
-                channelWData[sample] = (wetMix*0.01)*tempR*mult1 + (wetTwoMix*0.01)*tempTwoR*mult2 + (dryMix*0.01)*origR;
+                if (delayThreeEnable) {
+                    mult3 = 1.0;
+                }
+                if (delayFourEnable) {
+                    mult4 = 1.0;
+                }
+                channelWData[sample] = (wetMix*0.01) * tempR*mult1 +
+                                       (wetTwoMix*0.01) * tempTwoR * mult2 +
+                                       (wetThreeMix*0.01) * tempThreeR * mult3 +
+                                       (wetFourMix*0.01) * tempFourR * mult4 +
+                                       (dryMix*0.01)*origR;
             }
         }
     }

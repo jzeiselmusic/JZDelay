@@ -81,22 +81,62 @@ public:
     //**************************************//
     //**************************************//
     
-    // delay 1 parameter editor values
+    // delay 2 parameter editor values
     float delayTwoTime;
     float decayTwoRate;
     float wetTwoMix;
     bool delayTwoEnable;
     
-    // delay 1 parameter processor values
+    // delay 2 parameter processor values
     int numTwoSamples;
     int readTwoPosL;
     int writeTwoPosL;
     int readTwoPosR;
     int writeTwoPosR;
     
-    // delay 1 list to store memory values
+    // delay 2 list to store memory values
     float* echoTwoListL;
     float* echoTwoListR;
+    
+    //**************************************//
+    //**************************************//
+    
+    // delay 3 parameter editor values
+    float delayThreeTime;
+    float decayThreeRate;
+    float wetThreeMix;
+    bool delayThreeEnable;
+    
+    // delay 3 parameter processor values
+    int numThreeSamples;
+    int readThreePosL;
+    int writeThreePosL;
+    int readThreePosR;
+    int writeThreePosR;
+    
+    // delay 3 list to store memory values
+    float* echoThreeListL;
+    float* echoThreeListR;
+    
+    //**************************************//
+    //**************************************//
+    
+    // delay 4 parameter editor values
+    float delayFourTime;
+    float decayFourRate;
+    float wetFourMix;
+    bool delayFourEnable;
+    
+    // delay 4 parameter processor values
+    int numFourSamples;
+    int readFourPosL;
+    int writeFourPosL;
+    int readFourPosR;
+    int writeFourPosR;
+    
+    // delay 4 list to store memory values
+    float* echoFourListL;
+    float* echoFourListR;
     
 
 private:

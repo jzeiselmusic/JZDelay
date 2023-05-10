@@ -15,11 +15,13 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (800, 700);
+    setSize (750, 450);
+    
+    //**************************************************************************//
+    //**************************************************************************//
     
     // parameters for universal control
-    //**************************************************************************//
-    //**************************************************************************//
+    
     // pre-gain slider parameters
     inputGainSlider.setSliderSnapsToMousePosition(true);
     inputGainSlider.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
@@ -195,6 +197,127 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     wetTwoMixLabel.attachToComponent (&wetTwoMixSlider, false); //
     wetTwoMixLabel.setJustificationType(juce::Justification::topLeft);
     
+    
+    
+    //**************************************************************************//
+    //**************************************************************************//
+    
+    // parameters for delay 3 //
+    
+    addAndMakeVisible(delayThreeButton);
+    delayThreeButton.addListener(this);
+    
+    // delay time slider parameters
+    delayThreeTimeSlider.setSliderSnapsToMousePosition(true);
+    delayThreeTimeSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
+    delayThreeTimeSlider.setTitle("Delay Time");
+    delayThreeTimeSlider.setRange(30.0, 150.0, 1);
+    delayThreeTimeSlider.setValue(70.0);
+    delayThreeTimeSlider.setTextBoxIsEditable(true);
+    delayThreeTimeSlider.setDoubleClickReturnValue(true, 70.0, NULL);
+    delayThreeTimeSlider.addListener(this);
+    addAndMakeVisible(delayThreeTimeSlider);
+    
+    // add label to delay time slider
+    addAndMakeVisible (delayThreeTimeLabel);
+    delayThreeTimeLabel.setText ("Delay Time (ms)", juce::dontSendNotification);
+    delayThreeTimeLabel.attachToComponent (&delayThreeTimeSlider, false); //
+    delayThreeTimeLabel.setJustificationType(juce::Justification::topLeft);
+    
+    // decay rate slider parameters
+    decayThreeRateSlider.setSliderSnapsToMousePosition(true);
+    decayThreeRateSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
+    decayThreeRateSlider.setTitle("Decay Rate");
+    decayThreeRateSlider.setRange(0.1, 0.9, .01);
+    decayThreeRateSlider.setValue(0.75);
+    decayThreeRateSlider.setTextBoxIsEditable(true);
+    decayThreeRateSlider.setDoubleClickReturnValue(true, 0.75, NULL);
+    decayThreeRateSlider.addListener(this);
+    addAndMakeVisible(decayThreeRateSlider);
+    
+    // add label to decay rate slider
+    addAndMakeVisible (decayThreeRateLabel);
+    decayThreeRateLabel.setText ("Decay Rate", juce::dontSendNotification);
+    decayThreeRateLabel.attachToComponent (&decayThreeRateSlider, false); //
+    decayThreeRateLabel.setJustificationType(juce::Justification::topLeft);
+    
+    // wet mix slider parameters
+    wetThreeMixSlider.setSliderSnapsToMousePosition(true);
+    wetThreeMixSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
+    wetThreeMixSlider.setTitle("Wet Mix");
+    wetThreeMixSlider.setRange(0.0, 100.0, .1);
+    wetThreeMixSlider.setValue(50.0);
+    wetThreeMixSlider.setTextBoxIsEditable(true);
+    wetThreeMixSlider.setDoubleClickReturnValue(true, 50.0, NULL);
+    wetThreeMixSlider.addListener(this);
+    addAndMakeVisible(wetThreeMixSlider);
+    
+    // add label to wet mix slider
+    addAndMakeVisible (wetThreeMixLabel);
+    wetThreeMixLabel.setText ("Wet Mix", juce::dontSendNotification);
+    wetThreeMixLabel.attachToComponent (&wetThreeMixSlider, false); //
+    wetThreeMixLabel.setJustificationType(juce::Justification::topLeft);
+    
+    
+    //**************************************************************************//
+    //**************************************************************************//
+    
+    // parameters for delay 4 //
+    
+    addAndMakeVisible(delayFourButton);
+    delayFourButton.addListener(this);
+    
+    // delay time slider parameters
+    delayFourTimeSlider.setSliderSnapsToMousePosition(true);
+    delayFourTimeSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
+    delayFourTimeSlider.setTitle("Delay Time");
+    delayFourTimeSlider.setRange(30.0, 150.0, 1);
+    delayFourTimeSlider.setValue(70.0);
+    delayFourTimeSlider.setTextBoxIsEditable(true);
+    delayFourTimeSlider.setDoubleClickReturnValue(true, 70.0, NULL);
+    delayFourTimeSlider.addListener(this);
+    addAndMakeVisible(delayFourTimeSlider);
+    
+    // add label to delay time slider
+    addAndMakeVisible (delayFourTimeLabel);
+    delayFourTimeLabel.setText ("Delay Time (ms)", juce::dontSendNotification);
+    delayFourTimeLabel.attachToComponent (&delayFourTimeSlider, false); //
+    delayFourTimeLabel.setJustificationType(juce::Justification::topLeft);
+    
+    // decay rate slider parameters
+    decayFourRateSlider.setSliderSnapsToMousePosition(true);
+    decayFourRateSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
+    decayFourRateSlider.setTitle("Decay Rate");
+    decayFourRateSlider.setRange(0.1, 0.9, .01);
+    decayFourRateSlider.setValue(0.75);
+    decayFourRateSlider.setTextBoxIsEditable(true);
+    decayFourRateSlider.setDoubleClickReturnValue(true, 0.75, NULL);
+    decayFourRateSlider.addListener(this);
+    addAndMakeVisible(decayFourRateSlider);
+    
+    // add label to decay rate slider
+    addAndMakeVisible (decayFourRateLabel);
+    decayFourRateLabel.setText ("Decay Rate", juce::dontSendNotification);
+    decayFourRateLabel.attachToComponent (&decayFourRateSlider, false); //
+    decayFourRateLabel.setJustificationType(juce::Justification::topLeft);
+    
+    // wet mix slider parameters
+    wetFourMixSlider.setSliderSnapsToMousePosition(true);
+    wetFourMixSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
+    wetFourMixSlider.setTitle("Wet Mix");
+    wetFourMixSlider.setRange(0.0, 100.0, .1);
+    wetFourMixSlider.setValue(50.0);
+    wetFourMixSlider.setTextBoxIsEditable(true);
+    wetFourMixSlider.setDoubleClickReturnValue(true, 50.0, NULL);
+    wetFourMixSlider.addListener(this);
+    addAndMakeVisible(wetFourMixSlider);
+    
+    // add label to wet mix slider
+    addAndMakeVisible (wetFourMixLabel);
+    wetFourMixLabel.setText ("Wet Mix", juce::dontSendNotification);
+    wetFourMixLabel.attachToComponent (&wetThreeMixSlider, false); //
+    wetFourMixLabel.setJustificationType(juce::Justification::topLeft);
+    
 }
 
 JZDelayAudioProcessorEditor::~JZDelayAudioProcessorEditor()
@@ -209,6 +332,8 @@ void JZDelayAudioProcessorEditor::paint (juce::Graphics& g)
     
 }
 
+
+
 void JZDelayAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
@@ -216,9 +341,9 @@ void JZDelayAudioProcessorEditor::resized()
     auto sliderLeft = 30;
     
     // drawing boxes for universal parameters
-    inputGainSlider.setBounds(sliderLeft, 55, 60, 400);
-    outputGainSlider.setBounds(sliderLeft+60, 55, 60, 400);
-    dryMixSlider.setBounds(sliderLeft+120, 55, 60, 400);
+    inputGainSlider.setBounds(sliderLeft, 55, 60, 340);
+    outputGainSlider.setBounds(sliderLeft+60, 55, 60, 340);
+    dryMixSlider.setBounds(sliderLeft+120, 55, 60, 340);
     
     // drawing boxes for delay 1 parameters
     delayOneButton.setBounds(230, 30, 20, 20);
@@ -232,7 +357,24 @@ void JZDelayAudioProcessorEditor::resized()
     delayTwoTimeSlider.setBounds(230, 280, 225, 20);
     decayTwoRateSlider.setBounds(230, 330, 225, 20);
     wetTwoMixSlider.setBounds(230, 380, 225, 20);
+    
+    // drawing boxes for delay 3 parameters
+    
+    delayThreeButton.setBounds(480, 30, 20, 20);
+    delayThreeTimeSlider.setBounds(480, 80, 225, 20);
+    decayThreeRateSlider.setBounds(480, 130, 225, 20);
+    wetThreeMixSlider.setBounds(480, 180, 225, 20);
+    
+    // drawing boxes for delay 4 parameters
+    
+    delayFourButton.setBounds(480, 230, 20, 20);
+    delayFourTimeSlider.setBounds(480, 280, 225, 20);
+    decayFourRateSlider.setBounds(480, 330, 225, 20);
+    wetFourMixSlider.setBounds(480, 380, 225, 20);
 }
+
+
+
 
 
 void JZDelayAudioProcessorEditor::sliderValueChanged(juce::Slider *slider) {
@@ -287,7 +429,7 @@ void JZDelayAudioProcessorEditor::sliderValueChanged(juce::Slider *slider) {
         // if this slider is moved, reset echo parameters
         int tempTwoNumSamples = ceil(.001 * delayTwoTimeSlider.getValue() *
                                             audioProcessor.getSampleRate());
-        if (tempTwoNumSamples != audioProcessor.numSamples) {
+        if (tempTwoNumSamples != audioProcessor.numTwoSamples) {
             audioProcessor.numTwoSamples = tempTwoNumSamples;
             audioProcessor.readTwoPosL = 1; //
             audioProcessor.writeTwoPosL = 0; // always write to 1 before read. both are incremented
@@ -302,7 +444,59 @@ void JZDelayAudioProcessorEditor::sliderValueChanged(juce::Slider *slider) {
         audioProcessor.wetTwoMix = wetTwoMixSlider.getValue();
     }
     
+    //****************************************************************************//
+    //****************************************************************************//
+    
+    // in the case of delay 3 slider change
+    
+    else if (slider == &delayThreeTimeSlider) {
+        audioProcessor.delayThreeTime = delayThreeTimeSlider.getValue();
+        // if this slider is moved, reset echo parameters
+        int tempThreeNumSamples = ceil(.001 * delayThreeTimeSlider.getValue() *
+                                            audioProcessor.getSampleRate());
+        if (tempThreeNumSamples != audioProcessor.numThreeSamples) {
+            audioProcessor.numThreeSamples = tempThreeNumSamples;
+            audioProcessor.readThreePosL = 1; //
+            audioProcessor.writeThreePosL = 0; // always write to 1 before read. both are incremented
+            audioProcessor.readThreePosR = 1;
+            audioProcessor.writeThreePosR = 0;
+        }
+    }
+    else if (slider == &decayThreeRateSlider) {
+        audioProcessor.decayThreeRate = decayThreeRateSlider.getValue();
+    }
+    else if (slider == &wetThreeMixSlider) {
+        audioProcessor.wetThreeMix = wetThreeMixSlider.getValue();
+    }
+    
+    //****************************************************************************//
+    //****************************************************************************//
+    
+    // in the case of delay 4 slider change
+    
+    else if (slider == &delayFourTimeSlider) {
+        audioProcessor.delayFourTime = delayFourTimeSlider.getValue();
+        // if this slider is moved, reset echo parameters
+        int tempFourNumSamples = ceil(.001 * delayFourTimeSlider.getValue() *
+                                            audioProcessor.getSampleRate());
+        if (tempFourNumSamples != audioProcessor.numFourSamples) {
+            audioProcessor.numFourSamples = tempFourNumSamples;
+            audioProcessor.readFourPosL = 1; //
+            audioProcessor.writeFourPosL = 0; // always write to 1 before read. both are incremented
+            audioProcessor.readFourPosR = 1;
+            audioProcessor.writeFourPosR = 0;
+        }
+    }
+    else if (slider == &decayFourRateSlider) {
+        audioProcessor.decayFourRate = decayFourRateSlider.getValue();
+    }
+    else if (slider == &wetFourMixSlider) {
+        audioProcessor.wetFourMix = wetFourMixSlider.getValue();
+    }
+    
 }
+
+
 
 void JZDelayAudioProcessorEditor::buttonStateChanged(juce::Button *button) {
     if (button == &delayOneButton) {
@@ -316,6 +510,16 @@ void JZDelayAudioProcessorEditor::buttonStateChanged(juce::Button *button) {
     else if (button == &delayTwoButton) {
         if (delayTwoButton.getState() == 2) {
             audioProcessor.delayTwoEnable = !audioProcessor.delayTwoEnable;
+        }
+    }
+    else if (button == &delayThreeButton) {
+        if (delayThreeButton.getState() == 2) {
+            audioProcessor.delayThreeEnable = !audioProcessor.delayThreeEnable;
+        }
+    }
+    else if (button == &delayFourButton) {
+        if (delayFourButton.getState() == 2) {
+            audioProcessor.delayFourEnable = !audioProcessor.delayFourEnable;
         }
     }
 }
