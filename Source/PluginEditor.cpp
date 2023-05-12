@@ -145,10 +145,10 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     panSlider.setSliderSnapsToMousePosition(true);
     panSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     panSlider.setTitle("Pan");
-    panSlider.setRange(0.0, 1.0, .01);
-    panSlider.setValue(0.5);
+    panSlider.setRange(-100.0, 100.0, 0.1);
+    panSlider.setValue(0.0);
     panSlider.setTextBoxIsEditable(true);
-    panSlider.setDoubleClickReturnValue(true, 0.5, NULL);
+    panSlider.setDoubleClickReturnValue(true, 0.0, NULL);
     panSlider.addListener(this);
     addAndMakeVisible(panSlider);
     
@@ -223,10 +223,10 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     panTwoSlider.setSliderSnapsToMousePosition(true);
     panTwoSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     panTwoSlider.setTitle("Pan");
-    panTwoSlider.setRange(0.0, 1.0, .01);
-    panTwoSlider.setValue(0.5);
+    panTwoSlider.setRange(-100.0, 100.0, .1);
+    panTwoSlider.setValue(0.0);
     panTwoSlider.setTextBoxIsEditable(true);
-    panTwoSlider.setDoubleClickReturnValue(true, 0.5, NULL);
+    panTwoSlider.setDoubleClickReturnValue(true, 0.0, NULL);
     panTwoSlider.addListener(this);
     addAndMakeVisible(panTwoSlider);
     
@@ -301,10 +301,10 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     panThreeSlider.setSliderSnapsToMousePosition(true);
     panThreeSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     panThreeSlider.setTitle("Pan");
-    panThreeSlider.setRange(0.0, 1.0, .01);
+    panThreeSlider.setRange(-100.0, 100.0, 0.1);
     panThreeSlider.setValue(0.5);
     panThreeSlider.setTextBoxIsEditable(true);
-    panThreeSlider.setDoubleClickReturnValue(true, 0.5, NULL);
+    panThreeSlider.setDoubleClickReturnValue(true, 0.0, NULL);
     panThreeSlider.addListener(this);
     addAndMakeVisible(panThreeSlider);
     
@@ -379,10 +379,10 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     panFourSlider.setSliderSnapsToMousePosition(true);
     panFourSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     panFourSlider.setTitle("Pan");
-    panFourSlider.setRange(0.0, 1.0, .01);
+    panFourSlider.setRange(-100.0, 100.0, 0.1);
     panFourSlider.setValue(0.5);
     panFourSlider.setTextBoxIsEditable(true);
-    panFourSlider.setDoubleClickReturnValue(true, 0.5, NULL);
+    panFourSlider.setDoubleClickReturnValue(true, 0.0, NULL);
     panFourSlider.addListener(this);
     addAndMakeVisible(panFourSlider);
     
