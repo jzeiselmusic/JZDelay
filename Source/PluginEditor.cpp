@@ -111,7 +111,7 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     decayRateSlider.setSliderSnapsToMousePosition(true);
     decayRateSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     decayRateSlider.setTitle("Decay Rate");
-    decayRateSlider.setRange(0.1, 0.9, .01);
+    decayRateSlider.setRange(0.01, 0.99, .01);
     decayRateSlider.setValue(0.75);
     decayRateSlider.setTextBoxIsEditable(true);
     decayRateSlider.setDoubleClickReturnValue(true, 0.75, NULL);
@@ -189,7 +189,7 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     decayTwoRateSlider.setSliderSnapsToMousePosition(true);
     decayTwoRateSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     decayTwoRateSlider.setTitle("Decay Rate");
-    decayTwoRateSlider.setRange(0.1, 0.9, .01);
+    decayTwoRateSlider.setRange(0.01, 0.99, .01);
     decayTwoRateSlider.setValue(0.75);
     decayTwoRateSlider.setTextBoxIsEditable(true);
     decayTwoRateSlider.setDoubleClickReturnValue(true, 0.75, NULL);
@@ -267,7 +267,7 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     decayThreeRateSlider.setSliderSnapsToMousePosition(true);
     decayThreeRateSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     decayThreeRateSlider.setTitle("Decay Rate");
-    decayThreeRateSlider.setRange(0.1, 0.9, .01);
+    decayThreeRateSlider.setRange(0.01, 0.99, .01);
     decayThreeRateSlider.setValue(0.75);
     decayThreeRateSlider.setTextBoxIsEditable(true);
     decayThreeRateSlider.setDoubleClickReturnValue(true, 0.75, NULL);
@@ -344,7 +344,7 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     decayFourRateSlider.setSliderSnapsToMousePosition(true);
     decayFourRateSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     decayFourRateSlider.setTitle("Decay Rate");
-    decayFourRateSlider.setRange(0.1, 0.9, .01);
+    decayFourRateSlider.setRange(0.01, 0.99, .01);
     decayFourRateSlider.setValue(0.75);
     decayFourRateSlider.setTextBoxIsEditable(true);
     decayFourRateSlider.setDoubleClickReturnValue(true, 0.75, NULL);
@@ -371,7 +371,7 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     // add label to wet mix slider
     addAndMakeVisible (wetFourMixLabel);
     wetFourMixLabel.setText ("Wet Mix", juce::dontSendNotification);
-    wetFourMixLabel.attachToComponent (&wetThreeMixSlider, false); //
+    wetFourMixLabel.attachToComponent (&wetFourMixSlider, false); //
     wetFourMixLabel.setJustificationType(juce::Justification::topLeft);
     
     
