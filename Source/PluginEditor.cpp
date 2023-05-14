@@ -94,7 +94,7 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     delayTimeSlider.setSliderSnapsToMousePosition(true);
     delayTimeSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     delayTimeSlider.setTitle("Delay Time");
-    delayTimeSlider.setRange(30.0, 150.0, 1);
+    delayTimeSlider.setRange(30.0, 2000.0, 1);
     delayTimeSlider.setValue(70.0);
     delayTimeSlider.setTextBoxIsEditable(true);
     delayTimeSlider.setDoubleClickReturnValue(true, 70.0, NULL);
@@ -172,7 +172,7 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     delayTwoTimeSlider.setSliderSnapsToMousePosition(true);
     delayTwoTimeSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     delayTwoTimeSlider.setTitle("Delay Time");
-    delayTwoTimeSlider.setRange(30.0, 150.0, 1);
+    delayTwoTimeSlider.setRange(30.0, 2000.0, 1);
     delayTwoTimeSlider.setValue(70.0);
     delayTwoTimeSlider.setTextBoxIsEditable(true);
     delayTwoTimeSlider.setDoubleClickReturnValue(true, 70.0, NULL);
@@ -250,7 +250,7 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     delayThreeTimeSlider.setSliderSnapsToMousePosition(true);
     delayThreeTimeSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     delayThreeTimeSlider.setTitle("Delay Time");
-    delayThreeTimeSlider.setRange(30.0, 150.0, 1);
+    delayThreeTimeSlider.setRange(30.0, 2000.0, 1);
     delayThreeTimeSlider.setValue(70.0);
     delayThreeTimeSlider.setTextBoxIsEditable(true);
     delayThreeTimeSlider.setDoubleClickReturnValue(true, 70.0, NULL);
@@ -327,7 +327,7 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     delayFourTimeSlider.setSliderSnapsToMousePosition(true);
     delayFourTimeSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     delayFourTimeSlider.setTitle("Delay Time");
-    delayFourTimeSlider.setRange(30.0, 150.0, 1);
+    delayFourTimeSlider.setRange(30.0, 2000.0, 1);
     delayFourTimeSlider.setValue(70.0);
     delayFourTimeSlider.setTextBoxIsEditable(true);
     delayFourTimeSlider.setDoubleClickReturnValue(true, 70.0, NULL);

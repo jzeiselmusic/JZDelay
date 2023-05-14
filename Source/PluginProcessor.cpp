@@ -29,8 +29,8 @@ JZDelayAudioProcessor::JZDelayAudioProcessor()
     delayTime = 70.0;
     wetMix = 50.0;
     pan = 0.0;
-    echoListL = (float*)calloc(10000, sizeof(float));
-    echoListR = (float*)calloc(10000, sizeof(float));
+    echoListL = (float*)calloc(100000, sizeof(float));
+    echoListR = (float*)calloc(100000, sizeof(float));
     
     // set default parameters for delay 2
     delayTwoEnable = false;
@@ -39,8 +39,8 @@ JZDelayAudioProcessor::JZDelayAudioProcessor()
     delayTwoTime = 70.0;
     wetTwoMix = 50.0;
     panTwo = 0.0;
-    echoTwoListL = (float*)calloc(10000, sizeof(float));
-    echoTwoListR = (float*)calloc(10000, sizeof(float));
+    echoTwoListL = (float*)calloc(100000, sizeof(float));
+    echoTwoListR = (float*)calloc(100000, sizeof(float));
     
     // set default parameters for delay 3
     delayThreeEnable = false;
@@ -49,8 +49,8 @@ JZDelayAudioProcessor::JZDelayAudioProcessor()
     delayThreeTime = 70.0;
     wetThreeMix = 50.0;
     panThree = 0.0;
-    echoThreeListL = (float*)calloc(10000, sizeof(float));
-    echoThreeListR = (float*)calloc(10000, sizeof(float));
+    echoThreeListL = (float*)calloc(100000, sizeof(float));
+    echoThreeListR = (float*)calloc(100000, sizeof(float));
     
     
     // set default parameters for delay 4
@@ -60,8 +60,8 @@ JZDelayAudioProcessor::JZDelayAudioProcessor()
     delayFourTime = 70.0;
     wetFourMix = 50.0;
     panFour = 0.0;
-    echoFourListL = (float*)calloc(10000, sizeof(float));
-    echoFourListR = (float*)calloc(10000, sizeof(float));
+    echoFourListL = (float*)calloc(100000, sizeof(float));
+    echoFourListR = (float*)calloc(100000, sizeof(float));
 }
 
 JZDelayAudioProcessor::~JZDelayAudioProcessor()
@@ -265,17 +265,17 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
                 origL = channelWData[sample];
                 
                 // increment read and write positions
-                readPosL = readPosL + 1 >= numSamples ? 0 : (readPosL + 1);
-                writePosL = writePosL + 1 >= numSamples ? 0 : (writePosL + 1);
+                readPosL = readPosL + 1 >= (numSamples/2.0) ? 0 : (readPosL + 1);
+                writePosL = writePosL + 1 >= (numSamples/2.0) ? 0 : (writePosL + 1);
                 
-                readTwoPosL = readTwoPosL + 1 >= numTwoSamples ? 0 : (readTwoPosL + 1);
-                writeTwoPosL = writeTwoPosL + 1 >= numTwoSamples ? 0 : (writeTwoPosL + 1);
+                readTwoPosL = readTwoPosL + 1 >= (numTwoSamples/2.0) ? 0 : (readTwoPosL + 1);
+                writeTwoPosL = writeTwoPosL + 1 >= (numTwoSamples/2.0) ? 0 : (writeTwoPosL + 1);
                 
-                readThreePosL = readThreePosL + 1 >= numThreeSamples ? 0 : (readThreePosL + 1);
-                writeThreePosL = writeThreePosL + 1 >= numThreeSamples ? 0 : (writeThreePosL + 1);
+                readThreePosL = readThreePosL + 1 >= (numThreeSamples/2.0) ? 0 : (readThreePosL + 1);
+                writeThreePosL = writeThreePosL + 1 >= (numThreeSamples/2.0) ? 0 : (writeThreePosL + 1);
                 
-                readFourPosL = readFourPosL + 1 >= numFourSamples ? 0 : (readFourPosL + 1);
-                writeFourPosL = writeFourPosL + 1 >= numFourSamples ? 0 : (writeFourPosL + 1);
+                readFourPosL = readFourPosL + 1 >= (numFourSamples/2.0) ? 0 : (readFourPosL + 1);
+                writeFourPosL = writeFourPosL + 1 >= (numFourSamples/2.0) ? 0 : (writeFourPosL + 1);
                 
                 // calculate regressive echo value
                 // and write to echo buffer only the value that must echo and original input
@@ -323,17 +323,17 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
                 // R processing
                 origR = channelWData[sample];
                 
-                readPosR = readPosR + 1 >= numSamples ? 0 : (readPosR + 1);
-                writePosR = writePosR + 1 >= numSamples ? 0 : (writePosR + 1);
+                readPosR = readPosR + 1 >= (numSamples/2.0) ? 0 : (readPosR + 1);
+                writePosR = writePosR + 1 >= (numSamples/2.0) ? 0 : (writePosR + 1);
                 
-                readTwoPosR = readTwoPosR + 1 >= numTwoSamples ? 0 : (readTwoPosR + 1);
-                writeTwoPosR = writeTwoPosR + 1 >= numTwoSamples ? 0 : (writeTwoPosR + 1);
+                readTwoPosR = readTwoPosR + 1 >= (numTwoSamples/2.0) ? 0 : (readTwoPosR + 1);
+                writeTwoPosR = writeTwoPosR + 1 >= (numTwoSamples/2.0) ? 0 : (writeTwoPosR + 1);
                 
-                readThreePosR = readThreePosR + 1 >= numThreeSamples ? 0 : (readThreePosR + 1);
-                writeThreePosR = writeThreePosR + 1 >= numThreeSamples ? 0 : (writeThreePosR + 1);
+                readThreePosR = readThreePosR + 1 >= (numThreeSamples/2.0) ? 0 : (readThreePosR + 1);
+                writeThreePosR = writeThreePosR + 1 >= (numThreeSamples/2.0) ? 0 : (writeThreePosR + 1);
                 
-                readFourPosR = readFourPosR + 1 >= numFourSamples ? 0 : (readFourPosR + 1);
-                writeFourPosR = writeFourPosR + 1 >= numFourSamples ? 0 : (writeFourPosR + 1);
+                readFourPosR = readFourPosR + 1 >= (numFourSamples/2.0) ? 0 : (readFourPosR + 1);
+                writeFourPosR = writeFourPosR + 1 >= (numFourSamples/2.0) ? 0 : (writeFourPosR + 1);
                 
                 tempR = (float)(decayRate * echoListR[readPosR]);
                 echoListR[writePosR] = origR + tempR;
