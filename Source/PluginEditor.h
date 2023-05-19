@@ -55,6 +55,8 @@ private:
     juce::Label wetMixLabel;
     juce::Slider panSlider;
     juce::Label panLabel;
+    juce::Slider envelopeSlider;
+    juce::Label envelopeLabel;
     
     // objects for delay 2
     juce::ToggleButton delayTwoButton;

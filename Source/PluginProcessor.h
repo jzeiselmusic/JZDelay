@@ -9,6 +9,9 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include <vector>
+
+#define FILTER_LEN 21
 
 //==============================================================================
 /**
@@ -53,10 +56,36 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
     
+    float lowpassFilter(float, int);
+    
     // universal parameter values
     float inputGain;
     float outputGain;
     float dryMix;
+    
+    int bufferLen = 100000;
+    
+    std::vector<float> lpfVecL;
+    std::vector<float> lpfVecLFilt;
+    std::vector<float>::iterator itLFilt;
+    std::vector<float>::iterator itL;
+    std::vector<float> lpfVecR;
+    std::vector<float> lpfVecRFilt;
+    std::vector<float>::iterator itR;
+    std::vector<float>::iterator itRFilt;
+    
+    float filt_b[FILTER_LEN] = {.0000018455, .00003691, .00035065,
+                        .0021039, .008941, .0286,
+                        .071532, .14306, .23248,
+                        .30997, .3409, .30997,
+                        .23248, .14306, .071432,
+                        .0286, .008941, .0021039,
+                        .00035065, .00003691, .0000018455};
+    float filt_a[FILTER_LEN] = {1.0, -1.8575, 4.3097, -5.2722, 6.5736,
+                        -5.7714, 4.8401, -3.1634, 1.9135, -.94161,
+                        .41936, -.15433, .0502, -.0134, .003105,
+                        -.00057566, .00008722, -.00001002,
+                        .0000008468, -.00000004552, .0000000012};
     
     //**************************************//
     //**************************************//
@@ -75,9 +104,14 @@ public:
     int readPosR;
     int writePosR;
     
+    int envelopeVal;
+    
     // delay 1 list to store memory values
     float* echoListL;
     float* echoListR;
+    
+    int* envelopeList;
+
     
     //**************************************//
     //**************************************//

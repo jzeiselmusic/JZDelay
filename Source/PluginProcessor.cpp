@@ -29,8 +29,17 @@ JZDelayAudioProcessor::JZDelayAudioProcessor()
     delayTime = 70.0;
     wetMix = 50.0;
     pan = 0.0;
-    echoListL = (float*)calloc(100000, sizeof(float));
-    echoListR = (float*)calloc(100000, sizeof(float));
+    envelopeVal = 100;
+    echoListL = (float*)calloc(bufferLen, sizeof(float));
+    echoListR = (float*)calloc(bufferLen, sizeof(float));
+    
+    // initialize envelope list to all 1s so gate is completely open
+    envelopeList = (int*)calloc(bufferLen, sizeof(int));
+    for(int i = 0; i < bufferLen; ++i)
+    {
+          envelopeList[i] = 1;
+    }
+    
     
     // set default parameters for delay 2
     delayTwoEnable = false;
@@ -39,8 +48,8 @@ JZDelayAudioProcessor::JZDelayAudioProcessor()
     delayTwoTime = 70.0;
     wetTwoMix = 50.0;
     panTwo = 0.0;
-    echoTwoListL = (float*)calloc(100000, sizeof(float));
-    echoTwoListR = (float*)calloc(100000, sizeof(float));
+    echoTwoListL = (float*)calloc(bufferLen, sizeof(float));
+    echoTwoListR = (float*)calloc(bufferLen, sizeof(float));
     
     // set default parameters for delay 3
     delayThreeEnable = false;
@@ -49,8 +58,8 @@ JZDelayAudioProcessor::JZDelayAudioProcessor()
     delayThreeTime = 70.0;
     wetThreeMix = 50.0;
     panThree = 0.0;
-    echoThreeListL = (float*)calloc(100000, sizeof(float));
-    echoThreeListR = (float*)calloc(100000, sizeof(float));
+    echoThreeListL = (float*)calloc(bufferLen, sizeof(float));
+    echoThreeListR = (float*)calloc(bufferLen, sizeof(float));
     
     
     // set default parameters for delay 4
@@ -60,8 +69,8 @@ JZDelayAudioProcessor::JZDelayAudioProcessor()
     delayFourTime = 70.0;
     wetFourMix = 50.0;
     panFour = 0.0;
-    echoFourListL = (float*)calloc(100000, sizeof(float));
-    echoFourListR = (float*)calloc(100000, sizeof(float));
+    echoFourListL = (float*)calloc(bufferLen, sizeof(float));
+    echoFourListR = (float*)calloc(bufferLen, sizeof(float));
 }
 
 JZDelayAudioProcessor::~JZDelayAudioProcessor()
@@ -280,7 +289,8 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
                 // calculate regressive echo value
                 // and write to echo buffer only the value that must echo and original input
                 // we keep separate echo buffers for each delay
-                tempL = (float)(decayRate * echoListL[readPosL]);
+                tempL = (float)(decayRate * echoListL[readPosL] * (float)envelopeList[readPosL]);
+                tempL = lowpassFilter(tempL, 0); // 0 for left side
                 echoListL[writePosL] = origL + tempL;
                 tempTwoL = (float)(decayTwoRate * echoTwoListL[readTwoPosL]);
                 echoTwoListL[writeTwoPosL] = origL + tempTwoL;
@@ -296,16 +306,20 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
                 pan_L_val_4 = 1.0 - ((panFour / 200.0) + 0.5);
                 
                 // enable or disable based on button
-                if (delayOneEnable) {
+                if (delayOneEnable)
+                {
                     mult1 = 1.0;
                 }
-                if (delayTwoEnable) {
+                if (delayTwoEnable)
+                {
                     mult2 = 1.0;
                 }
-                if (delayThreeEnable) {
+                if (delayThreeEnable)
+                {
                     mult3 = 1.0;
                 }
-                if (delayFourEnable) {
+                if (delayFourEnable)
+                {
                     mult4 = 1.0;
                 }
                 
@@ -335,7 +349,8 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
                 readFourPosR = readFourPosR + 1 >= (numFourSamples/2.0) ? 0 : (readFourPosR + 1);
                 writeFourPosR = writeFourPosR + 1 >= (numFourSamples/2.0) ? 0 : (writeFourPosR + 1);
                 
-                tempR = (float)(decayRate * echoListR[readPosR]);
+                tempR = (float)(decayRate * echoListR[readPosR] * (float)envelopeList[readPosR]);
+                tempR = lowpassFilter(tempR, 1); // 1 for right side
                 echoListR[writePosR] = origR + tempR;
                 tempTwoR = (float)(decayTwoRate * echoTwoListR[readTwoPosR]);
                 echoTwoListR[writeTwoPosR] = origR + tempTwoR;
@@ -344,16 +359,20 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
                 tempFourR = (float)(decayFourRate * echoFourListR[readFourPosR]);
                 echoFourListR[writeFourPosR] = origR + tempFourR;
                 
-                if (delayOneEnable) {
+                if (delayOneEnable)
+                {
                     mult1 = 1.0;
                 }
-                if (delayTwoEnable) {
+                if (delayTwoEnable)
+                {
                     mult2 = 1.0;
                 }
-                if (delayThreeEnable) {
+                if (delayThreeEnable)
+                {
                     mult3 = 1.0;
                 }
-                if (delayFourEnable) {
+                if (delayFourEnable)
+                {
                     mult4 = 1.0;
                 }
                 
@@ -378,6 +397,76 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
 }
 
 //==============================================================================
+
+float JZDelayAudioProcessor::lowpassFilter(float current_val, int side)
+{
+    float result;
+    float result_b;
+    float result_a;
+    if (side == 0) // for L
+    {
+        itL = lpfVecL.begin();
+        lpfVecL.insert(itL, current_val);
+        if (lpfVecL.size() > FILTER_LEN+10)
+        {
+            lpfVecL.pop_back();
+            lpfVecLFilt.pop_back();
+            result_b = 0.0;
+            result_a = 0.0;
+            for (int i = 0; i < FILTER_LEN; ++i)
+            {
+                result_b += lpfVecL[i]*filt_b[i];
+                if (i < FILTER_LEN-1)
+                {
+                    result_a += lpfVecLFilt[i]*filt_a[i+1];
+                }
+            }
+            result = result_b - result_a;
+            itLFilt = lpfVecLFilt.begin();
+            lpfVecLFilt.insert(itLFilt, result);
+            return result;
+        }
+        else
+        {
+            itLFilt = lpfVecLFilt.begin();
+            lpfVecLFilt.insert(itLFilt, current_val);
+            return current_val;
+        }
+    }
+    else if (side == 1) // for R
+    {
+        itR = lpfVecR.begin();
+        lpfVecR.insert(itR, current_val);
+        if (lpfVecR.size() > FILTER_LEN+10)
+        {
+            lpfVecR.pop_back();
+            lpfVecRFilt.pop_back();
+            result_b = 0.0;
+            result_a = 0.0;
+            for (int i = 0; i < FILTER_LEN; ++i)
+            {
+                result_b += lpfVecR[i]*filt_b[i];
+                if (i < FILTER_LEN-1)
+                {
+                    result_a += lpfVecRFilt[i]*filt_a[i+1];
+                }
+            }
+            result = result_b - result_a;
+            itRFilt = lpfVecRFilt.begin();
+            lpfVecRFilt.insert(itRFilt, result);
+            return result;
+        }
+        else
+        {
+            itRFilt = lpfVecRFilt.begin();
+            lpfVecRFilt.insert(itRFilt, current_val);
+            return current_val;
+        }
+    }
+    return 0.0;
+}
+
+
 bool JZDelayAudioProcessor::hasEditor() const
 {
     return true; // (change this to false if you choose to not supply an editor)
