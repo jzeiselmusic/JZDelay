@@ -104,13 +104,9 @@ public:
     int readPosR;
     int writePosR;
     
-    int envelopeVal;
-    
     // delay 1 list to store memory values
     float* echoListL;
     float* echoListR;
-    
-    int* envelopeList;
 
     
     //**************************************//

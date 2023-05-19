@@ -158,23 +158,6 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     panLabel.attachToComponent (&panSlider, false); //
     panLabel.setJustificationType(juce::Justification::topLeft);
     
-    // envelope slider parameters
-    envelopeSlider.setSliderSnapsToMousePosition(true);
-    envelopeSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    envelopeSlider.setTitle("Envelope");
-    envelopeSlider.setRange(0, 100, 1);
-    envelopeSlider.setValue(100);
-    envelopeSlider.setTextBoxIsEditable(true);
-    envelopeSlider.setDoubleClickReturnValue(true, 100, NULL);
-    envelopeSlider.addListener(this);
-    addAndMakeVisible(envelopeSlider);
-    
-    //add label to envelope slider
-    addAndMakeVisible(envelopeLabel);
-    envelopeLabel.setText ("Envelope", juce::dontSendNotification);
-    envelopeLabel.attachToComponent(&envelopeSlider, false);
-    envelopeLabel.setJustificationType(juce::Justification::topLeft);
-    
     
     //**************************************************************************//
     //**************************************************************************//
@@ -443,7 +426,6 @@ void JZDelayAudioProcessorEditor::resized()
     decayRateSlider.setBounds(230, 130, 225, 20);
     wetMixSlider.setBounds(230, 180, 225, 20);
     panSlider.setBounds(230, 230, 225, 20);
-    envelopeSlider.setBounds(230, 280, 225, 20);
     
     // drawing boxes for delay 2 parameters
     
@@ -508,18 +490,6 @@ void JZDelayAudioProcessorEditor::sliderValueChanged(juce::Slider *slider) {
             audioProcessor.readPosR = 1;
             audioProcessor.writePosR = 0;
         }
-        
-        for (int i = 0; i < audioProcessor.numSamples/2; ++i)
-        {
-            if (i < ((audioProcessor.numSamples * audioProcessor.envelopeVal) / (2 * 100)))
-            {
-                audioProcessor.envelopeList[(audioProcessor.readPosL+i)%(audioProcessor.numSamples/2)] = 1;
-            }
-            else
-            {
-                audioProcessor.envelopeList[(audioProcessor.readPosL+i)%(audioProcessor.numSamples/2)] = 0;
-            }
-        }
     }
     else if (slider == &decayRateSlider) {
         audioProcessor.decayRate = decayRateSlider.getValue();
@@ -529,21 +499,6 @@ void JZDelayAudioProcessorEditor::sliderValueChanged(juce::Slider *slider) {
     }
     else if (slider == &panSlider) {
         audioProcessor.pan = panSlider.getValue();
-    }
-    else if (slider == &envelopeSlider) {
-        audioProcessor.envelopeVal = (int)envelopeSlider.getValue();
-        int current_pos = audioProcessor.readPosL;
-        for (int i = 0; i < audioProcessor.numSamples/2; ++i)
-        {
-            if (i < ((audioProcessor.numSamples * audioProcessor.envelopeVal) / (2 * 100)))
-            {
-                audioProcessor.envelopeList[(current_pos+i)%(audioProcessor.numSamples/2)] = 1;
-            }
-            else
-            {
-                audioProcessor.envelopeList[(current_pos+i)%(audioProcessor.numSamples/2)] = 0;
-            }
-        }
     }
     
     //****************************************************************************//

@@ -29,16 +29,8 @@ JZDelayAudioProcessor::JZDelayAudioProcessor()
     delayTime = 70.0;
     wetMix = 50.0;
     pan = 0.0;
-    envelopeVal = 100;
     echoListL = (float*)calloc(bufferLen, sizeof(float));
     echoListR = (float*)calloc(bufferLen, sizeof(float));
-    
-    // initialize envelope list to all 1s so gate is completely open
-    envelopeList = (int*)calloc(bufferLen, sizeof(int));
-    for(int i = 0; i < bufferLen; ++i)
-    {
-          envelopeList[i] = 1;
-    }
     
     
     // set default parameters for delay 2
@@ -289,7 +281,7 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
                 // calculate regressive echo value
                 // and write to echo buffer only the value that must echo and original input
                 // we keep separate echo buffers for each delay
-                tempL = (float)(decayRate * echoListL[readPosL] * (float)envelopeList[readPosL]);
+                tempL = (float)(decayRate * echoListL[readPosL]);
                 tempL = lowpassFilter(tempL, 0); // 0 for left side
                 echoListL[writePosL] = origL + tempL;
                 tempTwoL = (float)(decayTwoRate * echoTwoListL[readTwoPosL]);
@@ -349,7 +341,7 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
                 readFourPosR = readFourPosR + 1 >= (numFourSamples/2.0) ? 0 : (readFourPosR + 1);
                 writeFourPosR = writeFourPosR + 1 >= (numFourSamples/2.0) ? 0 : (writeFourPosR + 1);
                 
-                tempR = (float)(decayRate * echoListR[readPosR] * (float)envelopeList[readPosR]);
+                tempR = (float)(decayRate * echoListR[readPosR]);
                 tempR = lowpassFilter(tempR, 1); // 1 for right side
                 echoListR[writePosR] = origR + tempR;
                 tempTwoR = (float)(decayTwoRate * echoTwoListR[readTwoPosR]);
