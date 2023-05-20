@@ -9,6 +9,7 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 #include "Module.h"
+#include "Global.h"
 
 //==============================================================================
 JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor& p)
@@ -20,61 +21,20 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     
     //**************************************************************************//
     //**************************************************************************//
-
-    // pre-gain slider parameters
-    inputGainSlider.setSliderSnapsToMousePosition(true);
-    inputGainSlider.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
-    inputGainSlider.setTitle("Input Gain");
-    inputGainSlider.setRange(-24.0, 24.0, 0.01);
-    inputGainSlider.setValue(0.0);
-    inputGainSlider.setTextBoxIsEditable(false);
-    inputGainSlider.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxAbove, true, 35, 20);
-    inputGainSlider.setDoubleClickReturnValue(true, 0.0, NULL);
-    inputGainSlider.addListener(this);
-    addAndMakeVisible(inputGainSlider);
     
-    // post-gain slider parameters
-    outputGainSlider.setSliderSnapsToMousePosition(true);
-    outputGainSlider.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
-    outputGainSlider.setTitle("Output Gain");
-    outputGainSlider.setRange(-24.0, 24.0, 0.01);
-    outputGainSlider.setValue(0.0);
-    outputGainSlider.setTextBoxIsEditable(false);
-    outputGainSlider.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxAbove, true, 35, 20);
-    outputGainSlider.setDoubleClickReturnValue(true, 0.0, NULL);
-    outputGainSlider.addListener(this);
-    addAndMakeVisible(outputGainSlider);
+    // initial value is whatever audioprocessor says it is
+    float igval = audioProcessor.inputGain;
+    float ogval = audioProcessor.outputGain;
+    float dmval = audioProcessor.dryMix;
     
-    // add labels to both gain sliders
-    addAndMakeVisible (inputGainLabel);
-    inputGainLabel.setText ("Input Gain", juce::dontSendNotification);
-    inputGainLabel.attachToComponent (&inputGainSlider, false); //
-    inputGainLabel.setJustificationType(juce::Justification::top);
-    inputGainLabel.setMinimumHorizontalScale(0.5);
+    Global global_module = Global();
+    global_module.setBoundaries(15, 200, 55, 450);
+    global_module.setNumSliders(3);
+    global_module.addSlider(&inputGainSlider, &inputGainLabel, "Input Gain", 0, -24.0, 24.0, 0.01, igval, 0.0, this);
+    global_module.addSlider(&outputGainSlider, &outputGainLabel, "Output Gain", 1, -24.0, 24.0, 0.01, ogval, 0.0, this);
+    global_module.addSlider(&dryMixSlider, &dryMixLabel, "Dry Mix", 2, 0.0, 100.0, 0.1, dmval, 100.0, this);
+    global_module.makeVisible(this);
     
-    addAndMakeVisible (outputGainLabel);
-    outputGainLabel.setText ("Output Gain", juce::dontSendNotification);
-    outputGainLabel.attachToComponent (&outputGainSlider, false); //
-    outputGainLabel.setJustificationType(juce::Justification::centredTop);
-    outputGainLabel.setMinimumHorizontalScale(0.5);
-    
-    // dry mix slider parameters
-    dryMixSlider.setSliderSnapsToMousePosition(true);
-    dryMixSlider.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
-    dryMixSlider.setTitle("Dry Mix");
-    dryMixSlider.setRange(0.0, 100.0, .1);
-    dryMixSlider.setValue(100.0);
-    dryMixSlider.setTextBoxIsEditable(true);
-    dryMixSlider.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxAbove, true, 35, 20);
-    dryMixSlider.setDoubleClickReturnValue(true, 100.0, NULL);
-    dryMixSlider.addListener(this);
-    addAndMakeVisible(dryMixSlider);
-    
-    // add label to dry mix slider
-    addAndMakeVisible (dryMixLabel);
-    dryMixLabel.setText ("Dry Mix", juce::dontSendNotification);
-    dryMixLabel.attachToComponent (&dryMixSlider, false); //
-    dryMixLabel.setJustificationType(juce::Justification::top);
     
     //**************************************************************************//
     //**************************************************************************//
@@ -83,47 +43,68 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     delay1_module.setEffectName("Delay 1");
     delay1_module.setNumSliders(4);
     delay1_module.setBoundaries(230, 455, 30, 300);
-    delay1_module.addSlider(&delayTimeSlider, &delayTimeLabel, "Delay Time", 0, 30.0, 2000.0, 1.0, 100.0, this);
-    delay1_module.addSlider(&decayRateSlider, &decayRateLabel, "Decay Rate", 1, 0.01, 0.99, 0.01, 0.75, this);
-    delay1_module.addSlider(&wetMixSlider, &wetMixLabel, "Wet Mix", 2, 0.0, 100.0, 0.1, 50.0, this);
-    delay1_module.addSlider(&panSlider, &panLabel, "Pan", 3, -100.0, 100.0, 0.1, 0.0, this);
+    float dT_val = audioProcessor.numSamples / (.001 * audioProcessor.getSampleRate());
+    float dR_val = audioProcessor.decayRate;
+    float wM_val = audioProcessor.wetMix;
+    float pS_val = audioProcessor.pan;
+    delay1_module.addSlider(&delayTimeSlider, &delayTimeLabel, "Delay Time", 0, 30.0, 2000.0, 1.0, dT_val, 100.0, this);
+    delay1_module.addSlider(&decayRateSlider, &decayRateLabel, "Decay Rate", 1, 0.01, 0.99, 0.01, dR_val, 0.75, this);
+    delay1_module.addSlider(&wetMixSlider, &wetMixLabel, "Wet Mix", 2, 0.0, 100.0, 0.1, wM_val, 50.0, this);
+    delay1_module.addSlider(&panSlider, &panLabel, "Pan", 3, -100.0, 100.0, 0.1, pS_val, 0.0, this);
     
     Module delay2_module = Module();
     delay2_module.setEffectName("Delay 2");
     delay2_module.setNumSliders(4);
     delay2_module.setBoundaries(230, 455, 310, 580);
-    delay2_module.addSlider(&delayTwoTimeSlider, &delayTwoTimeLabel, "Delay Time", 0, 30.0, 2000.0, 1.0, 100.0, this);
-    delay2_module.addSlider(&decayTwoRateSlider, &decayTwoRateLabel, "Decay Rate", 1, 0.01, 0.99, 0.01, 0.75, this);
-    delay2_module.addSlider(&wetTwoMixSlider, &wetTwoMixLabel, "Wet Mix", 2, 0.0, 100.0, 0.1, 50.0, this);
-    delay2_module.addSlider(&panTwoSlider, &panTwoLabel, "Pan", 3, -100.0, 100.0, 0.1, 0.0, this);
+    float dT2_val = audioProcessor.numTwoSamples / (.001 * audioProcessor.getSampleRate());
+    float dR2_val = audioProcessor.decayTwoRate;
+    float wM2_val = audioProcessor.wetTwoMix;
+    float pS2_val = audioProcessor.panTwo;
+    delay2_module.addSlider(&delayTwoTimeSlider, &delayTwoTimeLabel, "Delay Time", 0, 30.0, 2000.0, 1.0, dT2_val, 100.0, this);
+    delay2_module.addSlider(&decayTwoRateSlider, &decayTwoRateLabel, "Decay Rate", 1, 0.01, 0.99, 0.01, dR2_val, 0.75, this);
+    delay2_module.addSlider(&wetTwoMixSlider, &wetTwoMixLabel, "Wet Mix", 2, 0.0, 100.0, 0.1, wM2_val, 50.0, this);
+    delay2_module.addSlider(&panTwoSlider, &panTwoLabel, "Pan", 3, -100.0, 100.0, 0.1, pS2_val, 0.0, this);
     
     Module delay3_module = Module();
     delay3_module.setEffectName("Delay 3");
     delay3_module.setNumSliders(4);
     delay3_module.setBoundaries(480, 735, 30, 300);
-    delay3_module.addSlider(&delayThreeTimeSlider, &delayThreeTimeLabel, "Delay Time", 0, 30.0, 2000.0, 1.0, 100.0, this);
-    delay3_module.addSlider(&decayThreeRateSlider, &decayThreeRateLabel, "Decay Rate", 1, 0.01, 0.99, 0.01, 0.75, this);
-    delay3_module.addSlider(&wetThreeMixSlider, &wetThreeMixLabel, "Wet Mix", 2, 0.0, 100.0, 0.1, 50.0, this);
-    delay3_module.addSlider(&panThreeSlider, &panThreeLabel, "Pan", 3, -100.0, 100.0, 0.1, 0.0, this);
+    float dT3_val = audioProcessor.numThreeSamples / (.001 * audioProcessor.getSampleRate());
+    float dR3_val = audioProcessor.decayThreeRate;
+    float wM3_val = audioProcessor.wetThreeMix;
+    float pS3_val = audioProcessor.panThree;
+    delay3_module.addSlider(&delayThreeTimeSlider, &delayThreeTimeLabel, "Delay Time", 0, 30.0, 2000.0, 1.0, dT3_val, 100.0, this);
+    delay3_module.addSlider(&decayThreeRateSlider, &decayThreeRateLabel, "Decay Rate", 1, 0.01, 0.99, 0.01, dR3_val, 0.75, this);
+    delay3_module.addSlider(&wetThreeMixSlider, &wetThreeMixLabel, "Wet Mix", 2, 0.0, 100.0, 0.1, wM3_val, 50.0, this);
+    delay3_module.addSlider(&panThreeSlider, &panThreeLabel, "Pan", 3, -100.0, 100.0, 0.1, pS3_val, 0.0, this);
     
     Module delay4_module = Module();
     delay4_module.setEffectName("Delay 4");
     delay4_module.setNumSliders(4);
     delay4_module.setBoundaries(480, 735, 310, 580);
-    delay4_module.addSlider(&delayFourTimeSlider, &delayFourTimeLabel, "Delay Time", 0, 30.0, 2000.0, 1.0, 100.0, this);
-    delay4_module.addSlider(&decayFourRateSlider, &decayFourRateLabel, "Decay Rate", 1, 0.01, 0.99, 0.01, 0.75, this);
-    delay4_module.addSlider(&wetFourMixSlider, &wetFourMixLabel, "Wet Mix", 2, 0.0, 100.0, 0.1, 50.0, this);
-    delay4_module.addSlider(&panFourSlider, &panFourLabel, "Pan", 3, -100.0, 100.0, 0.1, 0.0, this);
+    float dT4_val = audioProcessor.numFourSamples / (.001 * audioProcessor.getSampleRate());
+    float dR4_val = audioProcessor.decayFourRate;
+    float wM4_val = audioProcessor.wetFourMix;
+    float pS4_val = audioProcessor.panFour;
+    delay4_module.addSlider(&delayFourTimeSlider, &delayFourTimeLabel, "Delay Time", 0, 30.0, 2000.0, 1.0, dT4_val, 100.0, this);
+    delay4_module.addSlider(&decayFourRateSlider, &decayFourRateLabel, "Decay Rate", 1, 0.01, 0.99, 0.01, dR4_val, 0.75, this);
+    delay4_module.addSlider(&wetFourMixSlider, &wetFourMixLabel, "Wet Mix", 2, 0.0, 100.0, 0.1, wM4_val, 50.0, this);
+    delay4_module.addSlider(&panFourSlider, &panFourLabel, "Pan", 3, -100.0, 100.0, 0.1, pS4_val, 0.0, this);
     
+    delayOneButton.setToggleState(audioProcessor.delayOneEnable, juce::NotificationType::dontSendNotification);
     delay1_module.addButton(&delayOneButton, this);
+    delayTwoButton.setToggleState(audioProcessor.delayTwoEnable, juce::NotificationType::dontSendNotification);
     delay2_module.addButton(&delayTwoButton, this);
+    delayThreeButton.setToggleState(audioProcessor.delayThreeEnable, juce::NotificationType::dontSendNotification);
     delay3_module.addButton(&delayThreeButton, this);
+    delayFourButton.setToggleState(audioProcessor.delayFourEnable, juce::NotificationType::dontSendNotification);
     delay4_module.addButton(&delayFourButton, this);
     
     delay1_module.makeVisible(this);
     delay2_module.makeVisible(this);
     delay3_module.makeVisible(this);
     delay4_module.makeVisible(this);
+    
 }
 
 JZDelayAudioProcessorEditor::~JZDelayAudioProcessorEditor()
@@ -144,12 +125,6 @@ void JZDelayAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
-    auto sliderLeft = 30;
-    
-    // drawing boxes for universal parameters
-    inputGainSlider.setBounds(sliderLeft, 55, 60, 340);
-    outputGainSlider.setBounds(sliderLeft+60, 55, 60, 340);
-    dryMixSlider.setBounds(sliderLeft+120, 55, 60, 340);
 
 }
 
@@ -165,10 +140,10 @@ void JZDelayAudioProcessorEditor::sliderValueChanged(juce::Slider *slider) {
     // in the case of universal slider change
     
     if (slider == &inputGainSlider) {
-        audioProcessor.inputGain = pow(10, inputGainSlider.getValue() / 20.0);
+        audioProcessor.inputGain = inputGainSlider.getValue();
     }
     else if (slider == &outputGainSlider) {
-        audioProcessor.outputGain = pow(10, outputGainSlider.getValue() / 20.0);
+        audioProcessor.outputGain = outputGainSlider.getValue();
     }
     else if (slider == &dryMixSlider) {
         audioProcessor.dryMix = dryMixSlider.getValue();

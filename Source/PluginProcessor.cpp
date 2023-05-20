@@ -17,52 +17,7 @@ JZDelayAudioProcessor::JZDelayAudioProcessor()
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                        )
 {
-    // set universal parameters first
-    inputGain = pow(10, 0.0); // start input gain at 1.0
-    outputGain = pow(10, 0.0); // start output gain at 1.0
-    dryMix = 100.0;
-    
-    // set default parameters for delay 1
-    delayOneEnable = false;
-    numSamples = ceil(.001 * 70.0 * getSampleRate());
-    decayRate = 0.75;
-    delayTime = 70.0;
-    wetMix = 50.0;
-    pan = 0.0;
-    echoListL = (float*)calloc(bufferLen, sizeof(float));
-    echoListR = (float*)calloc(bufferLen, sizeof(float));
-    
-    
-    // set default parameters for delay 2
-    delayTwoEnable = false;
-    numTwoSamples = ceil(.001 * 70.0 * getSampleRate());
-    decayTwoRate = 0.75;
-    delayTwoTime = 70.0;
-    wetTwoMix = 50.0;
-    panTwo = 0.0;
-    echoTwoListL = (float*)calloc(bufferLen, sizeof(float));
-    echoTwoListR = (float*)calloc(bufferLen, sizeof(float));
-    
-    // set default parameters for delay 3
-    delayThreeEnable = false;
-    numThreeSamples = ceil(.001 * 70.0 * getSampleRate());
-    decayThreeRate = 0.75;
-    delayThreeTime = 70.0;
-    wetThreeMix = 50.0;
-    panThree = 0.0;
-    echoThreeListL = (float*)calloc(bufferLen, sizeof(float));
-    echoThreeListR = (float*)calloc(bufferLen, sizeof(float));
-    
-    
-    // set default parameters for delay 4
-    delayFourEnable = false;
-    numFourSamples = ceil(.001 * 70.0 * getSampleRate());
-    decayFourRate = 0.75;
-    delayFourTime = 70.0;
-    wetFourMix = 50.0;
-    panFour = 0.0;
-    echoFourListL = (float*)calloc(bufferLen, sizeof(float));
-    echoFourListR = (float*)calloc(bufferLen, sizeof(float));
+
 }
 
 JZDelayAudioProcessor::~JZDelayAudioProcessor()
@@ -200,8 +155,8 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
     
     
     // input gain
-    buffer.applyGain(0, 0, buffer.getNumSamples(), inputGain);
-    buffer.applyGain(1, 0, buffer.getNumSamples(), inputGain);
+    buffer.applyGain(0, 0, buffer.getNumSamples(), pow(10, inputGain/20.0));
+    buffer.applyGain(1, 0, buffer.getNumSamples(), pow(10, inputGain/20.0));
     
     
     float origL;
@@ -384,8 +339,8 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
     }
     
     // output gain
-    buffer.applyGain(0, 0, buffer.getNumSamples(), outputGain);
-    buffer.applyGain(1, 0, buffer.getNumSamples(), outputGain);
+    buffer.applyGain(0, 0, buffer.getNumSamples(), pow(10, outputGain/20.0));
+    buffer.applyGain(1, 0, buffer.getNumSamples(), pow(10, outputGain/20.0));
 }
 
 //==============================================================================

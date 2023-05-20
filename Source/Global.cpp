@@ -27,7 +27,7 @@ void Global::setNumSliders(int num)
 void Global::addSlider(juce::Slider* newSlider, juce::Label* newLabel,
                        char const* name, int num,
                        float start, float stop,
-                       float step, float init_val,
+                       float step, float init_val, float doubclick_val,
                        juce::Slider::Listener* sliderL)
 {
     int width = endx - startx;
@@ -39,7 +39,7 @@ void Global::addSlider(juce::Slider* newSlider, juce::Label* newLabel,
     newSlider->setRange(start, stop, step);
     newSlider->setValue(init_val);
     newSlider->setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxAbove, true, 35, 20);
-    newSlider->setDoubleClickReturnValue(true, init_val, NULL);
+    newSlider->setDoubleClickReturnValue(true, doubclick_val, NULL);
     newSlider->addListener(sliderL);
     
     newSlider->setBounds(startx + num*step_x, starty, 60, endy-starty);

@@ -23,13 +23,15 @@ class Module
         // adders
         void addSlider(juce::Slider*, juce::Label*,
                        char const* name, int num, float start, float stop,
-                       float step, float init_val,
+                       float step, float init_val, float doubclick_val,
                        juce::Slider::Listener*);
     
         void addButton(juce::ToggleButton*, juce::Button::Listener*);
     
         // init
         void makeVisible(juce::Component* comp);
+    
+        void valuesChanged(juce::Slider::Listener*);
         
     
     private:

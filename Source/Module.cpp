@@ -34,7 +34,7 @@ void Module::setEffectName(char const* name)
 void Module::addSlider(juce::Slider* newSlider, juce::Label* newLabel,
                        char const* name, int num,
                        float start, float stop,
-                       float step, float init_val,
+                       float step, float init_val, float doubclick_val,
                        juce::Slider::Listener* sliderL)
 {
     int width = endy - starty;
@@ -48,7 +48,7 @@ void Module::addSlider(juce::Slider* newSlider, juce::Label* newLabel,
     newSlider->setValue(init_val);
     
     newSlider->setTextBoxIsEditable(false);
-    newSlider->setDoubleClickReturnValue(true, init_val, NULL);
+    newSlider->setDoubleClickReturnValue(true, doubclick_val, NULL);
     newSlider->addListener(sliderL);
     
     newSlider->setBounds(startx, starty + ((num+1)*step_y), endx - startx, 20);
@@ -81,6 +81,14 @@ void Module::makeVisible(juce::Component* component) {
     for (int i = 0; i < buttonList.size(); ++i)
     {
         component->addAndMakeVisible(buttonList[i]);
+    }
+}
+
+void Module::valuesChanged(juce::Slider::Listener* sliderL)
+{
+    for (int i = 0; i < sliderList.size(); ++i)
+    {
+        sliderL->sliderValueChanged(sliderList[i]);
     }
 }
 

@@ -59,9 +59,9 @@ public:
     float lowpassFilter(float, int);
     
     // universal parameter values
-    float inputGain;
-    float outputGain;
-    float dryMix;
+    float inputGain = 0.0;
+    float outputGain = 0.0;
+    float dryMix = 100.0;
     
     int bufferLen = 100000;
     
@@ -91,86 +91,86 @@ public:
     //**************************************//
     
     // delay 1 parameter editor values
-    float delayTime;
-    float decayRate;
-    float wetMix;
-    bool delayOneEnable;
-    float pan;
+    float delayTime = 70.0;
+    float decayRate = 0.75;
+    float wetMix = 50.0;
+    bool delayOneEnable = false;
+    float pan = 0.0;
     
     // delay 1 parameter processor values
-    int numSamples;
+    int numSamples = ceil(.001 * 70.0 * getSampleRate());
     int readPosL;
     int writePosL;
     int readPosR;
     int writePosR;
     
     // delay 1 list to store memory values
-    float* echoListL;
-    float* echoListR;
+    float* echoListL = (float*)calloc(bufferLen, sizeof(float));
+    float* echoListR = (float*)calloc(bufferLen, sizeof(float));
 
     
     //**************************************//
     //**************************************//
     
     // delay 2 parameter editor values
-    float delayTwoTime;
-    float decayTwoRate;
-    float wetTwoMix;
-    bool delayTwoEnable;
-    float panTwo;
+    float delayTwoTime = 70.0;
+    float decayTwoRate = 0.75;
+    float wetTwoMix = 50.0;
+    bool delayTwoEnable = false;
+    float panTwo = 0.0;
     
     // delay 2 parameter processor values
-    int numTwoSamples;
+    int numTwoSamples = ceil(.001 * 70.0 * getSampleRate());
     int readTwoPosL;
     int writeTwoPosL;
     int readTwoPosR;
     int writeTwoPosR;
     
     // delay 2 list to store memory values
-    float* echoTwoListL;
-    float* echoTwoListR;
+    float* echoTwoListL = (float*)calloc(bufferLen, sizeof(float));
+    float* echoTwoListR = (float*)calloc(bufferLen, sizeof(float));
     
     //**************************************//
     //**************************************//
     
     // delay 3 parameter editor values
-    float delayThreeTime;
-    float decayThreeRate;
-    float wetThreeMix;
-    bool delayThreeEnable;
-    float panThree;
+    float delayThreeTime = 70.0;
+    float decayThreeRate = 0.75;
+    float wetThreeMix = 50.0;
+    bool delayThreeEnable = false;
+    float panThree = 0.0;
     
     // delay 3 parameter processor values
-    int numThreeSamples;
+    int numThreeSamples = ceil(.001 * 70.0 * getSampleRate());
     int readThreePosL;
     int writeThreePosL;
     int readThreePosR;
     int writeThreePosR;
     
     // delay 3 list to store memory values
-    float* echoThreeListL;
-    float* echoThreeListR;
+    float* echoThreeListL = (float*)calloc(bufferLen, sizeof(float));
+    float* echoThreeListR = (float*)calloc(bufferLen, sizeof(float));
     
     //**************************************//
     //**************************************//
     
     // delay 4 parameter editor values
-    float delayFourTime;
-    float decayFourRate;
-    float wetFourMix;
-    bool delayFourEnable;
-    float panFour;
+    float delayFourTime = 70.0;
+    float decayFourRate = 0.75;
+    float wetFourMix = 50.0;
+    bool delayFourEnable = false;
+    float panFour = 0.0;
     
     // delay 4 parameter processor values
-    int numFourSamples;
+    int numFourSamples = ceil(.001 * 70.0 * getSampleRate());
     int readFourPosL;
     int writeFourPosL;
     int readFourPosR;
     int writeFourPosR;
     
     // delay 4 list to store memory values
-    float* echoFourListL;
-    float* echoFourListR;
+    float* echoFourListL = (float*)calloc(bufferLen, sizeof(float));
+    float* echoFourListR = (float*)calloc(bufferLen, sizeof(float));
     
 
 private:
