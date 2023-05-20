@@ -91,14 +91,14 @@ public:
     //**************************************//
     
     // delay 1 parameter editor values
-    float delayTime = 70.0;
+    float delayTime = 200.0;
     float decayRate = 0.75;
     float wetMix = 50.0;
     bool delayOneEnable = false;
     float pan = 0.0;
     
     // delay 1 parameter processor values
-    int numSamples = ceil(.001 * 70.0 * getSampleRate());
+    int numSamples = ceil(.001 * delayTime * getSampleRate());
     int readPosL;
     int writePosL;
     int readPosR;
@@ -113,14 +113,14 @@ public:
     //**************************************//
     
     // delay 2 parameter editor values
-    float delayTwoTime = 70.0;
+    float delayTwoTime = 200.0;
     float decayTwoRate = 0.75;
     float wetTwoMix = 50.0;
     bool delayTwoEnable = false;
     float panTwo = 0.0;
     
     // delay 2 parameter processor values
-    int numTwoSamples = ceil(.001 * 70.0 * getSampleRate());
+    int numTwoSamples = ceil(.001 * delayTwoTime * getSampleRate());
     int readTwoPosL;
     int writeTwoPosL;
     int readTwoPosR;
@@ -134,14 +134,14 @@ public:
     //**************************************//
     
     // delay 3 parameter editor values
-    float delayThreeTime = 70.0;
+    float delayThreeTime = 200.0;
     float decayThreeRate = 0.75;
     float wetThreeMix = 50.0;
     bool delayThreeEnable = false;
     float panThree = 0.0;
     
     // delay 3 parameter processor values
-    int numThreeSamples = ceil(.001 * 70.0 * getSampleRate());
+    int numThreeSamples = ceil(.001 * delayThreeTime * getSampleRate());
     int readThreePosL;
     int writeThreePosL;
     int readThreePosR;
@@ -155,14 +155,14 @@ public:
     //**************************************//
     
     // delay 4 parameter editor values
-    float delayFourTime = 70.0;
+    float delayFourTime = 200.0;
     float decayFourRate = 0.75;
     float wetFourMix = 50.0;
     bool delayFourEnable = false;
     float panFour = 0.0;
     
     // delay 4 parameter processor values
-    int numFourSamples = ceil(.001 * 70.0 * getSampleRate());
+    int numFourSamples = ceil(.001 * delayFourTime * getSampleRate());
     int readFourPosL;
     int writeFourPosL;
     int readFourPosR;
