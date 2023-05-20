@@ -15,18 +15,19 @@
 class Module
 {
     public:
-        
         Module() {};
-        ~Module() {};
         // setters
         void setBoundaries(int startxx, int endxx, int startyy, int endyy);
         void setNumSliders(int numSliders);
         void setEffectName(char const*);
         
         // adders
-        void addSlider(char const* name, int num, float start, float stop,
+        void addSlider(juce::Slider*, juce::Label*,
+                       char const* name, int num, float start, float stop,
                        float step, float init_val,
-                       juce::Slider::Listener*, juce::Button::Listener*);
+                       juce::Slider::Listener*);
+    
+        void addButton(juce::ToggleButton*, juce::Button::Listener*);
     
         // init
         void makeVisible(juce::Component* comp);

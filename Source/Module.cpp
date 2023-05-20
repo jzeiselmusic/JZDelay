@@ -31,16 +31,15 @@ void Module::setEffectName(char const* name)
     effectName = name;
 }
 
-void Module::addSlider(char const* name, int num,
+void Module::addSlider(juce::Slider* newSlider, juce::Label* newLabel,
+                       char const* name, int num,
                        float start, float stop,
                        float step, float init_val,
-                       juce::Slider::Listener* sliderL,
-                       juce::Button::Listener* buttonL)
+                       juce::Slider::Listener* sliderL)
 {
     int width = endy - starty;
     int step_y = width / (numSliders+1);
     // set parameters for this slider
-    juce::Slider* newSlider = new juce::Slider;
     newSlider->setSliderSnapsToMousePosition(true);
     newSlider->setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
     newSlider->setTitle(name);
@@ -55,29 +54,33 @@ void Module::addSlider(char const* name, int num,
     newSlider->setBounds(startx, starty + ((num+1)*step_y), endx - startx, 20);
     
     // add a label with same name and attach
-    juce::Label* newLabel = new juce::Label;
     newLabel->setText (name, juce::dontSendNotification);
     newLabel->attachToComponent (newSlider, false); //
     newLabel->setJustificationType(juce::Justification::topLeft);
-    
-    // add a button and add to button list
-    juce::ToggleButton* newButton = new juce::ToggleButton;
-    newButton->setBounds(startx, starty, 20, 20);
-    newButton->addListener(buttonL);
     
     // add slider to our slider list
     sliderList.push_back(newSlider);
     // add label to our label list
     labelList.push_back(newLabel);
-    // add button to button list
-    buttonList.push_back(newButton);
+}
+
+
+void Module::addButton(juce::ToggleButton* button, juce::Button::Listener* buttonL)
+{
+    button->setBounds(startx, starty, 20, 20);
+    button->addListener(buttonL);
+    buttonList.push_back(button);
 }
 
 void Module::makeVisible(juce::Component* component) {
     
-    for (int i = 0; i < numSliders; ++i)
+    for (int i = 0; i < sliderList.size(); ++i)
     {
         component->addAndMakeVisible(sliderList[i]);
+    }
+    for (int i = 0; i < buttonList.size(); ++i)
+    {
         component->addAndMakeVisible(buttonList[i]);
     }
 }
+

@@ -84,37 +84,42 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     delay1_module.setEffectName("Delay 1");
     delay1_module.setNumSliders(4);
     delay1_module.setBoundaries(230, 455, 30, 300);
-    delay1_module.addSlider("Delay Time", 0, 30.0, 2000.0, 1.0, 100.0, this, this);
-    delay1_module.addSlider("Decay Rate", 1, 0.01, 0.99, 0.01, 0.75, this, this);
-    delay1_module.addSlider("Wet Mix", 2, 0.0, 100.0, 0.1, 50.0, this, this);
-    delay1_module.addSlider("Pan", 3, -100.0, 100.0, 0.1, 50.0, this, this);
+    delay1_module.addSlider(&delayTimeSlider, &delayTimeLabel, "Delay Time", 0, 30.0, 2000.0, 1.0, 100.0, this);
+    delay1_module.addSlider(&decayRateSlider, &decayRateLabel, "Decay Rate", 1, 0.01, 0.99, 0.01, 0.75, this);
+    delay1_module.addSlider(&wetMixSlider, &wetMixLabel, "Wet Mix", 2, 0.0, 100.0, 0.1, 50.0, this);
+    delay1_module.addSlider(&panSlider, &panLabel, "Pan", 3, -100.0, 100.0, 0.1, 50.0, this);
     
     Module delay2_module = Module();
     delay2_module.setEffectName("Delay 2");
     delay2_module.setNumSliders(4);
     delay2_module.setBoundaries(230, 455, 310, 580);
-    delay2_module.addSlider("Delay Time", 0, 30.0, 2000.0, 1.0, 100.0, this, this);
-    delay2_module.addSlider("Decay Rate", 1, 0.01, 0.99, 0.01, 0.75, this, this);
-    delay2_module.addSlider("Wet Mix", 2, 0.0, 100.0, 0.1, 50.0, this, this);
-    delay2_module.addSlider("Pan", 3, -100.0, 100.0, 0.1, 50.0, this, this);
+    delay2_module.addSlider(&delayTwoTimeSlider, &delayTwoTimeLabel, "Delay Time", 0, 30.0, 2000.0, 1.0, 100.0, this);
+    delay2_module.addSlider(&decayTwoRateSlider, &decayTwoRateLabel, "Decay Rate", 1, 0.01, 0.99, 0.01, 0.75, this);
+    delay2_module.addSlider(&wetTwoMixSlider, &wetTwoMixLabel, "Wet Mix", 2, 0.0, 100.0, 0.1, 50.0, this);
+    delay2_module.addSlider(&panTwoSlider, &panTwoLabel, "Pan", 3, -100.0, 100.0, 0.1, 50.0, this);
     
     Module delay3_module = Module();
     delay3_module.setEffectName("Delay 3");
     delay3_module.setNumSliders(4);
     delay3_module.setBoundaries(480, 735, 30, 300);
-    delay3_module.addSlider("Delay Time", 0, 30.0, 2000.0, 1.0, 100.0, this, this);
-    delay3_module.addSlider("Decay Rate", 1, 0.01, 0.99, 0.01, 0.75, this, this);
-    delay3_module.addSlider("Wet Mix", 2, 0.0, 100.0, 0.1, 50.0, this, this);
-    delay3_module.addSlider("Pan", 3, -100.0, 100.0, 0.1, 50.0, this, this);
+    delay3_module.addSlider(&delayThreeTimeSlider, &delayThreeTimeLabel, "Delay Time", 0, 30.0, 2000.0, 1.0, 100.0, this);
+    delay3_module.addSlider(&decayThreeRateSlider, &decayThreeRateLabel, "Decay Rate", 1, 0.01, 0.99, 0.01, 0.75, this);
+    delay3_module.addSlider(&wetThreeMixSlider, &wetThreeMixLabel, "Wet Mix", 2, 0.0, 100.0, 0.1, 50.0, this);
+    delay3_module.addSlider(&panThreeSlider, &panThreeLabel, "Pan", 3, -100.0, 100.0, 0.1, 50.0, this);
     
     Module delay4_module = Module();
     delay4_module.setEffectName("Delay 4");
     delay4_module.setNumSliders(4);
     delay4_module.setBoundaries(480, 735, 310, 580);
-    delay4_module.addSlider("Delay Time", 0, 30.0, 2000.0, 1.0, 100.0, this, this);
-    delay4_module.addSlider("Decay Rate", 1, 0.01, 0.99, 0.01, 0.75, this, this);
-    delay4_module.addSlider("Wet Mix", 2, 0.0, 100.0, 0.1, 50.0, this, this);
-    delay4_module.addSlider("Pan", 3, -100.0, 100.0, 0.1, 50.0, this, this);
+    delay4_module.addSlider(&delayFourTimeSlider, &delayFourTimeLabel, "Delay Time", 0, 30.0, 2000.0, 1.0, 100.0, this);
+    delay4_module.addSlider(&decayFourRateSlider, &decayFourRateLabel, "Decay Rate", 1, 0.01, 0.99, 0.01, 0.75, this);
+    delay4_module.addSlider(&wetFourMixSlider, &wetFourMixLabel, "Wet Mix", 2, 0.0, 100.0, 0.1, 50.0, this);
+    delay4_module.addSlider(&panFourSlider, &panFourLabel, "Pan", 3, -100.0, 100.0, 0.1, 50.0, this);
+    
+    delay1_module.addButton(&delayOneButton, this);
+    delay2_module.addButton(&delayTwoButton, this);
+    delay3_module.addButton(&delayThreeButton, this);
+    delay4_module.addButton(&delayFourButton, this);
     
     delay1_module.makeVisible(this);
     delay2_module.makeVisible(this);
