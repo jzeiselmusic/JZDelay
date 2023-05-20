@@ -10,7 +10,6 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
-#include "XyPad.h"
 
 //==============================================================================
 /**
@@ -42,8 +41,6 @@ private:
     juce::Label outputGainLabel;
     juce::Slider dryMixSlider;
     juce::Label dryMixLabel;
-    // xypad
-    Gui::XyPad xypad;
     
     // objects for delay 1
     juce::ToggleButton delayOneButton;
