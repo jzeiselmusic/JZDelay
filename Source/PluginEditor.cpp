@@ -17,7 +17,7 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (750, 600);
+    setSize (730, 600);
     
     //**************************************************************************//
     //**************************************************************************//
@@ -68,7 +68,7 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     Module delay3_module = Module();
     delay3_module.setEffectName("Delay 3");
     delay3_module.setNumSliders(4);
-    delay3_module.setBoundaries(480, 735, 30, 300);
+    delay3_module.setBoundaries(480, 705, 30, 300);
     float dT3_val = audioProcessor.delayThreeTime;
     float dR3_val = audioProcessor.decayThreeRate;
     float wM3_val = audioProcessor.wetThreeMix;
@@ -81,7 +81,7 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     Module delay4_module = Module();
     delay4_module.setEffectName("Delay 4");
     delay4_module.setNumSliders(4);
-    delay4_module.setBoundaries(480, 735, 310, 580);
+    delay4_module.setBoundaries(480, 705, 310, 580);
     float dT4_val = audioProcessor.delayFourTime;
     float dR4_val = audioProcessor.decayFourRate;
     float wM4_val = audioProcessor.wetFourMix;
@@ -92,13 +92,21 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     delay4_module.addSlider(&panFourSlider, &panFourLabel, "Pan", 3, -100.0, 100.0, 0.1, pS4_val, 0.0, this);
     
     delayOneButton.setToggleState(audioProcessor.delayOneEnable, juce::NotificationType::dontSendNotification);
-    delay1_module.addButton(&delayOneButton, this);
+    delay1_module.setNumButtons(5);
+    delay1_module.addButton(&delayOneButton, this, 0);
+    delay1_module.addButton(&pitchOneButton, this, 1);
     delayTwoButton.setToggleState(audioProcessor.delayTwoEnable, juce::NotificationType::dontSendNotification);
-    delay2_module.addButton(&delayTwoButton, this);
+    delay2_module.setNumButtons(5);
+    delay2_module.addButton(&delayTwoButton, this, 0);
+    delay2_module.addButton(&pitchTwoButton, this, 1);
     delayThreeButton.setToggleState(audioProcessor.delayThreeEnable, juce::NotificationType::dontSendNotification);
-    delay3_module.addButton(&delayThreeButton, this);
+    delay3_module.setNumButtons(5);
+    delay3_module.addButton(&delayThreeButton, this, 0);
+    delay3_module.addButton(&pitchThreeButton, this, 1);
     delayFourButton.setToggleState(audioProcessor.delayFourEnable, juce::NotificationType::dontSendNotification);
-    delay4_module.addButton(&delayFourButton, this);
+    delay4_module.setNumButtons(5);
+    delay4_module.addButton(&delayFourButton, this, 0);
+    delay4_module.addButton(&pitchFourButton, this, 1);
     
     delay1_module.makeVisible(this);
     delay2_module.makeVisible(this);
@@ -265,30 +273,76 @@ void JZDelayAudioProcessorEditor::sliderValueChanged(juce::Slider *slider) {
 
 
 
-void JZDelayAudioProcessorEditor::buttonStateChanged(juce::Button *button) {
-    if (button == &delayOneButton) {
+void JZDelayAudioProcessorEditor::buttonStateChanged(juce::Button *button)
+{
+    if (button == &delayOneButton)
+    {
         // state is 2 when button is toggled
         // state is 1 when button is hovered
         // state is 0 otherwise
-        if (delayOneButton.getState() == 2) {
+        if (delayOneButton.getState() == 2)
+        {
             audioProcessor.delayOneEnable = !audioProcessor.delayOneEnable;
         }
     }
-    else if (button == &delayTwoButton) {
-        if (delayTwoButton.getState() == 2) {
+    else if (button == &delayTwoButton)
+    {
+        if (delayTwoButton.getState() == 2)
+        {
             audioProcessor.delayTwoEnable = !audioProcessor.delayTwoEnable;
         }
     }
-    else if (button == &delayThreeButton) {
-        if (delayThreeButton.getState() == 2) {
+    else if (button == &delayThreeButton)
+    {
+        if (delayThreeButton.getState() == 2)
+        {
             audioProcessor.delayThreeEnable = !audioProcessor.delayThreeEnable;
         }
     }
-    else if (button == &delayFourButton) {
-        if (delayFourButton.getState() == 2) {
+    else if (button == &delayFourButton)
+    {
+        if (delayFourButton.getState() == 2)
+        {
             audioProcessor.delayFourEnable = !audioProcessor.delayFourEnable;
         }
     }
+    
+    //****************************************************************************//
+    //****************************************************************************//
+    
+    
+    else if (button == &pitchOneButton)
+    {
+        if (pitchOneButton.getState() == 2)
+        {
+            audioProcessor.pitchOneEnable = !audioProcessor.pitchOneEnable;
+        }
+    }
+    
+    else if (button == &pitchTwoButton)
+    {
+        if (pitchTwoButton.getState() == 2)
+        {
+            audioProcessor.pitchTwoEnable = !audioProcessor.pitchTwoEnable;
+        }
+    }
+    
+    else if (button == &pitchThreeButton)
+    {
+        if (pitchThreeButton.getState() == 2)
+        {
+            audioProcessor.pitchThreeEnable = !audioProcessor.pitchThreeEnable;
+        }
+    }
+    
+    else if (button == &pitchFourButton)
+    {
+        if (pitchFourButton.getState() == 2)
+        {
+            audioProcessor.pitchFourEnable = !audioProcessor.pitchFourEnable;
+        }
+    }
+    
 }
 
 

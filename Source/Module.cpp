@@ -26,6 +26,11 @@ void Module::setNumSliders(int num)
     numSliders = num;
 }
 
+void Module::setNumButtons(int num)
+{
+    numButtons = num;
+}
+
 void Module::setEffectName(char const* name)
 {
     effectName = name;
@@ -65,9 +70,11 @@ void Module::addSlider(juce::Slider* newSlider, juce::Label* newLabel,
 }
 
 
-void Module::addButton(juce::ToggleButton* button, juce::Button::Listener* buttonL)
+void Module::addButton(juce::ToggleButton* button, juce::Button::Listener* buttonL, int num)
 {
-    button->setBounds(startx, starty, 20, 20);
+    int width = endx - startx;
+    int step_x = width / numButtons;
+    button->setBounds(startx + (num*step_x), starty, 20, 20);
     button->addListener(buttonL);
     buttonList.push_back(button);
 }

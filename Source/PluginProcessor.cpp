@@ -17,7 +17,6 @@ JZDelayAudioProcessor::JZDelayAudioProcessor()
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                        )
 {
-
 }
 
 JZDelayAudioProcessor::~JZDelayAudioProcessor()
@@ -157,7 +156,6 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
     // input gain
     buffer.applyGain(0, 0, buffer.getNumSamples(), pow(10, inputGain/20.0));
     buffer.applyGain(1, 0, buffer.getNumSamples(), pow(10, inputGain/20.0));
-    
     
     float origL;
     float origR;

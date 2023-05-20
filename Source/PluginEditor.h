@@ -15,8 +15,8 @@
 /**
 */
 class JZDelayAudioProcessorEditor  : public juce::AudioProcessorEditor,
-                                        public juce::Slider::Listener,
-                                        public juce::Button::Listener
+                                     public juce::Slider::Listener,
+                                     public juce::Button::Listener
 {
 public:
     JZDelayAudioProcessorEditor (JZDelayAudioProcessor&);
@@ -44,6 +44,7 @@ private:
     
     // objects for delay 1
     juce::ToggleButton delayOneButton;
+    juce::ToggleButton pitchOneButton;
     juce::Slider delayTimeSlider;
     juce::Label delayTimeLabel;
     juce::Slider decayRateSlider;
@@ -55,6 +56,7 @@ private:
     
     // objects for delay 2
     juce::ToggleButton delayTwoButton;
+    juce::ToggleButton pitchTwoButton;
     juce::Slider delayTwoTimeSlider;
     juce::Label delayTwoTimeLabel;
     juce::Slider decayTwoRateSlider;
@@ -66,6 +68,7 @@ private:
     
     //objects for delay 3
     juce::ToggleButton delayThreeButton;
+    juce::ToggleButton pitchThreeButton;
     juce::Slider delayThreeTimeSlider;
     juce::Label delayThreeTimeLabel;
     juce::Slider decayThreeRateSlider;
@@ -77,6 +80,7 @@ private:
     
     //objects for delay 4
     juce::ToggleButton delayFourButton;
+    juce::ToggleButton pitchFourButton;
     juce::Slider delayFourTimeSlider;
     juce::Label delayFourTimeLabel;
     juce::Slider decayFourRateSlider;

@@ -65,6 +65,7 @@ public:
     
     int bufferLen = 100000;
     
+    
     std::vector<float> lpfVecL;
     std::vector<float> lpfVecLFilt;
     std::vector<float>::iterator itLFilt;
@@ -94,8 +95,9 @@ public:
     float delayTime = 200.0;
     float decayRate = 0.75;
     float wetMix = 50.0;
-    bool delayOneEnable = false;
     float pan = 0.0;
+    bool delayOneEnable = false;
+    bool pitchOneEnable = false;
     
     // delay 1 parameter processor values
     int numSamples = ceil(.001 * delayTime * getSampleRate());
@@ -116,8 +118,9 @@ public:
     float delayTwoTime = 200.0;
     float decayTwoRate = 0.75;
     float wetTwoMix = 50.0;
-    bool delayTwoEnable = false;
     float panTwo = 0.0;
+    bool delayTwoEnable = false;
+    bool pitchTwoEnable = false;
     
     // delay 2 parameter processor values
     int numTwoSamples = ceil(.001 * delayTwoTime * getSampleRate());
@@ -137,8 +140,9 @@ public:
     float delayThreeTime = 200.0;
     float decayThreeRate = 0.75;
     float wetThreeMix = 50.0;
-    bool delayThreeEnable = false;
     float panThree = 0.0;
+    bool delayThreeEnable = false;
+    bool pitchThreeEnable = false;
     
     // delay 3 parameter processor values
     int numThreeSamples = ceil(.001 * delayThreeTime * getSampleRate());
@@ -158,8 +162,9 @@ public:
     float delayFourTime = 200.0;
     float decayFourRate = 0.75;
     float wetFourMix = 50.0;
-    bool delayFourEnable = false;
     float panFour = 0.0;
+    bool delayFourEnable = false;
+    bool pitchFourEnable = false;
     
     // delay 4 parameter processor values
     int numFourSamples = ceil(.001 * delayFourTime * getSampleRate());
