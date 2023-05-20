@@ -8,6 +8,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "Module.h"
 
 //==============================================================================
 JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor& p)
@@ -79,9 +80,51 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     //**************************************************************************//
     //**************************************************************************//
     
+    Module delay1_module = Module();
+    delay1_module.setEffectName("Delay 1");
+    delay1_module.setNumSliders(4);
+    delay1_module.setBoundaries(230, 455, 30, 300);
+    delay1_module.addSlider("Delay Time", 0, 30.0, 2000.0, 1.0, 100.0, this, this);
+    delay1_module.addSlider("Decay Rate", 1, 0.01, 0.99, 0.01, 0.75, this, this);
+    delay1_module.addSlider("Wet Mix", 2, 0.0, 100.0, 0.1, 50.0, this, this);
+    delay1_module.addSlider("Pan", 3, -100.0, 100.0, 0.1, 50.0, this, this);
+    
+    Module delay2_module = Module();
+    delay2_module.setEffectName("Delay 2");
+    delay2_module.setNumSliders(4);
+    delay2_module.setBoundaries(230, 455, 310, 580);
+    delay2_module.addSlider("Delay Time", 0, 30.0, 2000.0, 1.0, 100.0, this, this);
+    delay2_module.addSlider("Decay Rate", 1, 0.01, 0.99, 0.01, 0.75, this, this);
+    delay2_module.addSlider("Wet Mix", 2, 0.0, 100.0, 0.1, 50.0, this, this);
+    delay2_module.addSlider("Pan", 3, -100.0, 100.0, 0.1, 50.0, this, this);
+    
+    Module delay3_module = Module();
+    delay3_module.setEffectName("Delay 3");
+    delay3_module.setNumSliders(4);
+    delay3_module.setBoundaries(480, 735, 30, 300);
+    delay3_module.addSlider("Delay Time", 0, 30.0, 2000.0, 1.0, 100.0, this, this);
+    delay3_module.addSlider("Decay Rate", 1, 0.01, 0.99, 0.01, 0.75, this, this);
+    delay3_module.addSlider("Wet Mix", 2, 0.0, 100.0, 0.1, 50.0, this, this);
+    delay3_module.addSlider("Pan", 3, -100.0, 100.0, 0.1, 50.0, this, this);
+    
+    Module delay4_module = Module();
+    delay4_module.setEffectName("Delay 4");
+    delay4_module.setNumSliders(4);
+    delay4_module.setBoundaries(480, 735, 310, 580);
+    delay4_module.addSlider("Delay Time", 0, 30.0, 2000.0, 1.0, 100.0, this, this);
+    delay4_module.addSlider("Decay Rate", 1, 0.01, 0.99, 0.01, 0.75, this, this);
+    delay4_module.addSlider("Wet Mix", 2, 0.0, 100.0, 0.1, 50.0, this, this);
+    delay4_module.addSlider("Pan", 3, -100.0, 100.0, 0.1, 50.0, this, this);
+    
+    delay1_module.makeVisible(this);
+    delay2_module.makeVisible(this);
+    delay3_module.makeVisible(this);
+    delay4_module.makeVisible(this);
+    
+    
     // parameters for delay 1 //
     
-    addAndMakeVisible(delayOneButton);
+    /*addAndMakeVisible(delayOneButton);
     delayOneButton.addListener(this);
     
     // delay time slider parameters
@@ -146,19 +189,19 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     panSlider.addListener(this);
     addAndMakeVisible(panSlider);
     
-    // add label to wet mix slider
+    // add label to pan slider
     addAndMakeVisible (panLabel);
     panLabel.setText ("Pan", juce::dontSendNotification);
     panLabel.attachToComponent (&panSlider, false); //
     panLabel.setJustificationType(juce::Justification::topLeft);
     
-    
+    */
     //**************************************************************************//
     //**************************************************************************//
     
     // parameters for delay 2 //
     
-    addAndMakeVisible(delayTwoButton);
+    /*addAndMakeVisible(delayTwoButton);
     delayTwoButton.addListener(this);
     
     // delay time slider parameters
@@ -228,14 +271,14 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     panTwoLabel.setText ("Pan", juce::dontSendNotification);
     panTwoLabel.attachToComponent (&panTwoSlider, false); //
     panTwoLabel.setJustificationType(juce::Justification::topLeft);
-    
+    */
     
     
     //**************************************************************************//
     //**************************************************************************//
     
     // parameters for delay 3 //
-    
+    /*
     addAndMakeVisible(delayThreeButton);
     delayThreeButton.addListener(this);
     
@@ -307,10 +350,11 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     panThreeLabel.attachToComponent (&panThreeSlider, false); //
     panThreeLabel.setJustificationType(juce::Justification::topLeft);
     
-    
+    */
     //**************************************************************************//
     //**************************************************************************//
     
+    /*
     // parameters for delay 4 //
     
     addAndMakeVisible(delayFourButton);
@@ -384,7 +428,7 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     panFourLabel.setText ("Pan", juce::dontSendNotification);
     panFourLabel.attachToComponent (&panFourSlider, false); //
     panFourLabel.setJustificationType(juce::Justification::topLeft);
-    
+    */
 }
 
 JZDelayAudioProcessorEditor::~JZDelayAudioProcessorEditor()
@@ -412,6 +456,7 @@ void JZDelayAudioProcessorEditor::resized()
     outputGainSlider.setBounds(sliderLeft+60, 55, 60, 340);
     dryMixSlider.setBounds(sliderLeft+120, 55, 60, 340);
     
+    /*
     // drawing boxes for delay 1 parameters
     delayOneButton.setBounds(230, 30, 20, 20);
     delayTimeSlider.setBounds(230, 80, 225, 20);
@@ -441,7 +486,7 @@ void JZDelayAudioProcessorEditor::resized()
     delayFourTimeSlider.setBounds(480, 360, 225, 20);
     decayFourRateSlider.setBounds(480, 410, 225, 20);
     wetFourMixSlider.setBounds(480, 460, 225, 20);
-    panFourSlider.setBounds(480, 510, 225, 20);
+    panFourSlider.setBounds(480, 510, 225, 20);*/
 }
 
 
