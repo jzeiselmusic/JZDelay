@@ -21,7 +21,6 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     //**************************************************************************//
     //**************************************************************************//
 
-    
     // pre-gain slider parameters
     inputGainSlider.setSliderSnapsToMousePosition(true);
     inputGainSlider.setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
@@ -87,7 +86,7 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     delay1_module.addSlider(&delayTimeSlider, &delayTimeLabel, "Delay Time", 0, 30.0, 2000.0, 1.0, 100.0, this);
     delay1_module.addSlider(&decayRateSlider, &decayRateLabel, "Decay Rate", 1, 0.01, 0.99, 0.01, 0.75, this);
     delay1_module.addSlider(&wetMixSlider, &wetMixLabel, "Wet Mix", 2, 0.0, 100.0, 0.1, 50.0, this);
-    delay1_module.addSlider(&panSlider, &panLabel, "Pan", 3, -100.0, 100.0, 0.1, 50.0, this);
+    delay1_module.addSlider(&panSlider, &panLabel, "Pan", 3, -100.0, 100.0, 0.1, 0.0, this);
     
     Module delay2_module = Module();
     delay2_module.setEffectName("Delay 2");
@@ -96,7 +95,7 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     delay2_module.addSlider(&delayTwoTimeSlider, &delayTwoTimeLabel, "Delay Time", 0, 30.0, 2000.0, 1.0, 100.0, this);
     delay2_module.addSlider(&decayTwoRateSlider, &decayTwoRateLabel, "Decay Rate", 1, 0.01, 0.99, 0.01, 0.75, this);
     delay2_module.addSlider(&wetTwoMixSlider, &wetTwoMixLabel, "Wet Mix", 2, 0.0, 100.0, 0.1, 50.0, this);
-    delay2_module.addSlider(&panTwoSlider, &panTwoLabel, "Pan", 3, -100.0, 100.0, 0.1, 50.0, this);
+    delay2_module.addSlider(&panTwoSlider, &panTwoLabel, "Pan", 3, -100.0, 100.0, 0.1, 0.0, this);
     
     Module delay3_module = Module();
     delay3_module.setEffectName("Delay 3");
@@ -105,7 +104,7 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     delay3_module.addSlider(&delayThreeTimeSlider, &delayThreeTimeLabel, "Delay Time", 0, 30.0, 2000.0, 1.0, 100.0, this);
     delay3_module.addSlider(&decayThreeRateSlider, &decayThreeRateLabel, "Decay Rate", 1, 0.01, 0.99, 0.01, 0.75, this);
     delay3_module.addSlider(&wetThreeMixSlider, &wetThreeMixLabel, "Wet Mix", 2, 0.0, 100.0, 0.1, 50.0, this);
-    delay3_module.addSlider(&panThreeSlider, &panThreeLabel, "Pan", 3, -100.0, 100.0, 0.1, 50.0, this);
+    delay3_module.addSlider(&panThreeSlider, &panThreeLabel, "Pan", 3, -100.0, 100.0, 0.1, 0.0, this);
     
     Module delay4_module = Module();
     delay4_module.setEffectName("Delay 4");
@@ -114,7 +113,7 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     delay4_module.addSlider(&delayFourTimeSlider, &delayFourTimeLabel, "Delay Time", 0, 30.0, 2000.0, 1.0, 100.0, this);
     delay4_module.addSlider(&decayFourRateSlider, &decayFourRateLabel, "Decay Rate", 1, 0.01, 0.99, 0.01, 0.75, this);
     delay4_module.addSlider(&wetFourMixSlider, &wetFourMixLabel, "Wet Mix", 2, 0.0, 100.0, 0.1, 50.0, this);
-    delay4_module.addSlider(&panFourSlider, &panFourLabel, "Pan", 3, -100.0, 100.0, 0.1, 50.0, this);
+    delay4_module.addSlider(&panFourSlider, &panFourLabel, "Pan", 3, -100.0, 100.0, 0.1, 0.0, this);
     
     delay1_module.addButton(&delayOneButton, this);
     delay2_module.addButton(&delayTwoButton, this);
@@ -125,315 +124,6 @@ JZDelayAudioProcessorEditor::JZDelayAudioProcessorEditor (JZDelayAudioProcessor&
     delay2_module.makeVisible(this);
     delay3_module.makeVisible(this);
     delay4_module.makeVisible(this);
-    
-    
-    // parameters for delay 1 //
-    
-    /*addAndMakeVisible(delayOneButton);
-    delayOneButton.addListener(this);
-    
-    // delay time slider parameters
-    delayTimeSlider.setSliderSnapsToMousePosition(true);
-    delayTimeSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    delayTimeSlider.setTitle("Delay Time");
-    delayTimeSlider.setRange(30.0, 2000.0, 1);
-    delayTimeSlider.setValue(70.0);
-    delayTimeSlider.setTextBoxIsEditable(true);
-    delayTimeSlider.setDoubleClickReturnValue(true, 70.0, NULL);
-    delayTimeSlider.addListener(this);
-    addAndMakeVisible(delayTimeSlider);
-    
-    // add label to delay time slider
-    addAndMakeVisible (delayTimeLabel);
-    delayTimeLabel.setText ("Delay Time (ms)", juce::dontSendNotification);
-    delayTimeLabel.attachToComponent (&delayTimeSlider, false); //
-    delayTimeLabel.setJustificationType(juce::Justification::topLeft);
-    
-    // decay rate slider parameters
-    decayRateSlider.setSliderSnapsToMousePosition(true);
-    decayRateSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    decayRateSlider.setTitle("Decay Rate");
-    decayRateSlider.setRange(0.01, 0.99, .01);
-    decayRateSlider.setValue(0.75);
-    decayRateSlider.setTextBoxIsEditable(true);
-    decayRateSlider.setDoubleClickReturnValue(true, 0.75, NULL);
-    decayRateSlider.addListener(this);
-    addAndMakeVisible(decayRateSlider);
-    
-    // add label to decay rate slider
-    addAndMakeVisible (decayRateLabel);
-    decayRateLabel.setText ("Decay Rate", juce::dontSendNotification);
-    decayRateLabel.attachToComponent (&decayRateSlider, false); //
-    decayRateLabel.setJustificationType(juce::Justification::topLeft);
-    
-    // wet mix slider parameters
-    wetMixSlider.setSliderSnapsToMousePosition(true);
-    wetMixSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    wetMixSlider.setTitle("Wet Mix");
-    wetMixSlider.setRange(0.0, 100.0, .1);
-    wetMixSlider.setValue(50.0);
-    wetMixSlider.setTextBoxIsEditable(true);
-    wetMixSlider.setDoubleClickReturnValue(true, 50.0, NULL);
-    wetMixSlider.addListener(this);
-    addAndMakeVisible(wetMixSlider);
-    
-    // add label to wet mix slider
-    addAndMakeVisible (wetMixLabel);
-    wetMixLabel.setText ("Wet Mix", juce::dontSendNotification);
-    wetMixLabel.attachToComponent (&wetMixSlider, false); //
-    wetMixLabel.setJustificationType(juce::Justification::topLeft);
-    
-    // pan slider parameters
-    panSlider.setSliderSnapsToMousePosition(true);
-    panSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    panSlider.setTitle("Pan");
-    panSlider.setRange(-100.0, 100.0, 0.1);
-    panSlider.setValue(0.0);
-    panSlider.setTextBoxIsEditable(true);
-    panSlider.setDoubleClickReturnValue(true, 0.0, NULL);
-    panSlider.addListener(this);
-    addAndMakeVisible(panSlider);
-    
-    // add label to pan slider
-    addAndMakeVisible (panLabel);
-    panLabel.setText ("Pan", juce::dontSendNotification);
-    panLabel.attachToComponent (&panSlider, false); //
-    panLabel.setJustificationType(juce::Justification::topLeft);
-    
-    */
-    //**************************************************************************//
-    //**************************************************************************//
-    
-    // parameters for delay 2 //
-    
-    /*addAndMakeVisible(delayTwoButton);
-    delayTwoButton.addListener(this);
-    
-    // delay time slider parameters
-    delayTwoTimeSlider.setSliderSnapsToMousePosition(true);
-    delayTwoTimeSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    delayTwoTimeSlider.setTitle("Delay Time");
-    delayTwoTimeSlider.setRange(30.0, 2000.0, 1);
-    delayTwoTimeSlider.setValue(70.0);
-    delayTwoTimeSlider.setTextBoxIsEditable(true);
-    delayTwoTimeSlider.setDoubleClickReturnValue(true, 70.0, NULL);
-    delayTwoTimeSlider.addListener(this);
-    addAndMakeVisible(delayTwoTimeSlider);
-    
-    // add label to delay time slider
-    addAndMakeVisible (delayTwoTimeLabel);
-    delayTwoTimeLabel.setText ("Delay Time (ms)", juce::dontSendNotification);
-    delayTwoTimeLabel.attachToComponent (&delayTwoTimeSlider, false); //
-    delayTwoTimeLabel.setJustificationType(juce::Justification::topLeft);
-    
-    // decay rate slider parameters
-    decayTwoRateSlider.setSliderSnapsToMousePosition(true);
-    decayTwoRateSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    decayTwoRateSlider.setTitle("Decay Rate");
-    decayTwoRateSlider.setRange(0.01, 0.99, .01);
-    decayTwoRateSlider.setValue(0.75);
-    decayTwoRateSlider.setTextBoxIsEditable(true);
-    decayTwoRateSlider.setDoubleClickReturnValue(true, 0.75, NULL);
-    decayTwoRateSlider.addListener(this);
-    addAndMakeVisible(decayTwoRateSlider);
-    
-    // add label to decay rate slider
-    addAndMakeVisible (decayTwoRateLabel);
-    decayTwoRateLabel.setText ("Decay Rate", juce::dontSendNotification);
-    decayTwoRateLabel.attachToComponent (&decayTwoRateSlider, false); //
-    decayTwoRateLabel.setJustificationType(juce::Justification::topLeft);
-    
-    // wet mix slider parameters
-    wetTwoMixSlider.setSliderSnapsToMousePosition(true);
-    wetTwoMixSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    wetTwoMixSlider.setTitle("Wet Mix");
-    wetTwoMixSlider.setRange(0.0, 100.0, .1);
-    wetTwoMixSlider.setValue(50.0);
-    wetTwoMixSlider.setTextBoxIsEditable(true);
-    wetTwoMixSlider.setDoubleClickReturnValue(true, 50.0, NULL);
-    wetTwoMixSlider.addListener(this);
-    addAndMakeVisible(wetTwoMixSlider);
-    
-    // add label to wet mix slider
-    addAndMakeVisible (wetTwoMixLabel);
-    wetTwoMixLabel.setText ("Wet Mix", juce::dontSendNotification);
-    wetTwoMixLabel.attachToComponent (&wetTwoMixSlider, false); //
-    wetTwoMixLabel.setJustificationType(juce::Justification::topLeft);
-    
-    // pan slider parameters
-    panTwoSlider.setSliderSnapsToMousePosition(true);
-    panTwoSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    panTwoSlider.setTitle("Pan");
-    panTwoSlider.setRange(-100.0, 100.0, .1);
-    panTwoSlider.setValue(0.0);
-    panTwoSlider.setTextBoxIsEditable(true);
-    panTwoSlider.setDoubleClickReturnValue(true, 0.0, NULL);
-    panTwoSlider.addListener(this);
-    addAndMakeVisible(panTwoSlider);
-    
-    // add label to wet mix slider
-    addAndMakeVisible (panTwoLabel);
-    panTwoLabel.setText ("Pan", juce::dontSendNotification);
-    panTwoLabel.attachToComponent (&panTwoSlider, false); //
-    panTwoLabel.setJustificationType(juce::Justification::topLeft);
-    */
-    
-    
-    //**************************************************************************//
-    //**************************************************************************//
-    
-    // parameters for delay 3 //
-    /*
-    addAndMakeVisible(delayThreeButton);
-    delayThreeButton.addListener(this);
-    
-    // delay time slider parameters
-    delayThreeTimeSlider.setSliderSnapsToMousePosition(true);
-    delayThreeTimeSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    delayThreeTimeSlider.setTitle("Delay Time");
-    delayThreeTimeSlider.setRange(30.0, 2000.0, 1);
-    delayThreeTimeSlider.setValue(70.0);
-    delayThreeTimeSlider.setTextBoxIsEditable(true);
-    delayThreeTimeSlider.setDoubleClickReturnValue(true, 70.0, NULL);
-    delayThreeTimeSlider.addListener(this);
-    addAndMakeVisible(delayThreeTimeSlider);
-    
-    // add label to delay time slider
-    addAndMakeVisible (delayThreeTimeLabel);
-    delayThreeTimeLabel.setText ("Delay Time (ms)", juce::dontSendNotification);
-    delayThreeTimeLabel.attachToComponent (&delayThreeTimeSlider, false); //
-    delayThreeTimeLabel.setJustificationType(juce::Justification::topLeft);
-    
-    // decay rate slider parameters
-    decayThreeRateSlider.setSliderSnapsToMousePosition(true);
-    decayThreeRateSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    decayThreeRateSlider.setTitle("Decay Rate");
-    decayThreeRateSlider.setRange(0.01, 0.99, .01);
-    decayThreeRateSlider.setValue(0.75);
-    decayThreeRateSlider.setTextBoxIsEditable(true);
-    decayThreeRateSlider.setDoubleClickReturnValue(true, 0.75, NULL);
-    decayThreeRateSlider.addListener(this);
-    addAndMakeVisible(decayThreeRateSlider);
-    
-    // add label to decay rate slider
-    addAndMakeVisible (decayThreeRateLabel);
-    decayThreeRateLabel.setText ("Decay Rate", juce::dontSendNotification);
-    decayThreeRateLabel.attachToComponent (&decayThreeRateSlider, false); //
-    decayThreeRateLabel.setJustificationType(juce::Justification::topLeft);
-    
-    // wet mix slider parameters
-    wetThreeMixSlider.setSliderSnapsToMousePosition(true);
-    wetThreeMixSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    wetThreeMixSlider.setTitle("Wet Mix");
-    wetThreeMixSlider.setRange(0.0, 100.0, .1);
-    wetThreeMixSlider.setValue(50.0);
-    wetThreeMixSlider.setTextBoxIsEditable(true);
-    wetThreeMixSlider.setDoubleClickReturnValue(true, 50.0, NULL);
-    wetThreeMixSlider.addListener(this);
-    addAndMakeVisible(wetThreeMixSlider);
-    
-    // add label to wet mix slider
-    addAndMakeVisible (wetThreeMixLabel);
-    wetThreeMixLabel.setText ("Wet Mix", juce::dontSendNotification);
-    wetThreeMixLabel.attachToComponent (&wetThreeMixSlider, false); //
-    wetThreeMixLabel.setJustificationType(juce::Justification::topLeft);
-    
-    // pan slider parameters
-    panThreeSlider.setSliderSnapsToMousePosition(true);
-    panThreeSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    panThreeSlider.setTitle("Pan");
-    panThreeSlider.setRange(-100.0, 100.0, 0.1);
-    panThreeSlider.setValue(0.5);
-    panThreeSlider.setTextBoxIsEditable(true);
-    panThreeSlider.setDoubleClickReturnValue(true, 0.0, NULL);
-    panThreeSlider.addListener(this);
-    addAndMakeVisible(panThreeSlider);
-    
-    // add label to wet mix slider
-    addAndMakeVisible (panThreeLabel);
-    panThreeLabel.setText ("Pan", juce::dontSendNotification);
-    panThreeLabel.attachToComponent (&panThreeSlider, false); //
-    panThreeLabel.setJustificationType(juce::Justification::topLeft);
-    
-    */
-    //**************************************************************************//
-    //**************************************************************************//
-    
-    /*
-    // parameters for delay 4 //
-    
-    addAndMakeVisible(delayFourButton);
-    delayFourButton.addListener(this);
-    
-    // delay time slider parameters
-    delayFourTimeSlider.setSliderSnapsToMousePosition(true);
-    delayFourTimeSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    delayFourTimeSlider.setTitle("Delay Time");
-    delayFourTimeSlider.setRange(30.0, 2000.0, 1);
-    delayFourTimeSlider.setValue(70.0);
-    delayFourTimeSlider.setTextBoxIsEditable(true);
-    delayFourTimeSlider.setDoubleClickReturnValue(true, 70.0, NULL);
-    delayFourTimeSlider.addListener(this);
-    addAndMakeVisible(delayFourTimeSlider);
-    
-    // add label to delay time slider
-    addAndMakeVisible (delayFourTimeLabel);
-    delayFourTimeLabel.setText ("Delay Time (ms)", juce::dontSendNotification);
-    delayFourTimeLabel.attachToComponent (&delayFourTimeSlider, false); //
-    delayFourTimeLabel.setJustificationType(juce::Justification::topLeft);
-    
-    // decay rate slider parameters
-    decayFourRateSlider.setSliderSnapsToMousePosition(true);
-    decayFourRateSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    decayFourRateSlider.setTitle("Decay Rate");
-    decayFourRateSlider.setRange(0.01, 0.99, .01);
-    decayFourRateSlider.setValue(0.75);
-    decayFourRateSlider.setTextBoxIsEditable(true);
-    decayFourRateSlider.setDoubleClickReturnValue(true, 0.75, NULL);
-    decayFourRateSlider.addListener(this);
-    addAndMakeVisible(decayFourRateSlider);
-    
-    // add label to decay rate slider
-    addAndMakeVisible (decayFourRateLabel);
-    decayFourRateLabel.setText ("Decay Rate", juce::dontSendNotification);
-    decayFourRateLabel.attachToComponent (&decayFourRateSlider, false); //
-    decayFourRateLabel.setJustificationType(juce::Justification::topLeft);
-    
-    // wet mix slider parameters
-    wetFourMixSlider.setSliderSnapsToMousePosition(true);
-    wetFourMixSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    wetFourMixSlider.setTitle("Wet Mix");
-    wetFourMixSlider.setRange(0.0, 100.0, .1);
-    wetFourMixSlider.setValue(50.0);
-    wetFourMixSlider.setTextBoxIsEditable(true);
-    wetFourMixSlider.setDoubleClickReturnValue(true, 50.0, NULL);
-    wetFourMixSlider.addListener(this);
-    addAndMakeVisible(wetFourMixSlider);
-    
-    // add label to wet mix slider
-    addAndMakeVisible (wetFourMixLabel);
-    wetFourMixLabel.setText ("Wet Mix", juce::dontSendNotification);
-    wetFourMixLabel.attachToComponent (&wetFourMixSlider, false); //
-    wetFourMixLabel.setJustificationType(juce::Justification::topLeft);
-    
-    
-    // pan slider parameters
-    panFourSlider.setSliderSnapsToMousePosition(true);
-    panFourSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    panFourSlider.setTitle("Pan");
-    panFourSlider.setRange(-100.0, 100.0, 0.1);
-    panFourSlider.setValue(0.5);
-    panFourSlider.setTextBoxIsEditable(true);
-    panFourSlider.setDoubleClickReturnValue(true, 0.0, NULL);
-    panFourSlider.addListener(this);
-    addAndMakeVisible(panFourSlider);
-    
-    // add label to wet mix slider
-    addAndMakeVisible (panFourLabel);
-    panFourLabel.setText ("Pan", juce::dontSendNotification);
-    panFourLabel.attachToComponent (&panFourSlider, false); //
-    panFourLabel.setJustificationType(juce::Justification::topLeft);
-    */
 }
 
 JZDelayAudioProcessorEditor::~JZDelayAudioProcessorEditor()
@@ -460,38 +150,7 @@ void JZDelayAudioProcessorEditor::resized()
     inputGainSlider.setBounds(sliderLeft, 55, 60, 340);
     outputGainSlider.setBounds(sliderLeft+60, 55, 60, 340);
     dryMixSlider.setBounds(sliderLeft+120, 55, 60, 340);
-    
-    /*
-    // drawing boxes for delay 1 parameters
-    delayOneButton.setBounds(230, 30, 20, 20);
-    delayTimeSlider.setBounds(230, 80, 225, 20);
-    decayRateSlider.setBounds(230, 130, 225, 20);
-    wetMixSlider.setBounds(230, 180, 225, 20);
-    panSlider.setBounds(230, 230, 225, 20);
-    
-    // drawing boxes for delay 2 parameters
-    
-    delayTwoButton.setBounds(230, 310, 20, 20);
-    delayTwoTimeSlider.setBounds(230, 360, 225, 20);
-    decayTwoRateSlider.setBounds(230, 410, 225, 20);
-    wetTwoMixSlider.setBounds(230, 460, 225, 20);
-    panTwoSlider.setBounds(230, 510, 225, 20);
-    
-    // drawing boxes for delay 3 parameters
-    
-    delayThreeButton.setBounds(480, 30, 20, 20);
-    delayThreeTimeSlider.setBounds(480, 80, 225, 20);
-    decayThreeRateSlider.setBounds(480, 130, 225, 20);
-    wetThreeMixSlider.setBounds(480, 180, 225, 20);
-    panThreeSlider.setBounds(480, 230, 225, 20);
-    
-    // drawing boxes for delay 4 parameters
-    
-    delayFourButton.setBounds(480, 410, 20, 20);
-    delayFourTimeSlider.setBounds(480, 360, 225, 20);
-    decayFourRateSlider.setBounds(480, 410, 225, 20);
-    wetFourMixSlider.setBounds(480, 460, 225, 20);
-    panFourSlider.setBounds(480, 510, 225, 20);*/
+
 }
 
 

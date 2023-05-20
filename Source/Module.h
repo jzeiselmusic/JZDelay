@@ -7,10 +7,9 @@
 
   ==============================================================================
 */
+#pragma once
 
 #include <JuceHeader.h>
-
-#pragma once
 
 class Module
 {
