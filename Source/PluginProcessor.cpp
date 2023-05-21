@@ -352,6 +352,46 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
     // 1. if necessary, do pitch shifting on them
     // 2. afterwards, mix them together into a single output buffer
     
+    // pitch shifting
+    float* temp_pitch_bufferL = (float*)calloc(buffer.getNumSamples(), sizeof(float));
+    float* temp_pitch_bufferR = (float*)calloc(buffer.getNumSamples(), sizeof(float));
+    int iterator = 0;
+    if (pitchOneEnable)
+    {
+        // go through output buffer and take every other sample
+        for (int i = 0; i < buffer.getNumSamples(); ++i)
+        {
+            if (i%2 == 0)
+            {
+                temp_pitch_bufferL[iterator] = outputBufL[i];
+                temp_pitch_bufferR[iterator] = outputBufR[i];
+                ++iterator;
+            }
+        }
+        for (int i = 0; i < buffer.getNumSamples()/2; ++i)
+        {
+            outputBufL[i] = temp_pitch_bufferL[i];
+            outputBufR[i] = temp_pitch_bufferR[i];
+        }
+        for (int i = 0; i < buffer.getNumSamples()/2; ++i)
+        {
+            outputBufL[buffer.getNumSamples()/2 + i] = temp_pitch_bufferL[i];
+            outputBufR[buffer.getNumSamples()/2 + i] = temp_pitch_bufferR[i];
+        }
+    }
+    if (pitchTwoEnable)
+    {
+        
+    }
+    if (pitchThreeEnable)
+    {
+        
+    }
+    if (pitchFourEnable)
+    {
+        
+    }
+    
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         auto* channelWData = buffer.getWritePointer (channel);

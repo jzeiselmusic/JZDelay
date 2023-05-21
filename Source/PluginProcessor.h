@@ -76,6 +76,7 @@ public:
     std::vector<float>::iterator itR;
     std::vector<float>::iterator itRFilt;
     
+    // low pass filter at 10k Hz (for 44.1k sample rate)
     float filt_b[FILTER_LEN] = {.0000018455, .00003691, .00035065,
                         .0021039, .008941, .0286,
                         .071532, .14306, .23248,
