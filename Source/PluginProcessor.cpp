@@ -187,7 +187,7 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
     
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
-        auto* channelWData = buffer.getWritePointer (channel);
+        auto* channelRData = buffer.getReadPointer (channel);
         for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
         {
             
@@ -216,7 +216,7 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
                 // L processing
                 
                 // original input data
-                origL = channelWData[sample];
+                origL = channelRData[sample];
                 
                 // increment read and write positions
                 readPosL = readPosL + 1 >= (numSamples/2.0) ? 0 : (readPosL + 1);
@@ -244,12 +244,6 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
                 tempFourL = (float)(decayFourRate * echoFourListL[readFourPosL]);
                 echoFourListL[writeFourPosL] = origL + tempFourL;
                 
-                // calculate pan value for each component
-                pan_L_val_1 = 1.0 - ((pan / 200.0) + 0.5);
-                pan_L_val_2 = 1.0 - ((panTwo / 200.0) + 0.5);
-                pan_L_val_3 = 1.0 - ((panThree / 200.0) + 0.5);
-                pan_L_val_4 = 1.0 - ((panFour / 200.0) + 0.5);
-                
                 // enable or disable based on button
                 if (delayOneEnable)
                 {
@@ -268,19 +262,31 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
                     mult4 = 1.0;
                 }
                 
+                // calculate pan value for each component
+                pan_L_val_1 = 1.0 - ((pan / 200.0) + 0.5);
+                pan_L_val_2 = 1.0 - ((panTwo / 200.0) + 0.5);
+                pan_L_val_3 = 1.0 - ((panThree / 200.0) + 0.5);
+                pan_L_val_4 = 1.0 - ((panFour / 200.0) + 0.5);
+                
                 // full calculation of output
                 // and write to channel data buffer output
-                channelWData[sample] = (wetMix*0.01) * tempL * mult1 * pan_L_val_1 +
+                
+                outputBufL[sample] = (wetMix*0.01) * tempL * mult1 * pan_L_val_1;
+                outputTwoBufL[sample] = (wetTwoMix*0.01) * tempTwoL * mult2 * pan_L_val_2;
+                outputThreeBufL[sample] = (wetThreeMix*0.01) * tempThreeL * mult3 * pan_L_val_3;
+                outputFourBufL[sample] = (wetFourMix*0.01) * tempFourL * mult4 * pan_L_val_4;
+                
+                /*channelWData[sample] = (wetMix*0.01) * tempL * mult1 * pan_L_val_1 +
                                        (wetTwoMix*0.01) * tempTwoL * mult2 * pan_L_val_2 +
                                        (wetThreeMix*0.01) * tempThreeL * mult3 * pan_L_val_3 +
                                        (wetFourMix*0.01) * tempFourL * mult4 * pan_L_val_4 +
-                                       (dryMix*0.01) * origL;
+                                       (dryMix*0.01) * origL;*/
                 
             }
             else if (channel == 1)
             {
                 // R processing
-                origR = channelWData[sample];
+                origR = channelRData[sample];
                 
                 readPosR = readPosR + 1 >= (numSamples/2.0) ? 0 : (readPosR + 1);
                 writePosR = writePosR + 1 >= (numSamples/2.0) ? 0 : (writePosR + 1);
@@ -327,14 +333,45 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
                 pan_R_val_3 = (panThree / 200.0) + 0.5;
                 pan_R_val_4 = (panFour / 200.0) + 0.5;
                 
-                channelWData[sample] = (wetMix*0.01) * tempR*mult1 * pan_R_val_1 +
+                outputBufR[sample] = (wetMix*0.01) * tempR * mult1 * pan_R_val_1;
+                outputTwoBufR[sample] = (wetTwoMix*0.01) * tempTwoR * mult2 * pan_R_val_2;
+                outputThreeBufR[sample] = (wetThreeMix*0.01) * tempThreeR * mult3 * pan_R_val_3;
+                outputFourBufR[sample] = (wetFourMix*0.01) * tempFourR * mult4 * pan_R_val_4;
+                
+                /*channelWData[sample] = (wetMix*0.01) * tempR*mult1 * pan_R_val_1 +
                                        (wetTwoMix*0.01) * tempTwoR * mult2 * pan_R_val_2 +
                                        (wetThreeMix*0.01) * tempThreeR * mult3 * pan_R_val_3 +
                                        (wetFourMix*0.01) * tempFourR * mult4 * pan_R_val_4 +
-                                       (dryMix*0.01)*origR;
+                                       (dryMix*0.01)*origR;*/
+            }
+            
+        }
+    }
+    
+    // now all the output buffers should be filled and we need to
+    // 1. if necessary, do pitch shifting on them
+    // 2. afterwards, mix them together into a single output buffer
+    
+    for (int channel = 0; channel < totalNumInputChannels; ++channel)
+    {
+        auto* channelWData = buffer.getWritePointer (channel);
+        for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
+        {
+            if (channel == 0)
+            {
+                channelWData[sample] = outputBufL[sample] + outputTwoBufL[sample] +
+                                        outputThreeBufL[sample] + outputFourBufL[sample] +
+                                        (dryMix*0.01) * channelWData[sample];
+            }
+            else if (channel == 1)
+            {
+                channelWData[sample] = outputBufR[sample] + outputTwoBufR[sample] +
+                                       outputThreeBufR[sample] + outputFourBufR[sample] +
+                                        (dryMix*0.01) * channelWData[sample];
             }
         }
     }
+    
     
     // output gain
     buffer.applyGain(0, 0, buffer.getNumSamples(), pow(10, outputGain/20.0));

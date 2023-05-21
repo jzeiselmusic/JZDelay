@@ -11,7 +11,8 @@
 #include <JuceHeader.h>
 #include <vector>
 
-#define FILTER_LEN 21
+#define FILTER_LEN      21
+#define MAX_BUF_SIZE    2048
 
 //==============================================================================
 /**
@@ -109,6 +110,10 @@ public:
     // delay 1 list to store memory values
     float* echoListL = (float*)calloc(bufferLen, sizeof(float));
     float* echoListR = (float*)calloc(bufferLen, sizeof(float));
+    
+    // lists to store the output buffer that will be mixed with others
+    float* outputBufL = (float*)calloc(MAX_BUF_SIZE, sizeof(float));
+    float* outputBufR = (float*)calloc(MAX_BUF_SIZE, sizeof(float));
 
     
     //**************************************//
@@ -133,6 +138,10 @@ public:
     float* echoTwoListL = (float*)calloc(bufferLen, sizeof(float));
     float* echoTwoListR = (float*)calloc(bufferLen, sizeof(float));
     
+    // lists to store the output buffer that will be mixed with others
+    float* outputTwoBufL = (float*)calloc(MAX_BUF_SIZE, sizeof(float));
+    float* outputTwoBufR = (float*)calloc(MAX_BUF_SIZE, sizeof(float));
+    
     //**************************************//
     //**************************************//
     
@@ -155,6 +164,10 @@ public:
     float* echoThreeListL = (float*)calloc(bufferLen, sizeof(float));
     float* echoThreeListR = (float*)calloc(bufferLen, sizeof(float));
     
+    // lists to store the output buffer that will be mixed with others
+    float* outputThreeBufL = (float*)calloc(MAX_BUF_SIZE, sizeof(float));
+    float* outputThreeBufR = (float*)calloc(MAX_BUF_SIZE, sizeof(float));
+    
     //**************************************//
     //**************************************//
     
@@ -176,6 +189,10 @@ public:
     // delay 4 list to store memory values
     float* echoFourListL = (float*)calloc(bufferLen, sizeof(float));
     float* echoFourListR = (float*)calloc(bufferLen, sizeof(float));
+    
+    // lists to store the output buffer that will be mixed with others
+    float* outputFourBufL = (float*)calloc(MAX_BUF_SIZE, sizeof(float));
+    float* outputFourBufR = (float*)calloc(MAX_BUF_SIZE, sizeof(float));
     
 
 private:
