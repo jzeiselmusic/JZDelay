@@ -157,8 +157,7 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
     buffer.applyGain(0, 0, buffer.getNumSamples(), pow(10, inputGain/20.0));
     buffer.applyGain(1, 0, buffer.getNumSamples(), pow(10, inputGain/20.0));
     
-    float origL;
-    float origR;
+    float orig_sample;
     
     float tempL;
     float tempR;
@@ -187,12 +186,14 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
     
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
-        auto* channelRData = buffer.getReadPointer (channel);
-        for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
+        auto* channelRData = buffer.getReadPointer (channel); // channelRData is read pointer to channel n buffer
+        for (int sample = 0; sample < buffer.getNumSamples(); ++sample) // go through M samples of buffer
         {
             
             // set these to 0.0 so that they must be
             // recalculated every time we read from the buffer
+            //
+            orig_sample = channelRData[sample];
             //
             tempL = 0.0;
             tempR = 0.0;
@@ -215,10 +216,8 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
             {
                 // L processing
                 
-                // original input data
-                origL = channelRData[sample];
-                
                 // increment read and write positions
+                // move back to zero if past max value
                 readPosL = readPosL + 1 >= (numSamples/2.0) ? 0 : (readPosL + 1);
                 writePosL = writePosL + 1 >= (numSamples/2.0) ? 0 : (writePosL + 1);
                 
@@ -235,14 +234,14 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
                 // and write to echo buffer only the value that must echo and original input
                 // we keep separate echo buffers for each delay
                 tempL = (float)(decayRate * echoListL[readPosL]);
-                tempL = lowpassFilter(tempL, 0); // 0 for left side
-                echoListL[writePosL] = origL + tempL;
+                tempL = lowpassFilterRT(tempL, 0); // 0 for left side
+                echoListL[writePosL] = orig_sample + tempL;
                 tempTwoL = (float)(decayTwoRate * echoTwoListL[readTwoPosL]);
-                echoTwoListL[writeTwoPosL] = origL + tempTwoL;
+                echoTwoListL[writeTwoPosL] = orig_sample + tempTwoL;
                 tempThreeL = (float)(decayThreeRate * echoThreeListL[readThreePosL]);
-                echoThreeListL[writeThreePosL] = origL + tempThreeL;
+                echoThreeListL[writeThreePosL] = orig_sample + tempThreeL;
                 tempFourL = (float)(decayFourRate * echoFourListL[readFourPosL]);
-                echoFourListL[writeFourPosL] = origL + tempFourL;
+                echoFourListL[writeFourPosL] = orig_sample + tempFourL;
                 
                 // enable or disable based on button
                 if (delayOneEnable)
@@ -276,17 +275,11 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
                 outputThreeBufL[sample] = (wetThreeMix*0.01) * tempThreeL * mult3 * pan_L_val_3;
                 outputFourBufL[sample] = (wetFourMix*0.01) * tempFourL * mult4 * pan_L_val_4;
                 
-                /*channelWData[sample] = (wetMix*0.01) * tempL * mult1 * pan_L_val_1 +
-                                       (wetTwoMix*0.01) * tempTwoL * mult2 * pan_L_val_2 +
-                                       (wetThreeMix*0.01) * tempThreeL * mult3 * pan_L_val_3 +
-                                       (wetFourMix*0.01) * tempFourL * mult4 * pan_L_val_4 +
-                                       (dryMix*0.01) * origL;*/
                 
             }
             else if (channel == 1)
             {
                 // R processing
-                origR = channelRData[sample];
                 
                 readPosR = readPosR + 1 >= (numSamples/2.0) ? 0 : (readPosR + 1);
                 writePosR = writePosR + 1 >= (numSamples/2.0) ? 0 : (writePosR + 1);
@@ -301,14 +294,14 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
                 writeFourPosR = writeFourPosR + 1 >= (numFourSamples/2.0) ? 0 : (writeFourPosR + 1);
                 
                 tempR = (float)(decayRate * echoListR[readPosR]);
-                tempR = lowpassFilter(tempR, 1); // 1 for right side
-                echoListR[writePosR] = origR + tempR;
+                tempR = lowpassFilterRT(tempR, 1); // 1 for right side
+                echoListR[writePosR] = orig_sample + tempR;
                 tempTwoR = (float)(decayTwoRate * echoTwoListR[readTwoPosR]);
-                echoTwoListR[writeTwoPosR] = origR + tempTwoR;
+                echoTwoListR[writeTwoPosR] = orig_sample + tempTwoR;
                 tempThreeR = (float)(decayThreeRate * echoThreeListR[readThreePosR]);
-                echoThreeListR[writeThreePosR] = origR + tempThreeR;
+                echoThreeListR[writeThreePosR] = orig_sample + tempThreeR;
                 tempFourR = (float)(decayFourRate * echoFourListR[readFourPosR]);
-                echoFourListR[writeFourPosR] = origR + tempFourR;
+                echoFourListR[writeFourPosR] = orig_sample + tempFourR;
                 
                 if (delayOneEnable)
                 {
@@ -338,11 +331,6 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
                 outputThreeBufR[sample] = (wetThreeMix*0.01) * tempThreeR * mult3 * pan_R_val_3;
                 outputFourBufR[sample] = (wetFourMix*0.01) * tempFourR * mult4 * pan_R_val_4;
                 
-                /*channelWData[sample] = (wetMix*0.01) * tempR*mult1 * pan_R_val_1 +
-                                       (wetTwoMix*0.01) * tempTwoR * mult2 * pan_R_val_2 +
-                                       (wetThreeMix*0.01) * tempThreeR * mult3 * pan_R_val_3 +
-                                       (wetFourMix*0.01) * tempFourR * mult4 * pan_R_val_4 +
-                                       (dryMix*0.01)*origR;*/
             }
             
         }
@@ -353,8 +341,26 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
     // 2. afterwards, mix them together into a single output buffer
     
     // pitch shifting
+    
+    // copy the output buffer to a separate space so we can filter it and use that
+    // to do the pitch shifting
+    float* outputBufLCpy = (float*)calloc(buffer.getNumSamples(), sizeof(float));
+    float* outputBufRCpy = (float*)calloc(buffer.getNumSamples(), sizeof(float));
+    for (int i = 0; i < buffer.getNumSamples(); ++i)
+    {
+        outputBufLCpy[i] = outputBufL[i];
+        outputBufRCpy[i] = outputBufR[i];
+    }
+
+    
+    // first anti-aliasing filter for freq pi/2 because we are stretching f by 2
+    // lowpassFilterStatic(outputBufLCpy, buffer.getNumSamples());
+    // lowpassFilterStatic(outputBufRCpy, buffer.getNumSamples());
+    
+    // allocate space for pitch shifting
     float* temp_pitch_bufferL = (float*)calloc(buffer.getNumSamples(), sizeof(float));
     float* temp_pitch_bufferR = (float*)calloc(buffer.getNumSamples(), sizeof(float));
+    
     int iterator = 0;
     if (pitchOneEnable)
     {
@@ -363,11 +369,13 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
         {
             if (i%2 == 0)
             {
-                temp_pitch_bufferL[iterator] = outputBufL[i];
-                temp_pitch_bufferR[iterator] = outputBufR[i];
+                temp_pitch_bufferL[iterator] = outputBufLCpy[i];
+                temp_pitch_bufferR[iterator] = outputBufRCpy[i];
                 ++iterator;
             }
         }
+        // then go through and duplicate the squeezed list
+        // to get back a list of the original length ex. (1,2,3,4) -> (1,3,1,3)
         for (int i = 0; i < buffer.getNumSamples()/2; ++i)
         {
             outputBufL[i] = temp_pitch_bufferL[i];
@@ -391,6 +399,9 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
     {
         
     }
+    
+    // piece all the parts together at the end for the different
+    // signal processing channels
     
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
@@ -420,7 +431,7 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
 
 //==============================================================================
 
-float JZDelayAudioProcessor::lowpassFilter(float current_val, int side)
+float JZDelayAudioProcessor::lowpassFilterRT(float current_val, int side)
 {
     float result;
     float result_b;
@@ -429,16 +440,16 @@ float JZDelayAudioProcessor::lowpassFilter(float current_val, int side)
     {
         itL = lpfVecL.begin();
         lpfVecL.insert(itL, current_val);
-        if (lpfVecL.size() > FILTER_LEN+10)
+        if (lpfVecL.size() > RT_FILTER_LEN+10)
         {
             lpfVecL.pop_back();
             lpfVecLFilt.pop_back();
             result_b = 0.0;
             result_a = 0.0;
-            for (int i = 0; i < FILTER_LEN; ++i)
+            for (int i = 0; i < RT_FILTER_LEN; ++i)
             {
                 result_b += lpfVecL[i]*filt_b[i];
-                if (i < FILTER_LEN-1)
+                if (i < RT_FILTER_LEN-1)
                 {
                     result_a += lpfVecLFilt[i]*filt_a[i+1];
                 }
@@ -459,16 +470,16 @@ float JZDelayAudioProcessor::lowpassFilter(float current_val, int side)
     {
         itR = lpfVecR.begin();
         lpfVecR.insert(itR, current_val);
-        if (lpfVecR.size() > FILTER_LEN+10)
+        if (lpfVecR.size() > RT_FILTER_LEN+10)
         {
             lpfVecR.pop_back();
             lpfVecRFilt.pop_back();
             result_b = 0.0;
             result_a = 0.0;
-            for (int i = 0; i < FILTER_LEN; ++i)
+            for (int i = 0; i < RT_FILTER_LEN; ++i)
             {
                 result_b += lpfVecR[i]*filt_b[i];
-                if (i < FILTER_LEN-1)
+                if (i < RT_FILTER_LEN-1)
                 {
                     result_a += lpfVecRFilt[i]*filt_a[i+1];
                 }
@@ -488,6 +499,23 @@ float JZDelayAudioProcessor::lowpassFilter(float current_val, int side)
     return 0.0;
 }
 
+
+void JZDelayAudioProcessor::lowpassFilterStatic(float* buffer, int N)
+{
+    // take a static list of floats and lowpass filter to normalized pi/2
+    for (int i = 0; i < N; ++i)
+    {
+        if (i >= 6)
+        {
+            buffer[i] = buffer[i]*filt_bb[0] + buffer[i-1]*filt_bb[1] +
+                        buffer[i-2]*filt_bb[2] + buffer[i-3]*filt_bb[3] +
+                        buffer[i-4]*filt_bb[4] + buffer[i-5]*filt_bb[5] -
+                        buffer[i-1]*filt_aa[1] - buffer[i-2]*filt_aa[2] -
+                        buffer[i-3]*filt_aa[3] - buffer[i-4]*filt_aa[4] -
+                        buffer[i-5]*filt_aa[5];
+        }
+    }
+}
 
 bool JZDelayAudioProcessor::hasEditor() const
 {

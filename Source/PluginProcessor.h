@@ -11,7 +11,8 @@
 #include <JuceHeader.h>
 #include <vector>
 
-#define FILTER_LEN      21
+#define RT_FILTER_LEN   21
+#define ST_FILTER_LEN   6
 #define MAX_BUF_SIZE    2048
 
 //==============================================================================
@@ -57,7 +58,8 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
     
-    float lowpassFilter(float, int);
+    float lowpassFilterRT(float, int);
+    void lowpassFilterStatic(float*, int);
     
     // universal parameter values
     float inputGain = 0.0;
@@ -77,18 +79,21 @@ public:
     std::vector<float>::iterator itRFilt;
     
     // low pass filter at 10k Hz (for 44.1k sample rate)
-    float filt_b[FILTER_LEN] = {.0000018455, .00003691, .00035065,
+    float filt_b[RT_FILTER_LEN] = {.0000018455, .00003691, .00035065,
                         .0021039, .008941, .0286,
                         .071532, .14306, .23248,
                         .30997, .3409, .30997,
                         .23248, .14306, .071432,
                         .0286, .008941, .0021039,
                         .00035065, .00003691, .0000018455};
-    float filt_a[FILTER_LEN] = {1.0, -1.8575, 4.3097, -5.2722, 6.5736,
+    float filt_a[RT_FILTER_LEN] = {1.0, -1.8575, 4.3097, -5.2722, 6.5736,
                         -5.7714, 4.8401, -3.1634, 1.9135, -.94161,
                         .41936, -.15433, .0502, -.0134, .003105,
                         -.00057566, .00008722, -.00001002,
                         .0000008468, -.00000004552, .0000000012};
+    
+    float filt_bb[ST_FILTER_LEN] = {0.052786, 0.263932, 0.52786, 0.52786, 0.263932, 0.052786};
+    float filt_aa[ST_FILTER_LEN] = {1.0, 0.0, 0.63344, 0.0, 0.055728, 0.0};
     
     //**************************************//
     //**************************************//
