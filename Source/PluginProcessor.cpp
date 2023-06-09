@@ -9,6 +9,7 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 #include <math.h>
+#include <StftPitchShift/StftPitchShift.h>
 
 //==============================================================================
 JZDelayAudioProcessor::JZDelayAudioProcessor()
@@ -340,64 +341,85 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
     // 1. if necessary, do pitch shifting on them
     // 2. afterwards, mix them together into a single output buffer
     
-    // pitch shifting
+    stftpitchshift::StftPitchShift pitchshifter(64, 32, getSampleRate(), true, false);
     
-    // copy the output buffer to a separate space so we can filter it and use that
-    // to do the pitch shifting
-    float* outputBufLCpy = (float*)calloc(buffer.getNumSamples(), sizeof(float));
-    float* outputBufRCpy = (float*)calloc(buffer.getNumSamples(), sizeof(float));
-    for (int i = 0; i < buffer.getNumSamples(); ++i)
-    {
-        outputBufLCpy[i] = outputBufL[i];
-        outputBufRCpy[i] = outputBufR[i];
-    }
-
+    std::vector<float> inputPitchL(buffer.getNumSamples());
+    std::vector<float> outputPitchL(inputPitchL.size());
     
-    // first anti-aliasing filter for freq pi/2 because we are stretching f by 2
-    // lowpassFilterStatic(outputBufLCpy, buffer.getNumSamples());
-    // lowpassFilterStatic(outputBufRCpy, buffer.getNumSamples());
+    std::vector<float> inputPitchR(buffer.getNumSamples());
+    std::vector<float> outputPitchR(inputPitchR.size());
     
-    // allocate space for pitch shifting
-    float* temp_pitch_bufferL = (float*)calloc(buffer.getNumSamples(), sizeof(float));
-    float* temp_pitch_bufferR = (float*)calloc(buffer.getNumSamples(), sizeof(float));
-    
-    int iterator = 0;
     if (pitchOneEnable)
     {
-        // go through output buffer and take every other sample
+        
         for (int i = 0; i < buffer.getNumSamples(); ++i)
         {
-            if (i%2 == 0)
-            {
-                temp_pitch_bufferL[iterator] = outputBufLCpy[i];
-                temp_pitch_bufferR[iterator] = outputBufRCpy[i];
-                ++iterator;
-            }
+            inputPitchL[i] = outputBufL[i];
+            inputPitchR[i] = outputBufR[i];
         }
-        // then go through and duplicate the squeezed list
-        // to get back a list of the original length ex. (1,2,3,4) -> (1,3,1,3)
-        for (int i = 0; i < buffer.getNumSamples()/2; ++i)
+        
+        pitchshifter.shiftpitch(inputPitchL, outputPitchL, 2);
+        pitchshifter.shiftpitch(inputPitchR, outputPitchR, 2);
+        
+        for (int i = 0; i < buffer.getNumSamples(); ++i)
         {
-            outputBufL[i] = temp_pitch_bufferL[i];
-            outputBufR[i] = temp_pitch_bufferR[i];
+            outputBufL[i] = outputPitchL[i];
+            outputBufR[i] = outputPitchR[i];
         }
-        for (int i = 0; i < buffer.getNumSamples()/2; ++i)
-        {
-            outputBufL[buffer.getNumSamples()/2 + i] = temp_pitch_bufferL[i];
-            outputBufR[buffer.getNumSamples()/2 + i] = temp_pitch_bufferR[i];
-        }
+        
     }
     if (pitchTwoEnable)
     {
+        for (int i = 0; i < buffer.getNumSamples(); ++i)
+        {
+            inputPitchL[i] = outputTwoBufL[i];
+            inputPitchR[i] = outputTwoBufR[i];
+        }
+        
+        pitchshifter.shiftpitch(inputPitchL, outputPitchL, 2);
+        pitchshifter.shiftpitch(inputPitchR, outputPitchR, 2);
+        
+        for (int i = 0; i < buffer.getNumSamples(); ++i)
+        {
+            outputTwoBufL[i] = outputPitchL[i];
+            outputTwoBufR[i] = outputPitchR[i];
+        }
         
     }
     if (pitchThreeEnable)
     {
+        for (int i = 0; i < buffer.getNumSamples(); ++i)
+        {
+            inputPitchL[i] = outputThreeBufL[i];
+            inputPitchR[i] = outputThreeBufR[i];
+        }
+        
+        pitchshifter.shiftpitch(inputPitchL, outputPitchL, 2);
+        pitchshifter.shiftpitch(inputPitchR, outputPitchR, 2);
+        
+        for (int i = 0; i < buffer.getNumSamples(); ++i)
+        {
+            outputThreeBufL[i] = outputPitchL[i];
+            outputThreeBufR[i] = outputPitchR[i];
+        }
         
     }
     if (pitchFourEnable)
     {
+        for (int i = 0; i < buffer.getNumSamples(); ++i)
+        {
+            inputPitchL[i] = outputFourBufL[i];
+            inputPitchR[i] = outputFourBufR[i];
+        }
         
+        pitchshifter.shiftpitch(inputPitchL, outputPitchL, 2);
+        pitchshifter.shiftpitch(inputPitchR, outputPitchR, 2);
+        
+        for (int i = 0; i < buffer.getNumSamples(); ++i)
+        {
+            outputFourBufL[i] = outputPitchL[i];
+            outputFourBufR[i] = outputPitchR[i];
+        }
     }
     
     // piece all the parts together at the end for the different

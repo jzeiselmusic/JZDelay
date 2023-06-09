@@ -95,6 +95,9 @@ public:
     float filt_bb[ST_FILTER_LEN] = {0.052786, 0.263932, 0.52786, 0.52786, 0.263932, 0.052786};
     float filt_aa[ST_FILTER_LEN] = {1.0, 0.0, 0.63344, 0.0, 0.055728, 0.0};
     
+    // juce filtering
+
+    
     //**************************************//
     //**************************************//
     
@@ -199,7 +202,6 @@ public:
     // lists to store the output buffer that will be mixed with others
     float* outputFourBufL = (float*)calloc(MAX_BUF_SIZE, sizeof(float));
     float* outputFourBufR = (float*)calloc(MAX_BUF_SIZE, sizeof(float));
-    
 
 private:
     //==============================================================================

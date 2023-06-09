@@ -54,6 +54,7 @@
 		C3D0C2C95BEABD0F2FCEFDF3 /* include_juce_audio_plugin_client_VST_utils.mm */ = {isa = PBXBuildFile; fileRef = E4BDAAF4F3F6D9D6ACDFB73F; };
 		D10A178CEC0085D150303A87 /* CoreMIDI.framework */ = {isa = PBXBuildFile; fileRef = EDC65D6B70DA35B871E9A065; };
 		D46346A7EE3B6F54112C0A67 /* DiscRecording.framework */ = {isa = PBXBuildFile; fileRef = 671A52A59B6A361F48138BD0; };
+		DAA781C5A3950F9C008B8452 /* include_juce_dsp.mm */ = {isa = PBXBuildFile; fileRef = 90A0CC307BD1B9C319CEC1D3; };
 		E1176E753E0CD6E69CD7C9DD /* include_juce_audio_plugin_client_AU_1.mm */ = {isa = PBXBuildFile; fileRef = A37986BE2D4E2589FD7CAA6C; };
 		E6F26ED8823430396A46F2EC /* QuartzCore.framework */ = {isa = PBXBuildFile; fileRef = C609C1B76C2F506AEAC7DF9D; };
 		E9F14347671A4C26811CBEE6 /* include_juce_events.mm */ = {isa = PBXBuildFile; fileRef = 10E2F037A21D8A1FFA6409B4; };
@@ -84,6 +85,7 @@
 		3195BA502E0FF7E290B0885D /* include_juce_data_structures.mm */ /* include_juce_data_structures.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_data_structures.mm; path = ../../JuceLibraryCode/include_juce_data_structures.mm; sourceTree = SOURCE_ROOT; };
 		31F3642334ABE58DE4AC77CE /* include_juce_audio_processors.mm */ /* include_juce_audio_processors.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_processors.mm; path = ../../JuceLibraryCode/include_juce_audio_processors.mm; sourceTree = SOURCE_ROOT; };
 		34DE9248C3EC3A5DE9154F5C /* juce_data_structures */ /* juce_data_structures */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_data_structures; path = /Users/jacobzeisel/Desktop/JUCE/modules/juce_data_structures; sourceTree = "<absolute>"; };
+		373E00ADD3210BFBB0188944 /* juce_dsp */ /* juce_dsp */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_dsp; path = /Users/jacobzeisel/Desktop/JUCE/modules/juce_dsp; sourceTree = "<absolute>"; };
 		3CDD75027EB450C59FF4A533 /* juce_events */ /* juce_events */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_events; path = /Users/jacobzeisel/Desktop/JUCE/modules/juce_events; sourceTree = "<absolute>"; };
 		49209EB773C0F0BD80640E85 /* Module.h */ /* Module.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Module.h; path = ../../Source/Module.h; sourceTree = SOURCE_ROOT; };
 		4B278615FB32829F3580D576 /* Standalone Plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NewProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -99,6 +101,7 @@
 		784A2424AD1E4A4443E8C1DE /* PluginProcessor.h */ /* PluginProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PluginProcessor.h; path = ../../Source/PluginProcessor.h; sourceTree = SOURCE_ROOT; };
 		7EBDE73264C8D66B8293EBBA /* juce_audio_basics */ /* juce_audio_basics */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_basics; path = /Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_basics; sourceTree = "<absolute>"; };
 		8C1D1A63CF42438635E255B6 /* CoreAudioKit.framework */ /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
+		90A0CC307BD1B9C319CEC1D3 /* include_juce_dsp.mm */ /* include_juce_dsp.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_dsp.mm; path = ../../JuceLibraryCode/include_juce_dsp.mm; sourceTree = SOURCE_ROOT; };
 		91801B2C890820F53AB702F2 /* Global.h */ /* Global.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Global.h; path = ../../Source/Global.h; sourceTree = SOURCE_ROOT; };
 		97A6FDFA534E0792D2332AA7 /* juce_audio_utils */ /* juce_audio_utils */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_utils; path = /Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_utils; sourceTree = "<absolute>"; };
 		9ACEF857BF599E596845B466 /* Module.cpp */ /* Module.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Module.cpp; path = ../../Source/Module.cpp; sourceTree = SOURCE_ROOT; };
@@ -275,6 +278,7 @@
 				E3FB82848D918177481297E7,
 				6F67AEA4B2EC55DB2A1EF05D,
 				3195BA502E0FF7E290B0885D,
+				90A0CC307BD1B9C319CEC1D3,
 				10E2F037A21D8A1FFA6409B4,
 				5191E5DA11BFFC2C61315CE0,
 				2B4F8FD0C07D271DD4AA54A5,
@@ -316,6 +320,7 @@
 				97A6FDFA534E0792D2332AA7,
 				AA5923BB44CB42D5EDAB9C72,
 				34DE9248C3EC3A5DE9154F5C,
+				373E00ADD3210BFBB0188944,
 				3CDD75027EB450C59FF4A533,
 				6D2A3688B2094432D090C9D5,
 				FA9A1BBAB3147F8197B54C0F,
@@ -594,6 +599,7 @@
 				30AB9CBE754233AC9E48CE79,
 				9C74F8721805FE4C522B12EA,
 				4692C71C2E78E55962E3EA6B,
+				DAA781C5A3950F9C008B8452,
 				E9F14347671A4C26811CBEE6,
 				5FB9107F72C5FE96579E6509,
 				B599D381FAB4665205C342CC,
@@ -687,6 +693,7 @@
 					"JUCE_MODULE_AVAILABLE_juce_audio_utils=1",
 					"JUCE_MODULE_AVAILABLE_juce_core=1",
 					"JUCE_MODULE_AVAILABLE_juce_data_structures=1",
+					"JUCE_MODULE_AVAILABLE_juce_dsp=1",
 					"JUCE_MODULE_AVAILABLE_juce_events=1",
 					"JUCE_MODULE_AVAILABLE_juce_graphics=1",
 					"JUCE_MODULE_AVAILABLE_juce_gui_basics=1",
@@ -753,14 +760,19 @@
 					"/Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_processors/format_types/VST3_SDK",
 					"$(SRCROOT)/../../JuceLibraryCode",
 					"/Users/jacobzeisel/Desktop/JUCE/modules",
+					"/Users/jacobzeisel/git/stftPitchShift/cpp",
 					"/Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_plugin_client",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Info-Standalone_Plugin.plist;
 				INFOPLIST_PREPROCESS = NO;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"/Users/jacobzeisel/git/stftPitchShift/build_test\"",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MTL_HEADER_SEARCH_PATHS = "/Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jacobzeisel/Desktop/JUCE/modules /Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_plugin_client";
-				OTHER_LDFLAGS = "-lNewProject";
+				MTL_HEADER_SEARCH_PATHS = "/Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jacobzeisel/Desktop/JUCE/modules /Users/jacobzeisel/git/stftPitchShift/cpp /Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_plugin_client";
+				OTHER_LDFLAGS = "-lNewProject /Users/jacobzeisel/git/stftPitchShift/build_test/libstftpitchshift.a";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.JZDelay;
 				PRODUCT_NAME = "NewProject";
 				USE_HEADERMAP = NO;
@@ -852,6 +864,7 @@
 					"JUCE_MODULE_AVAILABLE_juce_audio_utils=1",
 					"JUCE_MODULE_AVAILABLE_juce_core=1",
 					"JUCE_MODULE_AVAILABLE_juce_data_structures=1",
+					"JUCE_MODULE_AVAILABLE_juce_dsp=1",
 					"JUCE_MODULE_AVAILABLE_juce_events=1",
 					"JUCE_MODULE_AVAILABLE_juce_graphics=1",
 					"JUCE_MODULE_AVAILABLE_juce_gui_basics=1",
@@ -919,12 +932,18 @@
 					"/Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_processors/format_types/VST3_SDK",
 					"$(SRCROOT)/../../JuceLibraryCode",
 					"/Users/jacobzeisel/Desktop/JUCE/modules",
+					"/Users/jacobzeisel/git/stftPitchShift/cpp",
 					"/Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_plugin_client",
 					"$(inherited)",
 				);
 				INSTALL_PATH = "@executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"/Users/jacobzeisel/git/stftPitchShift/build_test\"",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MTL_HEADER_SEARCH_PATHS = "/Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jacobzeisel/Desktop/JUCE/modules /Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_plugin_client";
+				MTL_HEADER_SEARCH_PATHS = "/Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jacobzeisel/Desktop/JUCE/modules /Users/jacobzeisel/git/stftPitchShift/cpp /Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_plugin_client";
+				OTHER_LDFLAGS = "/Users/jacobzeisel/git/stftPitchShift/build_test/libstftpitchshift.a";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.JZDelay;
 				PRODUCT_NAME = "NewProject";
 				SKIP_INSTALL = YES;
@@ -962,6 +981,7 @@
 					"JUCE_MODULE_AVAILABLE_juce_audio_utils=1",
 					"JUCE_MODULE_AVAILABLE_juce_core=1",
 					"JUCE_MODULE_AVAILABLE_juce_data_structures=1",
+					"JUCE_MODULE_AVAILABLE_juce_dsp=1",
 					"JUCE_MODULE_AVAILABLE_juce_events=1",
 					"JUCE_MODULE_AVAILABLE_juce_graphics=1",
 					"JUCE_MODULE_AVAILABLE_juce_gui_basics=1",
@@ -1029,17 +1049,22 @@
 					"/Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_processors/format_types/VST3_SDK",
 					"$(SRCROOT)/../../JuceLibraryCode",
 					"/Users/jacobzeisel/Desktop/JUCE/modules",
+					"/Users/jacobzeisel/git/stftPitchShift/cpp",
 					"/Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_plugin_client",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Info-VST3.plist;
 				INFOPLIST_PREPROCESS = NO;
 				INSTALL_PATH = "$(HOME)/Library/Audio/Plug-Ins/VST3/";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"/Users/jacobzeisel/git/stftPitchShift/build_test\"",
+				);
 				LIBRARY_STYLE = Bundle;
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MTL_HEADER_SEARCH_PATHS = "/Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jacobzeisel/Desktop/JUCE/modules /Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_plugin_client";
-				OTHER_LDFLAGS = "-bundle -lNewProject";
+				MTL_HEADER_SEARCH_PATHS = "/Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jacobzeisel/Desktop/JUCE/modules /Users/jacobzeisel/git/stftPitchShift/cpp /Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_plugin_client";
+				OTHER_LDFLAGS = "-bundle -lNewProject /Users/jacobzeisel/git/stftPitchShift/build_test/libstftpitchshift.a";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.JZDelay;
 				PRODUCT_NAME = "NewProject";
 				USE_HEADERMAP = NO;
@@ -1075,6 +1100,7 @@
 					"JUCE_MODULE_AVAILABLE_juce_audio_utils=1",
 					"JUCE_MODULE_AVAILABLE_juce_core=1",
 					"JUCE_MODULE_AVAILABLE_juce_data_structures=1",
+					"JUCE_MODULE_AVAILABLE_juce_dsp=1",
 					"JUCE_MODULE_AVAILABLE_juce_events=1",
 					"JUCE_MODULE_AVAILABLE_juce_graphics=1",
 					"JUCE_MODULE_AVAILABLE_juce_gui_basics=1",
@@ -1141,15 +1167,20 @@
 					"/Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_processors/format_types/VST3_SDK",
 					"$(SRCROOT)/../../JuceLibraryCode",
 					"/Users/jacobzeisel/Desktop/JUCE/modules",
+					"/Users/jacobzeisel/git/stftPitchShift/cpp",
 					"/Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_plugin_client",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Info-Standalone_Plugin.plist;
 				INFOPLIST_PREPROCESS = NO;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"/Users/jacobzeisel/git/stftPitchShift/build_test\"",
+				);
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MTL_HEADER_SEARCH_PATHS = "/Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jacobzeisel/Desktop/JUCE/modules /Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_plugin_client";
-				OTHER_LDFLAGS = "-lNewProject";
+				MTL_HEADER_SEARCH_PATHS = "/Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jacobzeisel/Desktop/JUCE/modules /Users/jacobzeisel/git/stftPitchShift/cpp /Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_plugin_client";
+				OTHER_LDFLAGS = "-lNewProject /Users/jacobzeisel/git/stftPitchShift/build_test/libstftpitchshift.a";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.JZDelay;
 				PRODUCT_NAME = "NewProject";
 				USE_HEADERMAP = NO;
@@ -1186,6 +1217,7 @@
 					"JUCE_MODULE_AVAILABLE_juce_audio_utils=1",
 					"JUCE_MODULE_AVAILABLE_juce_core=1",
 					"JUCE_MODULE_AVAILABLE_juce_data_structures=1",
+					"JUCE_MODULE_AVAILABLE_juce_dsp=1",
 					"JUCE_MODULE_AVAILABLE_juce_events=1",
 					"JUCE_MODULE_AVAILABLE_juce_graphics=1",
 					"JUCE_MODULE_AVAILABLE_juce_gui_basics=1",
@@ -1253,16 +1285,21 @@
 					"/Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_processors/format_types/VST3_SDK",
 					"$(SRCROOT)/../../JuceLibraryCode",
 					"/Users/jacobzeisel/Desktop/JUCE/modules",
+					"/Users/jacobzeisel/git/stftPitchShift/cpp",
 					"/Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_plugin_client",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Info-AU.plist;
 				INFOPLIST_PREPROCESS = NO;
 				INSTALL_PATH = "$(HOME)/Library/Audio/Plug-Ins/Components/";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"/Users/jacobzeisel/git/stftPitchShift/build_test\"",
+				);
 				LIBRARY_STYLE = Bundle;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MTL_HEADER_SEARCH_PATHS = "/Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jacobzeisel/Desktop/JUCE/modules /Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_plugin_client";
-				OTHER_LDFLAGS = "-bundle -lNewProject";
+				MTL_HEADER_SEARCH_PATHS = "/Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jacobzeisel/Desktop/JUCE/modules /Users/jacobzeisel/git/stftPitchShift/cpp /Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_plugin_client";
+				OTHER_LDFLAGS = "-bundle -lNewProject /Users/jacobzeisel/git/stftPitchShift/build_test/libstftpitchshift.a";
 				OTHER_REZFLAGS = "-d ppc_$ppc -d i386_$i386 -d ppc64_$ppc64 -d x86_64_$x86_64 -d arm64_$arm64 -I /System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Versions/A/Headers -I \"$(DEVELOPER_DIR)/Extras/CoreAudio/AudioUnits/AUPublic/AUBase\" -I \"$(DEVELOPER_DIR)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AudioUnit.framework/Headers\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.JZDelay;
 				PRODUCT_NAME = "NewProject";
@@ -1301,6 +1338,7 @@
 					"JUCE_MODULE_AVAILABLE_juce_audio_utils=1",
 					"JUCE_MODULE_AVAILABLE_juce_core=1",
 					"JUCE_MODULE_AVAILABLE_juce_data_structures=1",
+					"JUCE_MODULE_AVAILABLE_juce_dsp=1",
 					"JUCE_MODULE_AVAILABLE_juce_events=1",
 					"JUCE_MODULE_AVAILABLE_juce_graphics=1",
 					"JUCE_MODULE_AVAILABLE_juce_gui_basics=1",
@@ -1368,16 +1406,21 @@
 					"/Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_processors/format_types/VST3_SDK",
 					"$(SRCROOT)/../../JuceLibraryCode",
 					"/Users/jacobzeisel/Desktop/JUCE/modules",
+					"/Users/jacobzeisel/git/stftPitchShift/cpp",
 					"/Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_plugin_client",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Info-VST3.plist;
 				INFOPLIST_PREPROCESS = NO;
 				INSTALL_PATH = "$(HOME)/Library/Audio/Plug-Ins/VST3/";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"/Users/jacobzeisel/git/stftPitchShift/build_test\"",
+				);
 				LIBRARY_STYLE = Bundle;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MTL_HEADER_SEARCH_PATHS = "/Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jacobzeisel/Desktop/JUCE/modules /Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_plugin_client";
-				OTHER_LDFLAGS = "-bundle -lNewProject";
+				MTL_HEADER_SEARCH_PATHS = "/Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jacobzeisel/Desktop/JUCE/modules /Users/jacobzeisel/git/stftPitchShift/cpp /Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_plugin_client";
+				OTHER_LDFLAGS = "-bundle -lNewProject /Users/jacobzeisel/git/stftPitchShift/build_test/libstftpitchshift.a";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.JZDelay;
 				PRODUCT_NAME = "NewProject";
 				USE_HEADERMAP = NO;
@@ -1461,6 +1504,7 @@
 					"JUCE_MODULE_AVAILABLE_juce_audio_utils=1",
 					"JUCE_MODULE_AVAILABLE_juce_core=1",
 					"JUCE_MODULE_AVAILABLE_juce_data_structures=1",
+					"JUCE_MODULE_AVAILABLE_juce_dsp=1",
 					"JUCE_MODULE_AVAILABLE_juce_events=1",
 					"JUCE_MODULE_AVAILABLE_juce_graphics=1",
 					"JUCE_MODULE_AVAILABLE_juce_gui_basics=1",
@@ -1528,13 +1572,19 @@
 					"/Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_processors/format_types/VST3_SDK",
 					"$(SRCROOT)/../../JuceLibraryCode",
 					"/Users/jacobzeisel/Desktop/JUCE/modules",
+					"/Users/jacobzeisel/git/stftPitchShift/cpp",
 					"/Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_plugin_client",
 					"$(inherited)",
 				);
 				INSTALL_PATH = "@executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"/Users/jacobzeisel/git/stftPitchShift/build_test\"",
+				);
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MTL_HEADER_SEARCH_PATHS = "/Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jacobzeisel/Desktop/JUCE/modules /Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_plugin_client";
+				MTL_HEADER_SEARCH_PATHS = "/Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jacobzeisel/Desktop/JUCE/modules /Users/jacobzeisel/git/stftPitchShift/cpp /Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_plugin_client";
+				OTHER_LDFLAGS = "/Users/jacobzeisel/git/stftPitchShift/build_test/libstftpitchshift.a";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.JZDelay;
 				PRODUCT_NAME = "NewProject";
 				SKIP_INSTALL = YES;
@@ -1580,6 +1630,7 @@
 					"JUCE_MODULE_AVAILABLE_juce_audio_utils=1",
 					"JUCE_MODULE_AVAILABLE_juce_core=1",
 					"JUCE_MODULE_AVAILABLE_juce_data_structures=1",
+					"JUCE_MODULE_AVAILABLE_juce_dsp=1",
 					"JUCE_MODULE_AVAILABLE_juce_events=1",
 					"JUCE_MODULE_AVAILABLE_juce_graphics=1",
 					"JUCE_MODULE_AVAILABLE_juce_gui_basics=1",
@@ -1647,17 +1698,22 @@
 					"/Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_processors/format_types/VST3_SDK",
 					"$(SRCROOT)/../../JuceLibraryCode",
 					"/Users/jacobzeisel/Desktop/JUCE/modules",
+					"/Users/jacobzeisel/git/stftPitchShift/cpp",
 					"/Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_plugin_client",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Info-AU.plist;
 				INFOPLIST_PREPROCESS = NO;
 				INSTALL_PATH = "$(HOME)/Library/Audio/Plug-Ins/Components/";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"/Users/jacobzeisel/git/stftPitchShift/build_test\"",
+				);
 				LIBRARY_STYLE = Bundle;
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MTL_HEADER_SEARCH_PATHS = "/Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jacobzeisel/Desktop/JUCE/modules /Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_plugin_client";
-				OTHER_LDFLAGS = "-bundle -lNewProject";
+				MTL_HEADER_SEARCH_PATHS = "/Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jacobzeisel/Desktop/JUCE/modules /Users/jacobzeisel/git/stftPitchShift/cpp /Users/jacobzeisel/Desktop/JUCE/modules/juce_audio_plugin_client";
+				OTHER_LDFLAGS = "-bundle -lNewProject /Users/jacobzeisel/git/stftPitchShift/build_test/libstftpitchshift.a";
 				OTHER_REZFLAGS = "-d ppc_$ppc -d i386_$i386 -d ppc64_$ppc64 -d x86_64_$x86_64 -d arm64_$arm64 -I /System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Versions/A/Headers -I \"$(DEVELOPER_DIR)/Extras/CoreAudio/AudioUnits/AUPublic/AUBase\" -I \"$(DEVELOPER_DIR)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AudioUnit.framework/Headers\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.JZDelay;
 				PRODUCT_NAME = "NewProject";
