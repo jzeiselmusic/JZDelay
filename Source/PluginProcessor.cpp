@@ -10,6 +10,7 @@
 #include "PluginEditor.h"
 #include <math.h>
 #include <StftPitchShift/StftPitchShift.h>
+#include "Filter.h"
 
 //==============================================================================
 JZDelayAudioProcessor::JZDelayAudioProcessor()
@@ -153,12 +154,14 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
     
-    
+    int currentNumSamples = buffer.getNumSamples();
+    int currentSampleRate = getSampleRate();
     // input gain
-    buffer.applyGain(0, 0, buffer.getNumSamples(), pow(10, inputGain/20.0));
-    buffer.applyGain(1, 0, buffer.getNumSamples(), pow(10, inputGain/20.0));
+    buffer.applyGain(0, 0, currentNumSamples, pow(10, inputGain/20.0));
+    buffer.applyGain(1, 0, currentNumSamples, pow(10, inputGain/20.0));
     
     float orig_sample;
+    float pitch_sample;
     
     float tempL;
     float tempR;
@@ -183,18 +186,23 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
     float pan_R_val_4;
     
     
+    Filter lowpass = Filter(true, 10000, 1, currentSampleRate);
+    Filter highpass = Filter(false, 200, 1, currentSampleRate);
+
     float mult1, mult2, mult3, mult4;
     
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         auto* channelRData = buffer.getReadPointer (channel); // channelRData is read pointer to channel n buffer
-        for (int sample = 0; sample < buffer.getNumSamples(); ++sample) // go through M samples of buffer
+        for (int sample = 0; sample < currentNumSamples; ++sample) // go through M samples of buffer
         {
             
             // set these to 0.0 so that they must be
             // recalculated every time we read from the buffer
             //
             orig_sample = channelRData[sample];
+            pitch_sample = channelRData[sample*2 < currentNumSamples ? sample*2 : 0];
+            pitch_sample = lowpassFilterRT(pitch_sample, channel);
             //
             tempL = 0.0;
             tempR = 0.0;
@@ -219,6 +227,7 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
                 
                 // increment read and write positions
                 // move back to zero if past max value
+                
                 readPosL = readPosL + 1 >= (numSamples/2.0) ? 0 : (readPosL + 1);
                 writePosL = writePosL + 1 >= (numSamples/2.0) ? 0 : (writePosL + 1);
                 
@@ -235,8 +244,8 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
                 // and write to echo buffer only the value that must echo and original input
                 // we keep separate echo buffers for each delay
                 tempL = (float)(decayRate * echoListL[readPosL]);
-                tempL = lowpassFilterRT(tempL, 0); // 0 for left side
-                echoListL[writePosL] = orig_sample + tempL;
+                if (pitchOneEnable) echoListL[writePosL] = pitch_sample + tempL;
+                else echoListL[writePosL] = orig_sample + tempL;
                 tempTwoL = (float)(decayTwoRate * echoTwoListL[readTwoPosL]);
                 echoTwoListL[writeTwoPosL] = orig_sample + tempTwoL;
                 tempThreeL = (float)(decayThreeRate * echoThreeListL[readThreePosL]);
@@ -295,8 +304,8 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
                 writeFourPosR = writeFourPosR + 1 >= (numFourSamples/2.0) ? 0 : (writeFourPosR + 1);
                 
                 tempR = (float)(decayRate * echoListR[readPosR]);
-                tempR = lowpassFilterRT(tempR, 1); // 1 for right side
-                echoListR[writePosR] = orig_sample + tempR;
+                if (pitchOneEnable) echoListR[writePosR] = pitch_sample + tempR;
+                else echoListR[writePosR] = orig_sample + tempR;
                 tempTwoR = (float)(decayTwoRate * echoTwoListR[readTwoPosR]);
                 echoTwoListR[writeTwoPosR] = orig_sample + tempTwoR;
                 tempThreeR = (float)(decayThreeRate * echoThreeListR[readThreePosR]);
@@ -337,98 +346,21 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
         }
     }
     
-    // now all the output buffers should be filled and we need to
-    // 1. if necessary, do pitch shifting on them
-    // 2. afterwards, mix them together into a single output buffer
-    
-    stftpitchshift::StftPitchShift pitchshifter(64, 32, getSampleRate(), true, false);
-    
-    std::vector<float> inputPitchL(buffer.getNumSamples());
-    std::vector<float> outputPitchL(inputPitchL.size());
-    
-    std::vector<float> inputPitchR(buffer.getNumSamples());
-    std::vector<float> outputPitchR(inputPitchR.size());
+    // piece all the parts together at the end for the different
+    // signal processing channels
     
     if (pitchOneEnable)
     {
-        
-        for (int i = 0; i < buffer.getNumSamples(); ++i)
-        {
-            inputPitchL[i] = outputBufL[i];
-            inputPitchR[i] = outputBufR[i];
-        }
-        
-        pitchshifter.shiftpitch(inputPitchL, outputPitchL, 2);
-        pitchshifter.shiftpitch(inputPitchR, outputPitchR, 2);
-        
-        for (int i = 0; i < buffer.getNumSamples(); ++i)
-        {
-            outputBufL[i] = outputPitchL[i];
-            outputBufR[i] = outputPitchR[i];
-        }
-        
+        lowpass.filterBuffer(outputBufL, currentNumSamples);
+        lowpass.filterBuffer(outputBufR, currentNumSamples);
+        highpass.filterBuffer(outputBufL, currentNumSamples);
+        highpass.filterBuffer(outputBufR, currentNumSamples);
     }
-    if (pitchTwoEnable)
-    {
-        for (int i = 0; i < buffer.getNumSamples(); ++i)
-        {
-            inputPitchL[i] = outputTwoBufL[i];
-            inputPitchR[i] = outputTwoBufR[i];
-        }
-        
-        pitchshifter.shiftpitch(inputPitchL, outputPitchL, 2);
-        pitchshifter.shiftpitch(inputPitchR, outputPitchR, 2);
-        
-        for (int i = 0; i < buffer.getNumSamples(); ++i)
-        {
-            outputTwoBufL[i] = outputPitchL[i];
-            outputTwoBufR[i] = outputPitchR[i];
-        }
-        
-    }
-    if (pitchThreeEnable)
-    {
-        for (int i = 0; i < buffer.getNumSamples(); ++i)
-        {
-            inputPitchL[i] = outputThreeBufL[i];
-            inputPitchR[i] = outputThreeBufR[i];
-        }
-        
-        pitchshifter.shiftpitch(inputPitchL, outputPitchL, 2);
-        pitchshifter.shiftpitch(inputPitchR, outputPitchR, 2);
-        
-        for (int i = 0; i < buffer.getNumSamples(); ++i)
-        {
-            outputThreeBufL[i] = outputPitchL[i];
-            outputThreeBufR[i] = outputPitchR[i];
-        }
-        
-    }
-    if (pitchFourEnable)
-    {
-        for (int i = 0; i < buffer.getNumSamples(); ++i)
-        {
-            inputPitchL[i] = outputFourBufL[i];
-            inputPitchR[i] = outputFourBufR[i];
-        }
-        
-        pitchshifter.shiftpitch(inputPitchL, outputPitchL, 2);
-        pitchshifter.shiftpitch(inputPitchR, outputPitchR, 2);
-        
-        for (int i = 0; i < buffer.getNumSamples(); ++i)
-        {
-            outputFourBufL[i] = outputPitchL[i];
-            outputFourBufR[i] = outputPitchR[i];
-        }
-    }
-    
-    // piece all the parts together at the end for the different
-    // signal processing channels
     
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         auto* channelWData = buffer.getWritePointer (channel);
-        for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
+        for (int sample = 0; sample < currentNumSamples; ++sample)
         {
             if (channel == 0)
             {
@@ -447,8 +379,8 @@ void JZDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
     
     
     // output gain
-    buffer.applyGain(0, 0, buffer.getNumSamples(), pow(10, outputGain/20.0));
-    buffer.applyGain(1, 0, buffer.getNumSamples(), pow(10, outputGain/20.0));
+    buffer.applyGain(0, 0, currentNumSamples, pow(10, outputGain/20.0));
+    buffer.applyGain(1, 0, currentNumSamples, pow(10, outputGain/20.0));
 }
 
 //==============================================================================

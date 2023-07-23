@@ -5,9 +5,14 @@
               pluginManufacturer="JZ" cppLanguageStandard="17">
   <MAINGROUP id="wWwD3p" name="JZDelay">
     <GROUP id="{E3A0DA9C-05AF-8DA9-839F-11305C71E944}" name="Source">
+      <GROUP id="{729156F5-D446-8B03-ADB6-7E69425E9E66}" name="Effects">
+        <FILE id="nCeFHM" name="Filter.cpp" compile="1" resource="0" file="Source/Filter.cpp"/>
+        <FILE id="lIQ766" name="Filter.h" compile="0" resource="0" file="Source/Filter.h"/>
+      </GROUP>
       <GROUP id="{8E62A81A-A9E2-EFC8-C44C-E8F5B39D68A8}" name="Component">
         <FILE id="gXT583" name="Global.cpp" compile="1" resource="0" file="Source/Global.cpp"/>
         <FILE id="CN0rdB" name="Global.h" compile="0" resource="0" file="Source/Global.h"/>
+        <FILE id="Cs5spG" name="JZLookAndFeel.h" compile="0" resource="0" file="Source/JZLookAndFeel.h"/>
         <FILE id="yGMByQ" name="Module.cpp" compile="1" resource="0" file="Source/Module.cpp"/>
         <FILE id="M56dET" name="Module.h" compile="0" resource="0" file="Source/Module.h"/>
       </GROUP>

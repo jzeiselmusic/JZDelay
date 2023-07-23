@@ -1,14 +1,6 @@
-/*
-  ==============================================================================
-
-    Global.cpp
-    Created: 20 May 2023 11:54:32am
-    Author:  Jacob Zeisel
-
-  ==============================================================================
-*/
 
 #include "Global.h"
+#include "JZLookAndFeel.h"
 
 void Global::setBoundaries(int startxx, int endxx, int startyy, int endyy)
 {
@@ -28,19 +20,22 @@ void Global::addSlider(juce::Slider* newSlider, juce::Label* newLabel,
                        char const* name, int num,
                        float start, float stop,
                        float step, float init_val, float doubclick_val,
-                       juce::Slider::Listener* sliderL)
+                       juce::Slider::Listener* sliderL,
+                       JZLookAndFeel* lookandfeel)
 {
     int width = endx - startx;
     int step_x = width / numSliders;
     
     newSlider->setSliderSnapsToMousePosition(true);
-    newSlider->setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
+    newSlider->setSliderStyle(juce::Slider::SliderStyle::LinearBarVertical);
     newSlider->setTitle(name);
     newSlider->setRange(start, stop, step);
     newSlider->setValue(init_val);
     newSlider->setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxAbove, true, 35, 20);
     newSlider->setDoubleClickReturnValue(true, doubclick_val, NULL);
     newSlider->addListener(sliderL);
+    
+    newSlider->setLookAndFeel(lookandfeel);
     
     newSlider->setBounds(startx + num*step_x, starty, 60, endy-starty);
     

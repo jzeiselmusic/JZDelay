@@ -1,17 +1,8 @@
-/*
-  ==============================================================================
-
-    Global.h
-    Created: 20 May 2023 11:54:40am
-    Author:  Jacob Zeisel
-
-  ==============================================================================
-*/
 
 #pragma once
 
 #include <JuceHeader.h>
-
+#include "JZLookAndFeel.h"
 
 class Global
 {
@@ -24,7 +15,7 @@ class Global
         void addSlider(juce::Slider*, juce::Label*,
                    char const* name, int num, float start, float stop,
                    float step, float init_val, float doubclick_val,
-                   juce::Slider::Listener*);
+                   juce::Slider::Listener*, JZLookAndFeel* lookandfeel);
         
         void makeVisible(juce::Component*);
     

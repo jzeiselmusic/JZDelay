@@ -1,15 +1,8 @@
-/*
-  ==============================================================================
 
-    Module.h
-    Created: 19 May 2023 7:36:38pm
-    Author:  Jacob Zeisel
-
-  ==============================================================================
-*/
 #pragma once
 
 #include <JuceHeader.h>
+#include "JZLookAndFeel.h"
 
 class Module
 {
@@ -25,7 +18,7 @@ class Module
         void addSlider(juce::Slider*, juce::Label*,
                        char const* name, int num, float start, float stop,
                        float step, float init_val, float doubclick_val,
-                       juce::Slider::Listener*);
+                       juce::Slider::Listener*, JZLookAndFeel* lookandfeel);
     
         void addButton(juce::ToggleButton*, juce::Button::Listener*, int num);
     

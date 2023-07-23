@@ -10,6 +10,7 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "JZLookAndFeel.h"
 
 //==============================================================================
 /**
@@ -90,7 +91,8 @@ private:
     juce::Slider panFourSlider;
     juce::Label panFourLabel;
     
-    
+    // slider look and feel
+    JZLookAndFeel sliderLookAndFeel;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (JZDelayAudioProcessorEditor)
 };

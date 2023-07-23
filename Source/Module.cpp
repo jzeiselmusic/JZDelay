@@ -1,17 +1,8 @@
-/*
-  ==============================================================================
-
-    Module.cpp
-    Created: 19 May 2023 7:36:30pm
-    Author:  Jacob Zeisel
-
-  ==============================================================================
-*/
 
 #include "Module.h"
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
-
+#include "JZLookAndFeel.h"
 
 void Module::setBoundaries(int startxx, int endxx, int startyy, int endyy)
 {
@@ -40,7 +31,8 @@ void Module::addSlider(juce::Slider* newSlider, juce::Label* newLabel,
                        char const* name, int num,
                        float start, float stop,
                        float step, float init_val, float doubclick_val,
-                       juce::Slider::Listener* sliderL)
+                       juce::Slider::Listener* sliderL,
+                       JZLookAndFeel* lookandfeel)
 {
     int width = endy - starty;
     int step_y = width / (numSliders+1);
@@ -55,6 +47,8 @@ void Module::addSlider(juce::Slider* newSlider, juce::Label* newLabel,
     newSlider->setTextBoxIsEditable(false);
     newSlider->setDoubleClickReturnValue(true, doubclick_val, NULL);
     newSlider->addListener(sliderL);
+    
+    newSlider->setLookAndFeel(lookandfeel);
     
     newSlider->setBounds(startx, starty + ((num+1)*step_y), endx - startx, 20);
     
