@@ -27,7 +27,7 @@ void Global::addSlider(juce::Slider* newSlider, juce::Label* newLabel,
     int step_x = width / numSliders;
     
     newSlider->setSliderSnapsToMousePosition(true);
-    newSlider->setSliderStyle(juce::Slider::SliderStyle::LinearBarVertical);
+    newSlider->setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
     newSlider->setTitle(name);
     newSlider->setRange(start, stop, step);
     newSlider->setValue(init_val);

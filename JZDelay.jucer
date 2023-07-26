@@ -5,6 +5,10 @@
               pluginManufacturer="JZ" cppLanguageStandard="17">
   <MAINGROUP id="wWwD3p" name="JZDelay">
     <GROUP id="{E3A0DA9C-05AF-8DA9-839F-11305C71E944}" name="Source">
+      <GROUP id="{E2792F01-807E-87D5-F822-8894BC416F5F}" name="Images">
+        <FILE id="aO495E" name="sliders_total.png" compile="0" resource="1"
+              file="../../Downloads/sliders_total.png"/>
+      </GROUP>
       <GROUP id="{729156F5-D446-8B03-ADB6-7E69425E9E66}" name="Effects">
         <FILE id="nCeFHM" name="Filter.cpp" compile="1" resource="0" file="Source/Filter.cpp"/>
         <FILE id="lIQ766" name="Filter.h" compile="0" resource="0" file="Source/Filter.h"/>
@@ -12,6 +16,8 @@
       <GROUP id="{8E62A81A-A9E2-EFC8-C44C-E8F5B39D68A8}" name="Component">
         <FILE id="gXT583" name="Global.cpp" compile="1" resource="0" file="Source/Global.cpp"/>
         <FILE id="CN0rdB" name="Global.h" compile="0" resource="0" file="Source/Global.h"/>
+        <FILE id="E0az66" name="JZLookAndFeel.cpp" compile="1" resource="0"
+              file="Source/JZLookAndFeel.cpp"/>
         <FILE id="Cs5spG" name="JZLookAndFeel.h" compile="0" resource="0" file="Source/JZLookAndFeel.h"/>
         <FILE id="yGMByQ" name="Module.cpp" compile="1" resource="0" file="Source/Module.cpp"/>
         <FILE id="M56dET" name="Module.h" compile="0" resource="0" file="Source/Module.h"/>
